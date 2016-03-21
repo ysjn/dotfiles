@@ -1,0 +1,106 @@
+{
+  "__COMMENT__":
+    "ボックスモデルに影響する書き方を許可する",
+  "box-model": false,
+
+  "__COMMENT__":
+    "csslintが認識していないプロパティの指定を許可する",
+  "known-properties": false,
+
+  "__COMMENT__":
+    "IE6以前で対応していない、クラスを続けて書く書き方を許可する",
+  "adjoining-classes": false,
+
+  "__COMMENT__":
+    "IE7以前で対応していない、'box-sizing' の指定を許可する",
+  "box-sizing": false,
+
+  "__COMMENT__": [
+    "一部のブラウザのベンダープレフィックス('-o'、'-ms' など)が",
+    "書かれていなくても許容する(対象ブラウザを限定しているため)"
+  ],
+  "compatible-vendor-prefixes": false,
+
+  "__COMMENT__": [
+    "CSSグラデーションで全てのブラウザ用のベンダープレフィックス('-o'、'-ms' など)が",
+    "書かれていなくても許容する(対象ブラウザを限定しているため)"
+  ],
+  "gradients": false,
+
+  "__COMMENT__": [
+    "色指定に 'rgba()'、'hsl()'、'hsla()'を使用した時に",
+    "上記指定が未対応のブラウザ向けのフォールバックがなくても許容する"
+  ],
+  "fallback-colors": false,
+
+  "__COMMENT__":
+    "csslintが推奨するfont-faceの書き方は古いので無視する",
+  "bulletproof-font-face": false,
+
+  "__COMMENT__":
+    "正規表現風のセレクタの書き方を許可する",
+  "regex-selectors": false,
+
+  "__COMMENT__":
+    "ユニバーサルセレクタ '*' を許可する",
+  "universal-selector": false,
+
+  "__COMMENT__":
+    "パフォーマンスに影響する属性セレクタの指定方法を許可する",
+  "unqualified-attributes": false,
+
+  "__COMMENT__":
+    "'font-size' の指定が10回以上あっても許容する",
+  "font-sizes": false,
+
+  "__COMMENT__":
+    "'!important' の指定を許容する",
+  "important": false,
+
+  "__COMMENT__":
+    "見出し要素を特定のセレクタにネストする書き方を許可する。OOCSSの主義",
+  "qualified-headings": false,
+
+  "__COMMENT__":
+    "見出し要素を何度も設定することを許可する。OOCSSの主義",
+  "unique-headings": false,
+
+  "__COMMENT__":
+    "IDでのスタイリングを許可する",
+  "ids": false,
+
+  "__COMMENT__":
+    "Disallow star hack",
+  "star-property-hack": false,
+
+  "__COMMENT__":
+    "Disallow underscore hack",
+  "underscore-property-hack": false,
+
+  "__COMMENT__":
+    "'float' の指定が10回以上あっても許容する",
+  "floats": false,
+
+  "__COMMENT__":
+    "マイナス方向のインデント指定があっても許容する",
+  "text-indent": false,
+
+  "__COMMENT__":
+    "'outline-none:none'の指定があっても許容する",
+  "outline-none": false,
+
+  "__COMMENT__": [
+    "幾つかのプロパティ同士は同時に指定しても無意味なものがあるがそれを許容する（for IE6,7の指定）",
+    "display: inlineに対してwidthやheight、margin(とその派生)、float等",
+    "※※サポートブラウザからIE6,7がなくなった段階でこのチェックを有効化する!!※※"
+  ],
+  "display-property-grouping": false,
+
+  "__COMMENT__":
+    "li.activeのように、セレクタ+クラス名のような指定があっても許容する",
+  "overqualified-elements": false,
+
+  "__COMMENT__":
+    "0に単位が指定していないことを許容する",
+  "zero-units": false
+} 
