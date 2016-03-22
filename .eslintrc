@@ -26,20 +26,20 @@
     "jsx": true
   },
   "env": {
-    "browser": true,// ブラウザのグローバル変数を利用可能にする
-    "node": true,// Node.jsのグローバル変数とNode.js特有のルールを追加する
-    "worker": true,// web workersのグローバル変数を利用可能にする
-    "amd": true,// AMDの仕様の通りにrequire()とdefine()をグローバル変数として有効にする
-    "mocha": true,// mochaの全てのグローバル変数を有効にする
-    "jasmine": true,// jasmine(v1.3, v2.0)の全てのグローバル変数を有効にする
-    "phantomjs": true,// phantomjsのグローバル変数を有効にする
-    "jquery": true,// jQueryのグローバル変数を有効にする
-    "prototypejs": true,// prototype.jsのグローバル変数を有効にする
-    "shelljs": true,// shelljsのグローバル変数を有効にする
-    "meteor": true,// meteorのグローバル変数を有効にする
-    "mongo": true,// mongoのグローバル変数を有効にする
-    "applescript": true,// applescriptのグローバル変数を有効にする
-    "es6": true// modulesを除くES6の仕様を有効にする
+    "browser": true,
+    "node": true,
+    "worker": true,
+    "amd": true,
+    "mocha": true,
+    "jasmine": true,
+    "phantomjs": true,
+    "jquery": true,
+    "prototypejs": true,
+    "shelljs": true,
+    "meteor": true,
+    "mongo": true,
+    "applescript": true,
+    "es6": true
   },
   "rules": {
     "comma-dangle": [1,"always"],
@@ -122,13 +122,13 @@
     "semi-spacing": [1,{"before":false,"after":true}],
     "semi": [1,"always"],
     "keyword-spacing": 1,
-    "spaced-comment": [2],// コメントの直前にスペースorタブの有無を指定する
+    "spaced-comment": [2],
     "space-before-blocks": [2,"always"],
     "space-before-function-paren": [2,"never"],
     "space-infix-ops": [1,{}],
     "space-unary-ops": [2,{"words":true,"nonwords":false}],
-    "constructor-super": [2],// 無効なsuper()の呼び出しを許可しない
-    "generator-star-spacing": [2, {// generatorsの*の前後のスペース有無を指定する
+    "constructor-super": [2],
+    "generator-star-spacing": [2, {
       "before": true,
       "after": false
     }],
@@ -138,7 +138,7 @@
     "prefer-const": [2],
     "max-depth": [2, 2],
     "max-len": [1,100,2,{}],
-    "no-bitwise": [0],// ビット演算を許可しない
+    "no-bitwise": [0],
     "max-params": [1,4],
     "max-statements": [1,12],
     "quotes": [2, "double"]
