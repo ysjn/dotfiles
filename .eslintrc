@@ -42,7 +42,6 @@
     "es6": true
   },
   "rules": {
-    "comma-dangle": [1,"always"],
     "no-cond-assign": [1,"except-parens"],
     "no-console": 1,
     "no-constant-condition": 1,
@@ -94,7 +93,6 @@
     "no-unused-vars": 2,
     "radix": 1,
     "wrap-iife": [2,"inside"],
-    "strict": 2,
     "no-catch-shadow": 2,
     "no-delete-var": 1,
     "no-undef-init": 1,
@@ -143,5 +141,6 @@
     "max-statements": [1,12],
     "quotes": [1, "double"],
     "no-plusplus": [0]
-  }
+  },
+  "plugins": [ "html" ]
 }
