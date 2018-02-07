@@ -9,39 +9,13 @@ source /usr/local/git/contrib/completion/.git-prompt.sh
 __git_complete gb _git_branch
 __git_complete gc _git_checkout
 __git_complete push _git_branch
+__git_complete stash _git_stash
 
 #Power-line
 powerline-daemon -q
 POWERLINE_BASH_CONTINUATION=1
 POWERLINE_BASH_SELECT=1
 source /usr/local/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh
-
-
-# variables
-bldblk='\e[1;30m' # Black - Bold
-bldred='\e[1;31m' # Red
-bldgrn='\e[1;32m' # Green
-bldylw='\e[1;33m' # Yellow
-bldblu='\e[1;34m' # Blue
-bldpur='\e[1;35m' # Purple
-bldcyn='\e[1;36m' # Cyan
-bldwht='\e[1;37m' # White
-unkblk='\e[4;30m' # Black - Underline
-undred='\e[4;31m' # Red
-undgrn='\e[4;32m' # Green
-undylw='\e[4;33m' # Yellow
-undblu='\e[4;34m' # Blue
-undpur='\e[4;35m' # Purple
-undcyn='\e[4;36m' # Cyan
-undwht='\e[4;37m' # White
-txtrst='\e[0m'    # Text Reset
-
-
-
-# export
-# export PS1="---$bldred\$(__git_ps1)$txtrst\n[ $bldcyn\W$txtrst ] : "
-export EDITOR="'subl' -w"
-
 
 # export nvm directory
 export NVM_DIR="$HOME/.nvm"
@@ -72,6 +46,7 @@ alias ga='git add'
 alias gs='git status'
 alias gc='git checkout'
 alias gb='git branch'
+alias stash='git stash'
 alias fetch='git fetch'
 alias pull='git pull'
 alias push='git push'
@@ -80,6 +55,9 @@ alias commit='git commit'
 #npm
 alias ns='npm start'
 alias nb='npm run build'
+
+
+# export EDITOR='code --wait'
 
 # functions
 function sublime-projects() {

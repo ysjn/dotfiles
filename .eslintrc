@@ -3,5 +3,8 @@
     "airbnb-base",
     "eslint:recommended"
   ],
+  "env": {
+    "browser": true
+  },
   "plugins": [ "html", "import" ]
 }
