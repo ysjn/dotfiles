@@ -1,31 +1,13 @@
-
-#direnv
-eval "$(direnv hook bash)"
-
-#Source
-source /usr/local/git/contrib/completion/.git-completion.bash
-source /usr/local/git/contrib/completion/.git-prompt.sh
-
+# git-completion
 __git_complete gb _git_branch
 __git_complete gc _git_checkout
 __git_complete push _git_branch
 __git_complete stash _git_stash
 
-#Power-line
-powerline-daemon -q
-POWERLINE_BASH_CONTINUATION=1
-POWERLINE_BASH_SELECT=1
-source /usr/local/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh
-
-# export nvm directory
-export NVM_DIR="$HOME/.nvm"
-# Load NVM
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" 
-# set nvm path
-nvm_path=~/.nvm/current
-if [ -d $nvm_path/bin ]; then
-export PATH="$nvm_path/bin":$PATH
-fi
+# Power-line
+# powerline-daemon -q
+# POWERLINE_BASH_CONTINUATION=1
+# POWERLINE_BASH_SELECT=1
 
 # alias
 alias la='ls -a'
@@ -56,8 +38,11 @@ alias commit='git commit'
 alias ns='npm start'
 alias nb='npm run build'
 
+# yui compressor
+alias yuicomp='java -jar ~/yuicomp.jar'
 
-# export EDITOR='code --wait'
+# ls
+alias ls='ls -G -F'
 
 # functions
 function sublime-projects() {
@@ -98,6 +83,8 @@ function showDesktopIcon() {
     defaults write com.apple.finder CreateDesktop -boolean $1
     killAll Finder
 }
+
+
 ###-begin-npm-completion-###
 #
 # npm command completion script
