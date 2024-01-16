@@ -1,5 +1,6 @@
 return {
   { "Shatur/neovim-ayu" },
+  { "nvim-telescope/telescope-file-browser.nvim" },
 
   {
     "LazyVim/LazyVim",
