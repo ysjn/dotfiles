@@ -22,5 +22,5 @@ curl -o ~/.zsh/.git-completion.sh https://raw.githubusercontent.com/git/git/mast
 curl -o ~/.zsh/.git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 
 # create symbolic link
-ln -snfv ~/dev/dotfiles/.zshrc ~/.zshrc
+ln -snfv ~/dev/dotfiles/.zshrc ~
 ln -snfv ~/dev/dotfiles/nvim ~/.config
