@@ -7,4 +7,5 @@ vim.keymap.del("n", "s")
 vim.keymap.del("n", "S")
 
 -- Telescope file_browser
-vim.keymap.set("n", "<Space>fb", "<Cmd>Telescope file_browser<CR>", { desc = "file browser" })
+vim.keymap.del("n", "<Space>fb")
+vim.keymap.set("n", "<Space>fb", "<Cmd>Telescope file_browser<CR>", { desc = "file browser", noremap = true })

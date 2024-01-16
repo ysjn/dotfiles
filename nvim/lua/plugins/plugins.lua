@@ -1,6 +1,5 @@
 return {
   { "Shatur/neovim-ayu" },
-  { "nvim-telescope/telescope-file-browser.nvim" },
 
   {
     "LazyVim/LazyVim",
@@ -39,11 +38,18 @@ return {
     },
   },
 
+  { "nvim-telescope/telescope-file-browser.nvim" },
+
   {
     "nvim-telescope/telescope.nvim",
     opts = {
       defaults = {
         file_ignore_patterns = { "/node_modules/" },
+      },
+      extensions = {
+        file_browser = {
+          hidden = { file_browser = true, folder_browser = true },
+        },
       },
     },
   },
