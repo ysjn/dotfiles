@@ -34,12 +34,14 @@ brew install --cask font-jetbrains-mono-nerd-font
 
 # install github completion
 mkdir -p ~/.zsh
-curl -o ~/.zsh/.git-completion.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
-curl -o ~/.zsh/.git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
-source ~/.zsh/.git-completion.sh
-source ~/.zsh/.git-prompt.sh
+curl -o ~/.zsh/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+curl -o ~/.zsh/git-completion.zsh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
+curl -o ~/.zsh/git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 
 # create symbolic link
 ln -snfv ~/dev/dotfiles/.zshrc ~
 rm -rf ~/.config/nvim
 ln -snfv ~/dev/dotfiles/nvim ~/.config
+
+# load config
+source ~/.zshrc

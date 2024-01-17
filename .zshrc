@@ -12,8 +12,8 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 
 export NODE_PATH=$(realpath $(dirname $(nvm which current))/../lib/node_modules)
 
-[ -f ${HOME}/.zsh/git-completion.zsh ] && zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.zsh
-[ -f ${HOME}/.zsh/git-prompt.sh ] && . ${HOME}/.zsh/git-prompt.sh
+[ -f ${HOME}/.zsh/git-completion.bash ] && zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash 
+[ -f ${HOME}/.zsh/git-prompt.sh ] && source ${HOME}/.zsh/git-prompt.sh
 
 fpath=(~/.zsh $fpath)
 autoload -Uz compinit && compinit
