@@ -3,7 +3,9 @@ return {
 
   {
     "LazyVim/LazyVim",
-    opts = { colorscheme = "ayu-mirage" },
+    opts = {
+      colorscheme = "ayu-mirage",
+    },
   },
 
   {
@@ -38,18 +40,20 @@ return {
     },
   },
 
-  { "nvim-telescope/telescope-file-browser.nvim" },
-
   {
     "nvim-telescope/telescope.nvim",
     opts = {
       defaults = {
         file_ignore_patterns = { "/node_modules/" },
       },
-      extensions = {
-        file_browser = {
-          hidden = { file_browser = true, folder_browser = true },
-        },
+    },
+  },
+
+  {
+    "stevearc/conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        scss = { "prettierd" },
       },
     },
   },
