@@ -32,6 +32,16 @@ rm -rf ~/.config/nvim/.git
 brew tap homebrew/cask-fonts
 brew install --cask font-jetbrains-mono-nerd-font
 
+# install tmux
+brew install tmux
+
+# install tmux plugin manager
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
+# create symbolic link for tmux.conf
+mkdir -p $HOME/.config/tmux
+ln -snfv ~/dev/dotfiles/tmux.conf $HOME/.config/tmux/tmux.conf
+
 # install github completion
 mkdir -p ~/.zsh
 curl -o ~/.zsh/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
