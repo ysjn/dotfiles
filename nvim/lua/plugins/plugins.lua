@@ -1,4 +1,7 @@
 return {
+  { "mg979/vim-visual-multi" },
+  { "akinsho/git-conflict.nvim" },
+  { "christoomey/vim-tmux-navigator", lazy = false },
 
   {
     "nvim-treesitter/nvim-treesitter",
@@ -19,6 +22,10 @@ return {
         "yaml",
       },
     },
+    config = function()
+      vim.filetype.add({ extension = { mdx = "markdown.mdx" } })
+      vim.treesitter.language.register("markdown", "mdx")
+    end,
   },
 
   {
@@ -42,31 +49,6 @@ return {
   },
 
   {
-    "stevearc/conform.nvim",
-    opts = {
-      formatters_by_ft = {
-        scss = { "prettierd" },
-      },
-    },
-  },
-
-  {
-    "ggandor/leap.nvim",
-    config = function(_, opts)
-      local leap = require("leap")
-      for k, v in pairs(opts) do
-        leap.opts[k] = v
-      end
-      leap.add_default_mappings(true)
-      vim.keymap.del({ "x", "o" }, "x")
-      vim.keymap.del({ "x", "o" }, "X")
-      vim.keymap.set("n", "s", function()
-        require("leap").leap({ target_windows = { vim.api.nvim_get_current_win() } })
-      end)
-    end,
-  },
-
-  {
     "neovim/nvim-lspconfig",
     opts = {
       servers = { eslint = {} },
@@ -85,11 +67,36 @@ return {
   },
 
   {
-    "mg979/vim-visual-multi",
-  },
-
-  {
-    "christoomey/vim-tmux-navigator",
-    lazy = false,
+    "jay-babu/mason-null-ls.nvim",
+    lazy = true,
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+      {
+        "nvimtools/none-ls.nvim",
+        opts = function()
+          local null_ls = require("null-ls")
+          return {
+            sources = {
+              null_ls.builtins.diagnostics.markuplint.with({
+                filetypes = { "html", "javascriptreact", "typescriptreact" },
+              }),
+              null_ls.builtins.diagnostics.cspell.with({
+                diagnostics_postprocess = function(diagnostic)
+                  diagnostic.severity = vim.diagnostic.severity["HINT"]
+                end,
+              }),
+              null_ls.builtins.code_actions.cspell,
+            },
+          }
+        end,
+      },
+    },
+    config = function()
+      require("mason-null-ls").setup({
+        ensure_installed = {},
+        automatic_installation = true,
+        automatic_setup = true,
+      })
+    end,
   },
 }

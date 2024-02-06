@@ -16,6 +16,9 @@ fi
 # install nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 
+# install alacritty
+brew install --cask alacritty
+
 # install neovim
 brew install neovim ripgrep fd lazygit
 
@@ -52,6 +55,7 @@ curl -o ~/.zsh/git-prompt.sh https://raw.githubusercontent.com/git/git/master/co
 ln -snfv ~/dev/dotfiles/.zshrc ~
 rm -rf ~/.config/nvim
 ln -snfv ~/dev/dotfiles/nvim ~/.config
+ln -snfv ~/dev/dotfiles/alacritty.toml $HOME/.config/alacritty.toml
 
 # load config
 source ~/.zshrc
