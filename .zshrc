@@ -20,7 +20,6 @@ export NODE_PATH=$(realpath $(dirname $(nvm which current))/../lib/node_modules)
 plug "zsh-users/zsh-autosuggestions"
 plug "zap-zsh/supercharge"
 plug "zsh-users/zsh-syntax-highlighting"
-plug "zap-zsh/vim"
 plug "agkozak/zsh-z"
 
 fpath=(~/.zsh $fpath)

@@ -35,8 +35,17 @@ magenta = '#d4bfff'
 cyan = '#95e6cb'
 white = '#ffffff'
 
+[colors.cursor]
+text = "#ffffff"
+cursor = "#ff4057"
+
+[colors.vi_mode_cursor]
+text = "#1f2430"
+cursor = "#ffffff"
+
 [cursor]
 style = { blinking = "Always" }
+vi_mode_style = { shape = "Block" }
 
 [mouse]
 hide_when_typing = true
