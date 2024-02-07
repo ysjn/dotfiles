@@ -1,7 +1,7 @@
 return {
   { "mg979/vim-visual-multi" },
-  { "akinsho/git-conflict.nvim" },
   { "christoomey/vim-tmux-navigator", lazy = false },
+  { "akinsho/git-conflict.nvim", lazy = true, config = true },
 
   {
     "nvim-treesitter/nvim-treesitter",
