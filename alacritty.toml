@@ -8,7 +8,7 @@ option_as_alt = "Both"
 
 [font]
 normal = { family = "JetBrainsMonoNL Nerd Font Mono" }
-size = 16
+size = 15
 
 [colors.primary]
 background = '#1f2430'
@@ -49,3 +49,9 @@ vi_mode_style = { shape = "Block" }
 
 [mouse]
 hide_when_typing = true
+
+[[keyboard.bindings]]
+key = "Escape"
+action = 'ToggleViMode'
+mode = "Vi"
+
