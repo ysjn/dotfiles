@@ -31,6 +31,14 @@ vim.keymap.set({ "n", "v" }, "D", '"_D', opts("Delete Right"))
 vim.keymap.set({ "n", "v" }, "<c-h>", "^", opts())
 vim.keymap.set({ "n", "v" }, "<c-l>", "$", opts())
 
+-- Move Lines
+vim.keymap.set("n", "<A-C-k>", "<cmd>m .-2<cr>==", opts("Move up"))
+vim.keymap.set("n", "<A-C-j>", "<cmd>m .+1<cr>==", opts("Move down"))
+vim.keymap.set("i", "<A-C-j>", "<esc><cmd>m .+1<cr>==gi", opts("Move down"))
+vim.keymap.set("i", "<A-C-k>", "<esc><cmd>m .-2<cr>==gi", opts("Move up"))
+vim.keymap.set("v", "<A-C-j>", ":m '>+1<cr>gv=gv", opts("Move down"))
+vim.keymap.set("v", "<A-C-k>", ":m '<-2<cr>gv=gv", opts("Move up"))
+
 -- Move between splits in NeoVim windows and Tmux panes
 vim.keymap.set("n", "<A-h>", "<cmd>TmuxNavigateLeft<CR>", opts())
 vim.keymap.set("n", "<A-j>", "<cmd>TmuxNavigateDown<CR>", opts())
