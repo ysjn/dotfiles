@@ -10,6 +10,8 @@ end
 vim.keymap.del({ "i", "x", "n", "s" }, "<C-s>")
 vim.keymap.del({ "n", "v" }, "s")
 vim.keymap.del({ "n", "v" }, "S")
+vim.keymap.del("n", "<leader>|")
+vim.keymap.del("n", "<leader>-")
 
 -- leap
 vim.keymap.set("n", "f", function()
@@ -29,10 +31,21 @@ vim.keymap.set({ "n", "v" }, "D", '"_D', opts("Delete Right"))
 vim.keymap.set({ "n", "v" }, "<c-h>", "^", opts())
 vim.keymap.set({ "n", "v" }, "<c-l>", "$", opts())
 
+-- Move between splits in NeoVim windows and Tmux panes
 vim.keymap.set("n", "<A-h>", "<cmd>TmuxNavigateLeft<CR>", opts())
 vim.keymap.set("n", "<A-j>", "<cmd>TmuxNavigateDown<CR>", opts())
 vim.keymap.set("n", "<A-k>", "<cmd>TmuxNavigateUp<CR>", opts())
 vim.keymap.set("n", "<A-l>", "<cmd>TmuxNavigateRight<CR>", opts())
+
+-- Resize splits for NeoVim windows Panes and Tmux panes
+vim.keymap.set("n", "<A-H>", "<cmd>TmuxResizeLeft<CR>", opts())
+vim.keymap.set("n", "<A-J>", "<cmd>TmuxResizeDown<CR>", opts())
+vim.keymap.set("n", "<A-K>", "<cmd>TmuxResizeUp<CR>", opts())
+vim.keymap.set("n", "<A-L>", "<cmd>TmuxResizeRight<CR>", opts())
+
+-- Split windows
+vim.keymap.set("n", "<leader>v", "<cmd>vsplit<CR>", opts("Split window right"))
+vim.keymap.set("n", "<leader>h", "<cmd>split<CR>", opts("Split window below"))
 
 -- Clear all marks
 vim.keymap.set("n", "<A-m>", "<cmd>delm! | delm A-Z0-9<CR><cmd>wviminfo!<CR><cmd>echo 'Clear all marks'<CR>", opts())
