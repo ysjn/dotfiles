@@ -5,6 +5,17 @@ return {
   { "akinsho/git-conflict.nvim", lazy = true, config = true },
 
   {
+    "echasnovski/mini.surround",
+    opts = {
+      mappings = {
+        add = "gsa", -- Add surrounding in Normal and Visual modes
+        delete = "gsd", -- Delete surrounding
+        replace = "gsr", -- Replace surrounding
+      },
+    },
+  },
+
+  {
     "nvim-treesitter/nvim-treesitter",
     opts = {
       ensure_installed = {
