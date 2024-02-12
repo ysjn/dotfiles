@@ -13,11 +13,11 @@ return {
           SignColumn = { bg = "None" },
           Folded = { bg = "None" },
           FoldColumn = { bg = "None" },
-          CursorLine = { bg = "None" },
           CursorColumn = { bg = "None" },
           WhichKeyFloat = { bg = "None" },
-          VertSplit = { bg = "None" },
           Visual = { bg = colors.selection_bg },
+          DiagnosticHint = { fg = colors.guide_normal },
+          DiagnosticUnderlineHint = { sp = colors.guide_active, undercurl = true },
         },
       })
 
@@ -25,9 +25,9 @@ return {
       local ayu_lualine = require("lualine.themes.ayu")
       ayu_lualine.visual.b.bg = "None"
       ayu_lualine.replace.b.bg = "None"
-      ayu_lualine.inactive.a.bg = "None"
-      ayu_lualine.inactive.b.bg = "None"
-      ayu_lualine.inactive.c.bg = "None"
+      ayu_lualine.inactive.a.bg = colors.panel_shadow
+      ayu_lualine.inactive.b.bg = colors.panel_shadow
+      ayu_lualine.inactive.c.bg = colors.panel_shadow
       ayu_lualine.normal.b.bg = "None"
       ayu_lualine.normal.c.bg = "None"
       ayu_lualine.insert.b.bg = "None"
