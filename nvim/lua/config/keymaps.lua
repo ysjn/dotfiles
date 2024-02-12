@@ -10,6 +10,7 @@ end
 vim.keymap.del({ "i", "x", "n", "s" }, "<C-s>")
 vim.keymap.del({ "n", "v" }, "s")
 vim.keymap.del({ "n", "v" }, "S")
+
 vim.keymap.del("n", "<leader>|")
 vim.keymap.del("n", "<leader>-")
 
@@ -54,6 +55,8 @@ vim.keymap.set("n", "<A-L>", "<cmd>TmuxResizeRight<CR>", opts())
 -- Split windows
 vim.keymap.set("n", "<leader>v", "<cmd>vsplit<CR>", opts("Split window right"))
 vim.keymap.set("n", "<leader>h", "<cmd>split<CR>", opts("Split window below"))
-
+-- Cannot override <leader>/ @see: https://github.com/LazyVim/LazyVim/issues/63#issuecomment-1383718679
+-- vim.keymap.set("n", "<leader>/", "<cmd>Telescope live_grep_args<CR>", opts("Grep with args (root dir)"))
+vim.keymap.set("n", "<leader>fg", "<cmd>Telescope live_grep_args<CR>", opts("Grep with args (root dir)"))
 -- Clear all marks
 vim.keymap.set("n", "<A-m>", "<cmd>delm! | delm A-Z0-9<CR><cmd>wviminfo!<CR><cmd>echo 'Clear all marks'<CR>", opts())
