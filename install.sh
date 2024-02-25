@@ -45,6 +45,9 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 mkdir -p $HOME/.config/tmux
 ln -snfv ~/dev/dotfiles/tmux.conf $HOME/.config/tmux/tmux.conf
 
+# install zap
+zsh <(curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh) --branch release-v1
+
 # install github completion
 mkdir -p ~/.zsh
 curl -o ~/.zsh/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
