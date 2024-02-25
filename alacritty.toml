@@ -1,5 +1,5 @@
 [window]
-padding = { x = 10, y = 10 }
+padding = { x = 10, y = 5 }
 dynamic_padding = true
 decorations = "Buttonless"
 opacity = 0.95
@@ -8,7 +8,8 @@ option_as_alt = "Both"
 
 [font]
 normal = { family = "JetBrainsMonoNL Nerd Font Mono" }
-size = 15
+size = 14
+offset = { x = 0, y = 1 }
 
 [colors.primary]
 background = '#1f2430'

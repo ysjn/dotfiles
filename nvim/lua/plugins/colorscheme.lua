@@ -9,19 +9,21 @@ return {
       require("ayu").setup({
         overrides = {
           Normal = { bg = "None" },
-          ColorColumn = { bg = "None" },
+          Visual = { bg = colors.selection_bg },
+
+          -- ColorColumn = { bg = "None" },
           SignColumn = { bg = "None" },
           Folded = { bg = "None" },
           FoldColumn = { bg = "None" },
+          CursorLine = { bg = "None" },
           CursorColumn = { bg = "None" },
           WhichKeyFloat = { bg = "None" },
-          Visual = { bg = colors.selection_bg },
+
           DiagnosticHint = { fg = colors.guide_normal },
           DiagnosticUnderlineHint = { sp = colors.guide_active, undercurl = true },
         },
       })
 
-      -- lualine
       local ayu_lualine = require("lualine.themes.ayu")
       ayu_lualine.visual.b.bg = "None"
       ayu_lualine.replace.b.bg = "None"
@@ -34,11 +36,48 @@ return {
       require("lualine").setup({
         options = {
           theme = ayu_lualine,
-          globalstatus = false,
           component_separators = { left = "|", right = "|" },
         },
         sections = {
           lualine_z = {},
+        },
+      })
+
+      require("bufferline").setup({
+        options = {
+          themable = true,
+          show_buffer_close_icons = false,
+          always_show_bufferline = true,
+          max_name_length = 50,
+          name_formatter = function(buf)
+            if string.match(buf.path, "/pc/") then
+              return "[PC]" .. vim.fn.fnamemodify(buf.path, ":t")
+            elseif string.match(buf.path, "/smp/") then
+              return "[SMP]" .. vim.fn.fnamemodify(buf.path, ":t")
+            end
+          end,
+          indicator = { style = "underline" },
+          offsets = {
+            {
+              filetype = "neo-tree",
+              text = "Neo-tree",
+              highlight = "Directory",
+              text_align = "left",
+            },
+          },
+        },
+        highlights = {
+          separator = {
+            fg = colors.panel_shadow,
+          },
+          separator_selected = {
+            bg = colors.panel_shadow,
+          },
+          buffer_selected = {
+            sp = colors.accent,
+            bold = false,
+            italic = false,
+          },
         },
       })
     end,
@@ -61,8 +100,23 @@ return {
         fg = colors.bg,
         bg = colors.lsp_parameter,
         bold = true,
-        nocombine = true,
+        -- nocombine = true,
       })
     end,
+  },
+
+  {
+    "b0o/incline.nvim",
+    event = "VeryLazy",
+    opts = {
+      hide = { cursorline = true },
+      window = {
+        margin = { vertical = 0 },
+        winhighlight = {
+          active = { Normal = "IncSearch" },
+          inactive = { Normal = "Pmenu" },
+        },
+      },
+    },
   },
 }

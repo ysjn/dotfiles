@@ -5,6 +5,12 @@ return {
   { "akinsho/git-conflict.nvim", lazy = true, config = true },
 
   {
+    "Wansmer/treesj",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    config = true,
+  },
+
+  {
     "echasnovski/mini.surround",
     opts = {
       mappings = {
@@ -123,6 +129,7 @@ return {
         opts = function()
           local null_ls = require("null-ls")
           return {
+            debounce = 500,
             sources = {
               null_ls.builtins.diagnostics.markuplint.with({
                 filetypes = { "html", "javascriptreact", "typescriptreact" },
