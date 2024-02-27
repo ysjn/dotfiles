@@ -119,4 +119,18 @@ return {
       },
     },
   },
+
+  {
+    "levouh/tint.nvim",
+    config = {
+      tint = -70,
+      saturation = 0.5,
+      highlight_ignore_patterns = {
+        "LineNr",
+        "WinSeparator",
+        "DiagnosticHint",
+        "Comment",
+      },
+    },
+  },
 }
