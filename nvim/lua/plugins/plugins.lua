@@ -133,6 +133,21 @@ return {
         sources = {
           null_ls.builtins.diagnostics.markuplint.with({
             filetypes = { "html", "javascriptreact", "typescriptreact" },
+            prefer_local = "node_modules/.bin",
+            condition = function(utils)
+              return vim.fn.executable("markuplint") > 0
+                and utils.root_has_file({
+                  ".markuplintrc",
+                  ".markuplintrc.json",
+                  ".markuplintrc.yaml",
+                  ".markuplintrc.yml",
+                  ".markuplintrc.js",
+                  ".markuplintrc.ts",
+                })
+            end,
+            diagnostics_postprocess = function(diagnostic)
+              diagnostic.severity = vim.diagnostic.severity["WARN"]
+            end,
           }),
           cspell.diagnostics.with({
             diagnostics_postprocess = function(diagnostic)
