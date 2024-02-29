@@ -20,13 +20,13 @@ vim.keymap.set("n", "f", function()
 end)
 
 -- send yanked text to black hole register
-vim.keymap.set("v", "p", '"_dP', opts())
-vim.keymap.set({ "n", "v" }, "dd", '"_dd', opts("Delete Line"))
-vim.keymap.set({ "n", "v" }, "dh", '"_dh', opts("Delete Left"))
-vim.keymap.set({ "n", "v" }, "dj", '"_dj', opts("Delete Down"))
-vim.keymap.set({ "n", "v" }, "dk", '"_dk', opts("Delete Up"))
-vim.keymap.set({ "n", "v" }, "dl", '"_dl', opts("Delete Right"))
+vim.keymap.set("v", "p", '"_dP', opts("Paste"))
+vim.keymap.set({ "n", "v" }, "d", '"_d', opts("Delete"))
 vim.keymap.set({ "n", "v" }, "D", '"_D', opts("Delete Right"))
+vim.keymap.set({ "n", "v" }, "s", '"_s', opts("Delete"))
+vim.keymap.set({ "n", "v" }, "S", '"_S', opts("Delete Right"))
+vim.keymap.set({ "n", "v" }, "c", '"_c', opts("Change"))
+vim.keymap.set({ "n", "v" }, "C", '"_C', opts("Change Right"))
 
 -- Move caret to start/end of line
 vim.keymap.set({ "n", "v" }, "<c-h>", "^", opts())
