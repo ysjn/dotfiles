@@ -1,9 +1,10 @@
 return {
-  { "mg979/vim-visual-multi" },
   { "christoomey/vim-tmux-navigator", lazy = false },
   { "RyanMillerC/better-vim-tmux-resizer", lazy = false },
+
   { "akinsho/git-conflict.nvim", lazy = true, config = true },
 
+  { "mg979/vim-visual-multi", event = "VeryLazy" },
   {
     "Wansmer/treesj",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
@@ -14,9 +15,9 @@ return {
     "echasnovski/mini.surround",
     opts = {
       mappings = {
-        add = "gsa", -- Add surrounding in Normal and Visual modes
-        delete = "gsd", -- Delete surrounding
-        replace = "gsr", -- Replace surrounding
+        add = "gsa",
+        delete = "gsd",
+        replace = "gsr",
       },
     },
   },
@@ -120,37 +121,27 @@ return {
   },
 
   {
-    "jay-babu/mason-null-ls.nvim",
+    "nvimtools/none-ls.nvim",
     lazy = true,
     event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      {
-        "nvimtools/none-ls.nvim",
-        opts = function()
-          local null_ls = require("null-ls")
-          return {
-            debounce = 500,
-            sources = {
-              null_ls.builtins.diagnostics.markuplint.with({
-                filetypes = { "html", "javascriptreact", "typescriptreact" },
-              }),
-              null_ls.builtins.diagnostics.cspell.with({
-                diagnostics_postprocess = function(diagnostic)
-                  diagnostic.severity = vim.diagnostic.severity["HINT"]
-                end,
-              }),
-              null_ls.builtins.code_actions.cspell,
-            },
-          }
-        end,
-      },
-    },
-    config = function()
-      require("mason-null-ls").setup({
-        ensure_installed = {},
-        automatic_installation = true,
-        automatic_setup = true,
-      })
+    dependencies = { "davidmh/cspell.nvim" },
+    opts = function()
+      local null_ls = require("null-ls")
+      local cspell = require("cspell")
+      return {
+        debounce = 500,
+        sources = {
+          null_ls.builtins.diagnostics.markuplint.with({
+            filetypes = { "html", "javascriptreact", "typescriptreact" },
+          }),
+          cspell.diagnostics.with({
+            diagnostics_postprocess = function(diagnostic)
+              diagnostic.severity = vim.diagnostic.severity["HINT"]
+            end,
+          }),
+          cspell.code_actions,
+        },
+      }
     end,
   },
 }
