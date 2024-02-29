@@ -11,7 +11,6 @@ return {
           Normal = { bg = "None" },
           Visual = { bg = colors.selection_bg },
 
-          -- ColorColumn = { bg = "None" },
           SignColumn = { bg = "None" },
           Folded = { bg = "None" },
           FoldColumn = { bg = "None" },
@@ -19,8 +18,16 @@ return {
           CursorColumn = { bg = "None" },
           WhichKeyFloat = { bg = "None" },
 
+          VertSplit = {
+            fg = colors.panel_border,
+            bg = "None",
+          },
+
           DiagnosticHint = { fg = colors.guide_normal },
-          DiagnosticUnderlineHint = { sp = colors.guide_active, undercurl = true },
+          DiagnosticUnderlineHint = {
+            sp = colors.guide_active,
+            undercurl = true,
+          },
         },
       })
 
@@ -100,7 +107,6 @@ return {
         fg = colors.bg,
         bg = colors.lsp_parameter,
         bold = true,
-        -- nocombine = true,
       })
     end,
   },
@@ -113,7 +119,7 @@ return {
       window = {
         margin = { vertical = 0 },
         winhighlight = {
-          active = { Normal = "IncSearch" },
+          active = { Normal = "CurSearch" },
           inactive = { Normal = "Pmenu" },
         },
       },
@@ -122,6 +128,7 @@ return {
 
   {
     "levouh/tint.nvim",
+    event = "VeryLazy",
     config = {
       tint = -70,
       saturation = 0.5,
