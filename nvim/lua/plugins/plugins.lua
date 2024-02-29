@@ -124,7 +124,18 @@ return {
     "nvimtools/none-ls.nvim",
     lazy = true,
     event = { "BufReadPre", "BufNewFile" },
-    dependencies = { "davidmh/cspell.nvim" },
+    dependencies = {
+      "williamboman/mason.nvim",
+      {
+        "jay-babu/mason-null-ls.nvim",
+        opts = {
+          ensure_installed = { "cspell", "markuplint" },
+          automatic_installation = true,
+          methods = { code_actions = false },
+        },
+      },
+      "davidmh/cspell.nvim",
+    },
     opts = function()
       local null_ls = require("null-ls")
       local cspell = require("cspell")
