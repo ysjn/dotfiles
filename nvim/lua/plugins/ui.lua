@@ -47,20 +47,32 @@ return {
       })
 
       local ayu_lualine = require("lualine.themes.ayu")
+      ayu_lualine.normal.b.bg = "None"
+      ayu_lualine.insert.b.bg = "None"
       ayu_lualine.visual.b.bg = "None"
       ayu_lualine.replace.b.bg = "None"
-      ayu_lualine.inactive.a.bg = colors.panel_shadow
-      ayu_lualine.inactive.b.bg = colors.panel_shadow
-      ayu_lualine.inactive.c.bg = colors.panel_shadow
-      ayu_lualine.normal.b.bg = "None"
       ayu_lualine.normal.c.bg = "None"
-      ayu_lualine.insert.b.bg = "None"
+
+      local icons = require("lazyvim.config").icons
       require("lualine").setup({
         options = {
           theme = ayu_lualine,
           component_separators = { left = "|", right = "|" },
         },
         sections = {
+          lualine_c = {
+            {
+              "diagnostics",
+              symbols = {
+                error = icons.diagnostics.Error,
+                warn = icons.diagnostics.Warn,
+                info = icons.diagnostics.Info,
+                hint = icons.diagnostics.Hint,
+              },
+            },
+            { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
+            { "filename", file_status = true, path = 1 },
+          },
           lualine_z = {},
         },
       })
@@ -130,7 +142,6 @@ return {
     "b0o/incline.nvim",
     event = "VeryLazy",
     opts = {
-      hide = { cursorline = true },
       window = {
         margin = { vertical = 0 },
         winhighlight = {
