@@ -3,3 +3,11 @@
 -- Add any additional options here
 vim.opt.breakindent = true
 vim.opt.scrolloff = 15
+
+vim.diagnostic.config({
+  float = {
+    header = false,
+    border = "rounded",
+    focusable = false,
+  },
+})
