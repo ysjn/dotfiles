@@ -61,6 +61,11 @@ return {
   {
     "nvim-telescope/telescope.nvim",
     dependencies = { "nvim-telescope/telescope-live-grep-args.nvim" },
+    keys = {
+      -- Override <leader>/
+      -- @see: https://github.com/LazyVim/LazyVim/issues/63#issuecomment-1383718679
+      { "<leader>/", vim.NIL },
+    },
     opts = function()
       local actions = require("telescope.actions")
       require("telescope").load_extension("live_grep_args")
