@@ -3,6 +3,7 @@
 -- Add any additional options here
 vim.opt.breakindent = true
 vim.opt.scrolloff = 15
+vim.opt.foldmethod = "indent"
 
 vim.diagnostic.config({
   float = {
