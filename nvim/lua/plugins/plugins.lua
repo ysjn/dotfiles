@@ -2,7 +2,7 @@ return {
   { "christoomey/vim-tmux-navigator", lazy = false },
   { "RyanMillerC/better-vim-tmux-resizer", lazy = false },
 
-  { "akinsho/git-conflict.nvim", lazy = true, config = true },
+  { "akinsho/git-conflict.nvim", config = true },
 
   { "mg979/vim-visual-multi", event = "VeryLazy" },
   {

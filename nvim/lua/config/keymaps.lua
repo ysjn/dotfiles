@@ -32,6 +32,13 @@ vim.keymap.set({ "n", "v" }, "C", '"_C', opts("Change Right"))
 vim.keymap.set({ "n", "v" }, "<c-h>", "^", opts())
 vim.keymap.set({ "n", "v" }, "<c-l>", "$", opts())
 
+-- Move page up/down then re-center buffer
+vim.keymap.set("n", "<c-u>", "<c-u>zz", opts())
+vim.keymap.set("n", "<c-d>", "<c-d>zz", opts())
+
+-- Close all buffer and open dashboard
+vim.keymap.set("n", "<leader>bx", "<Cmd>%bd<CR><Cmd>Dashboard<CR>", opts("Close all buffer"))
+
 -- Move Lines
 vim.keymap.set("n", "<A-C-k>", "<cmd>m .-2<cr>==", opts("Move up"))
 vim.keymap.set("n", "<A-C-j>", "<cmd>m .+1<cr>==", opts("Move down"))
