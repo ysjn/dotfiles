@@ -75,31 +75,37 @@ return {
           mappings = {
             n = {
               ["q"] = "close",
-              ["<C-a>"] = function(p_bufnr)
-                actions.send_selected_to_qflist(p_bufnr)
-                vim.cmd.cfdo("edit")
-              end,
-              ["<C-r>"] = function(p_bufnr)
-                -- send results to quick fix list
-                actions.send_to_qflist(p_bufnr)
+              ["<C-a>"] = {
+                function(p_bufnr)
+                  actions.send_selected_to_qflist(p_bufnr)
+                  vim.cmd.cfdo("edit")
+                end,
+                "Open selected files",
+              },
+              ["<C-r>"] = {
+                function(p_bufnr)
+                  -- send results to quick fix list
+                  actions.send_to_qflist(p_bufnr)
 
-                local qflist = vim.fn.getqflist()
-                local paths = {}
-                local hash = {}
-                for k in pairs(qflist) do
-                  local path = vim.fn.bufname(qflist[k]["bufnr"]) -- extract path from quick fix list
-                  if not hash[path] then -- add to paths table, if not already appeared
-                    paths[#paths + 1] = path
-                    hash[path] = true -- remember existing paths
+                  local qflist = vim.fn.getqflist()
+                  local paths = {}
+                  local hash = {}
+                  for k in pairs(qflist) do
+                    local path = vim.fn.bufname(qflist[k]["bufnr"]) -- extract path from quick fix list
+                    if not hash[path] then -- add to paths table, if not already appeared
+                      paths[#paths + 1] = path
+                      hash[path] = true -- remember existing paths
+                    end
                   end
-                end
 
-                -- show search scope with message
-                vim.notify("find in ...\n  " .. table.concat(paths, "\n  "))
+                  -- show search scope with message
+                  vim.notify("find in ...\n  " .. table.concat(paths, "\n  "))
 
-                -- execute live_grep_args with search scope
-                require("telescope").extensions.live_grep_args.live_grep_args({ search_dirs = paths })
-              end,
+                  -- execute live_grep_args with search scope
+                  require("telescope").extensions.live_grep_args.live_grep_args({ search_dirs = paths })
+                end,
+                "Live grep on results",
+              },
             },
           },
         },
