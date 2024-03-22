@@ -1,14 +1,19 @@
 return {
   { "christoomey/vim-tmux-navigator", lazy = false },
   { "RyanMillerC/better-vim-tmux-resizer", lazy = false },
-
   { "akinsho/git-conflict.nvim", config = true },
 
   { "mg979/vim-visual-multi", event = "VeryLazy" },
+
   {
     "Wansmer/treesj",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
-    config = true,
+    opts = { use_default_keymaps = false },
+  },
+
+  {
+    "chentoast/marks.nvim",
+    opts = { default_mappings = false },
   },
 
   {

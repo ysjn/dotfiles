@@ -40,7 +40,7 @@ return {
 
           DiagnosticHint = { fg = colors.guide_normal },
           DiagnosticUnderlineHint = {
-            sp = colors.guide_active,
+            sp = colors.comment,
             undercurl = true,
           },
         },

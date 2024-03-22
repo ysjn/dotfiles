@@ -68,3 +68,12 @@ vim.keymap.set("n", "<leader>/", "<cmd>Telescope live_grep_args<CR>", opts("Grep
 
 -- Clear all marks
 vim.keymap.set("n", "<A-m>", "<cmd>delm! | delm A-Z0-9<CR><cmd>wviminfo!<CR><cmd>echo 'Clear all marks'<CR>", opts())
+
+-- Tree split join
+vim.keymap.set("n", "<leader>j", require("treesj").toggle, opts("Split or Join"))
+
+-- Marks
+local marks = require("marks")
+vim.keymap.set("n", "<c-m>", marks.set_next, opts("Set next available lowercase mark"))
+vim.keymap.set("n", "m", marks.next, opts("Next mark"))
+vim.keymap.set("n", "M", marks.prev, opts("Previous mark"))
