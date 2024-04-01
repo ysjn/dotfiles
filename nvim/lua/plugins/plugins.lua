@@ -85,7 +85,12 @@ return {
                   actions.send_selected_to_qflist(p_bufnr)
                   vim.cmd.cfdo("edit")
                 end,
-                "Open selected files",
+                type = "action",
+                opts = {
+                  nowait = true,
+                  silent = true,
+                  desc = "Open selected files",
+                },
               },
               ["<C-r>"] = {
                 function(p_bufnr)
@@ -109,7 +114,12 @@ return {
                   -- execute live_grep_args with search scope
                   require("telescope").extensions.live_grep_args.live_grep_args({ search_dirs = paths })
                 end,
-                "Live grep on results",
+                type = "action",
+                opts = {
+                  nowait = true,
+                  silent = true,
+                  desc = "Live grep on results",
+                },
               },
             },
           },
