@@ -45,6 +45,9 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 mkdir -p $HOME/.config/tmux
 ln -snfv ~/dev/dotfiles/tmux.conf $HOME/.config/tmux/tmux.conf
 
+# install fzf (for tmux-fzf-url)
+brew install fzf
+
 # install zap
 zsh <(curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh) --branch release-v1
 
