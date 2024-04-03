@@ -1,18 +1,4 @@
 return {
-  {
-    "folke/noice.nvim",
-    opts = function(_, opts)
-      table.insert(opts.routes, {
-        filter = {
-          event = "notify",
-          find = "No information",
-        },
-        opts = { skip = true },
-      })
-
-      opts.presets.lsp_doc_border = true
-    end,
-  },
 
   {
     "Shatur/neovim-ayu",
@@ -37,6 +23,13 @@ return {
             fg = colors.panel_border,
             bg = "None",
           },
+
+          TreesitterContext = { bg = colors.line },
+
+          ["@lsp.typemod.variable.local"] = { fg = colors.lsp_parameter },
+          ["@lsp.type.property.typescriptreact"] = { fg = colors.fg },
+          ["@lsp.type.member.typescriptreact"] = { fg = colors.func },
+          ["htmlTagName"] = { fg = colors.markup },
 
           DiagnosticHint = { fg = colors.guide_normal },
           DiagnosticUnderlineHint = {
