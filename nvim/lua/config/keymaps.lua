@@ -77,3 +77,7 @@ local marks = require("marks")
 vim.keymap.set("n", "<c-m>", marks.set_next, opts("Set next available lowercase mark"))
 vim.keymap.set("n", "m", marks.next, opts("Next mark"))
 vim.keymap.set("n", "M", marks.prev, opts("Previous mark"))
+
+-- Oil
+vim.keymap.set("n", "<leader>e", "<CMD>Oil --float<CR>", opts("Open parent directory (float)"))
+vim.keymap.set("n", "<leader>E", "<CMD>Oil<CR>", opts("Open parent directory"))
