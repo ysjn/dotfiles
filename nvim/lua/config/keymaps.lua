@@ -39,6 +39,9 @@ vim.keymap.set("n", "<c-d>", "<c-d>zz", opts())
 -- Close all buffer and open dashboard
 vim.keymap.set("n", "<leader>bx", "<Cmd>%bd<CR><Cmd>Dashboard<CR>", opts("Close all buffer"))
 
+-- Re-open most recent buffer
+vim.keymap.set("n", "<leader>bz", "<c-o>", opts("Close all buffer"))
+
 -- Move Lines
 vim.keymap.set("n", "<A-C-k>", "<cmd>m .-2<cr>==", opts("Move up"))
 vim.keymap.set("n", "<A-C-j>", "<cmd>m .+1<cr>==", opts("Move down"))
@@ -63,9 +66,10 @@ vim.keymap.set("n", "<A-L>", "<cmd>TmuxResizeRight<CR>", opts())
 vim.keymap.set("n", "<leader>v", "<cmd>vsplit<CR>", opts("Split window right"))
 vim.keymap.set("n", "<leader>h", "<cmd>split<CR>", opts("Split window below"))
 
--- Use live_grep_args instead of default live_grep
--- vim.keymap.set("n", "<leader>/", "<cmd>Telescope live_grep_args<CR>", opts("Grep with args (root dir)"))
-vim.keymap.set("n", "<leader>/", "<cmd>Telescope egrepify<CR>", opts("Grep with args (root dir)"))
+-- Use egrepify instead of default live_grep
+vim.keymap.set("n", "<leader>/", function()
+  require("telescope").extensions.egrepify.egrepify({ cwd = LazyVim.root() })
+end, opts("Grep with args (root dir)"))
 
 -- Clear all marks
 vim.keymap.set("n", "<A-m>", "<cmd>delm! | delm A-Z0-9<CR><cmd>wviminfo!<CR><cmd>echo 'Clear all marks'<CR>", opts())

@@ -135,11 +135,21 @@ return {
     },
     opts = function()
       local actions = require("telescope.actions")
-      -- require("telescope").load_extension("live_grep_args")
       require("telescope").load_extension("egrepify")
       return {
         defaults = {
           file_ignore_patterns = { "/node_modules/", "package-lock.json", "yarn.lock" },
+          vimgrep_arguments = {
+            "rg",
+            "--color=never",
+            "--no-heading",
+            "--with-filename",
+            "--line-number",
+            "--column",
+            "--smart-case",
+            "--hidden", -- include hidden files and directories
+            "--trim", -- remove indentations in search results
+          },
           mappings = {
             n = {
               ["q"] = "close",
@@ -175,7 +185,6 @@ return {
                   vim.notify("find in ...\n  " .. table.concat(paths, "\n  "))
 
                   -- execute live_grep_args with search scope
-                  -- require("telescope").extensions.live_grep_args.live_grep_args({ search_dirs = paths })
                   require("telescope").extensions.egrepify.egrepify({ search_dirs = paths })
                 end,
                 type = "action",
