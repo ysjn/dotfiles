@@ -64,7 +64,8 @@ vim.keymap.set("n", "<leader>v", "<cmd>vsplit<CR>", opts("Split window right"))
 vim.keymap.set("n", "<leader>h", "<cmd>split<CR>", opts("Split window below"))
 
 -- Use live_grep_args instead of default live_grep
-vim.keymap.set("n", "<leader>/", "<cmd>Telescope live_grep_args<CR>", opts("Grep with args (root dir)"))
+-- vim.keymap.set("n", "<leader>/", "<cmd>Telescope live_grep_args<CR>", opts("Grep with args (root dir)"))
+vim.keymap.set("n", "<leader>/", "<cmd>Telescope egrepify<CR>", opts("Grep with args (root dir)"))
 
 -- Clear all marks
 vim.keymap.set("n", "<A-m>", "<cmd>delm! | delm A-Z0-9<CR><cmd>wviminfo!<CR><cmd>echo 'Clear all marks'<CR>", opts())

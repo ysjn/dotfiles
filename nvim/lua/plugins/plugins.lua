@@ -124,7 +124,10 @@ return {
 
   {
     "nvim-telescope/telescope.nvim",
-    dependencies = { "nvim-telescope/telescope-live-grep-args.nvim" },
+    dependencies = {
+      -- "nvim-telescope/telescope-live-grep-args.nvim",
+      "fdschmidt93/telescope-egrepify.nvim",
+    },
     keys = {
       -- Override <leader>/
       -- @see: https://github.com/LazyVim/LazyVim/issues/63#issuecomment-1383718679
@@ -132,7 +135,8 @@ return {
     },
     opts = function()
       local actions = require("telescope.actions")
-      require("telescope").load_extension("live_grep_args")
+      -- require("telescope").load_extension("live_grep_args")
+      require("telescope").load_extension("egrepify")
       return {
         defaults = {
           file_ignore_patterns = { "/node_modules/", "package-lock.json", "yarn.lock" },
@@ -171,7 +175,8 @@ return {
                   vim.notify("find in ...\n  " .. table.concat(paths, "\n  "))
 
                   -- execute live_grep_args with search scope
-                  require("telescope").extensions.live_grep_args.live_grep_args({ search_dirs = paths })
+                  -- require("telescope").extensions.live_grep_args.live_grep_args({ search_dirs = paths })
+                  require("telescope").extensions.egrepify.egrepify({ search_dirs = paths })
                 end,
                 type = "action",
                 opts = {
