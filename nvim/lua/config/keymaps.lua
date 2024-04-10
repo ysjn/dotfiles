@@ -10,9 +10,10 @@ end
 vim.keymap.del({ "i", "x", "n", "s" }, "<C-s>")
 vim.keymap.del({ "n", "v" }, "s")
 vim.keymap.del({ "n", "v" }, "S")
-
 vim.keymap.del("n", "<leader>|")
 vim.keymap.del("n", "<leader>-")
+vim.keymap.set("n", "q:", "<nop>", opts())
+vim.keymap.set("v", "g?", "<nop>", opts())
 
 -- leap
 vim.keymap.set("n", "f", function()
