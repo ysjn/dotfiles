@@ -138,7 +138,7 @@ return {
       require("telescope").load_extension("egrepify")
       return {
         defaults = {
-          file_ignore_patterns = { "/node_modules/", "package-lock.json", "yarn.lock" },
+          file_ignore_patterns = { ".git/", "/node_modules/", "package-lock.json", "yarn.lock" },
           vimgrep_arguments = {
             "rg",
             "--color=never",
