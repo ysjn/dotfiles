@@ -53,8 +53,8 @@ blink_interval = 400
 [mouse]
 hide_when_typing = true
 
-[[keyboard.bindings]]
-key = "Escape"
-action = 'ToggleViMode'
-mode = "Vi"
-
+[keyboard]
+bindings = [
+  { key = "Escape", action = 'ToggleViMode', mode = "Vi" },
+  { key = "q", action = 'ToggleViMode', mode = "Vi" },
+]
