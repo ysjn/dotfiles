@@ -47,6 +47,8 @@ cursor = "#ffffff"
 [cursor]
 style = { blinking = "Always" }
 vi_mode_style = { shape = "Block" }
+blink_timeout = 0
+blink_interval = 400
 
 [mouse]
 hide_when_typing = true
