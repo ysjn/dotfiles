@@ -48,9 +48,6 @@ ln -snfv ~/dev/dotfiles/tmux.conf $HOME/.config/tmux/tmux.conf
 # install fzf (for tmux-fzf-url)
 brew install fzf
 
-# install zap
-zsh <(curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh) --branch release-v1
-
 # install github completion
 mkdir -p ~/.zsh
 curl -o ~/.zsh/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash

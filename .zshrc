@@ -15,13 +15,6 @@ export NODE_PATH=$(realpath $(dirname $(nvm which current))/../lib/node_modules)
 [ -f ${HOME}/.zsh/git-completion.bash ] && zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash 
 [ -f ${HOME}/.zsh/git-prompt.sh ] && source ${HOME}/.zsh/git-prompt.sh
 
-# zap
-[ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
-plug "zsh-users/zsh-autosuggestions"
-plug "zap-zsh/supercharge"
-plug "zsh-users/zsh-syntax-highlighting"
-plug "agkozak/zsh-z"
-
 fpath=(~/.zsh $fpath)
 
 # load completion
