@@ -59,6 +59,7 @@ ln -snfv $HOME/dev/dotfiles/.zshrc ~
 rm -rf $HOME/.config/nvim
 ln -snfv $HOME/dev/dotfiles/nvim ~/.config
 ln -snfv $HOME/dev/dotfiles/alacritty.toml $HOME/.config/alacritty.toml
+ln -snfv $HOME/dev/dotfiles/ $HOME/Library/Application\ Support/lazygit/config.yml
 
 # load config
 source $HOME/.zshrc
