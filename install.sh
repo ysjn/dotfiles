@@ -23,13 +23,13 @@ brew install --cask alacritty
 brew install neovim ripgrep fd lazygit
 
 # install LazyVim
-mv ~/.config/nvim{,.bak}
-mv ~/.local/share/nvim{,.bak}
-mv ~/.local/state/nvim{,.bak}
-mv ~/.cache/nvim{,.bak}
+mv $HOME/.config/nvim{,.bak}
+mv $HOME/.local/share/nvim{,.bak}
+mv $HOME/.local/state/nvim{,.bak}
+mv $HOME/.cache/nvim{,.bak}
 
-git clone https://github.com/LazyVim/starter ~/.config/nvim
-rm -rf ~/.config/nvim/.git
+git clone https://github.com/LazyVim/starter $HOME/.config/nvim
+rm -rf $HOME/.config/nvim/.git
 
 # install fonts
 brew tap homebrew/cask-fonts
@@ -39,26 +39,26 @@ brew install --cask font-jetbrains-mono-nerd-font
 brew install tmux
 
 # install tmux plugin manager
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 
 # create symbolic link for tmux.conf
 mkdir -p $HOME/.config/tmux
-ln -snfv ~/dev/dotfiles/tmux.conf $HOME/.config/tmux/tmux.conf
+ln -snfv $HOME/dev/dotfiles/tmux.conf $HOME/.config/tmux/tmux.conf
 
 # install fzf (for tmux-fzf-url)
 brew install fzf
 
 # install github completion
-mkdir -p ~/.zsh
-curl -o ~/.zsh/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
-curl -o ~/.zsh/git-completion.zsh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
-curl -o ~/.zsh/git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+mkdir -p $HOME/.zsh
+curl -o $HOME/.zsh/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+curl -o $HOME/.zsh/git-completion.zsh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
+curl -o $HOME/.zsh/git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 
 # create symbolic link
-ln -snfv ~/dev/dotfiles/.zshrc ~
-rm -rf ~/.config/nvim
-ln -snfv ~/dev/dotfiles/nvim ~/.config
-ln -snfv ~/dev/dotfiles/alacritty.toml $HOME/.config/alacritty.toml
+ln -snfv $HOME/dev/dotfiles/.zshrc ~
+rm -rf $HOME/.config/nvim
+ln -snfv $HOME/dev/dotfiles/nvim ~/.config
+ln -snfv $HOME/dev/dotfiles/alacritty.toml $HOME/.config/alacritty.toml
 
 # load config
-source ~/.zshrc
+source $HOME/.zshrc
