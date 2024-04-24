@@ -4,6 +4,7 @@ return {
   { "akinsho/git-conflict.nvim", config = true },
 
   { "mg979/vim-visual-multi", event = "VeryLazy" },
+  { "vimpostor/vim-tpipeline", event = "VeryLazy" },
 
   {
     "andrewferrier/debugprint.nvim",
