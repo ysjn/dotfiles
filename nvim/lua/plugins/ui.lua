@@ -1,5 +1,4 @@
 return {
-
   {
     "Shatur/neovim-ayu",
     lazy = true,
@@ -31,7 +30,7 @@ return {
           ["@lsp.type.member.typescriptreact"] = { fg = colors.func },
           ["htmlTagName"] = { fg = colors.markup },
 
-          DiagnosticHint = { fg = colors.guide_normal },
+          DiagnosticHint = { fg = colors.vcs_added_bg },
           DiagnosticUnderlineHint = {
             sp = colors.comment,
             undercurl = true,
@@ -83,7 +82,11 @@ return {
               return "[SMP]" .. vim.fn.fnamemodify(buf.path, ":t")
             end
           end,
-          indicator = { style = "underline" },
+          indicator = {
+            icon = " ",
+            style = "icon",
+          },
+          separator_style = { "", "" },
           offsets = {
             {
               filetype = "neo-tree",
@@ -94,16 +97,18 @@ return {
           },
         },
         highlights = {
-          separator = {
-            fg = colors.panel_shadow,
-          },
-          separator_selected = {
-            bg = colors.panel_shadow,
+          buffer_visible = {
+            fg = colors.fg,
+            bg = colors.guide_normal,
           },
           buffer_selected = {
-            sp = colors.accent,
+            fg = colors.bg,
+            bg = colors.special,
             bold = false,
             italic = false,
+          },
+          modified_selected = {
+            bg = colors.accent,
           },
         },
       })
