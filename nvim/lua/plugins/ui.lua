@@ -108,7 +108,7 @@ return {
             italic = false,
           },
           modified_selected = {
-            bg = colors.accent,
+            bg = colors.special,
           },
         },
       })
