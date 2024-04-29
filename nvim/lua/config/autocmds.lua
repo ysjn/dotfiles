@@ -20,3 +20,17 @@ vim.api.nvim_create_autocmd("User", {
     end)
   end,
 })
+
+vim.api.nvim_create_autocmd("CmdwinEnter", {
+  callback = function()
+    vim.keymap.set("n", "q", "<Cmd>quit<CR>", { noremap = true, silent = true })
+    vim.keymap.set("n", "<esc>", "<Cmd>quit<CR>", { noremap = true, silent = true })
+  end,
+})
+
+vim.api.nvim_create_autocmd("CmdwinLeave", {
+  callback = function()
+    vim.keymap.del("n", "q")
+    vim.keymap.del("n", "<esc>")
+  end,
+})
