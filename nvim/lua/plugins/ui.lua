@@ -9,6 +9,9 @@ return {
       require("ayu").setup({
         overrides = {
           Normal = { bg = "None" },
+          NormalFloat = { bg = "None" },
+          FloatShadow = { bg = "None" },
+          FloatShadowThrough = { bg = "None" },
           Visual = { bg = colors.selection_bg },
 
           SignColumn = { bg = "None" },
@@ -108,6 +111,7 @@ return {
             italic = false,
           },
           modified_selected = {
+            fg = colors.vcs_removed,
             bg = colors.special,
           },
         },

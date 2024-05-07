@@ -293,4 +293,26 @@ return {
       }
     end,
   },
+
+  {
+    "echasnovski/mini.pairs",
+    opts = function()
+      local neigh_pattern = "[%s][%s]"
+      return {
+        mappings = {
+          ["("] = { action = "open", pair = "()", neigh_pattern = neigh_pattern },
+          ["["] = { action = "open", pair = "[]", neigh_pattern = neigh_pattern },
+          ["{"] = { action = "open", pair = "{}", neigh_pattern = neigh_pattern },
+
+          [")"] = { action = "close", pair = "()", neigh_pattern = neigh_pattern },
+          ["]"] = { action = "close", pair = "[]", neigh_pattern = neigh_pattern },
+          ["}"] = { action = "close", pair = "{}", neigh_pattern = neigh_pattern },
+
+          ['"'] = { action = "closeopen", pair = '""', neigh_pattern = neigh_pattern, register = { cr = false } },
+          ["'"] = { action = "closeopen", pair = "''", neigh_pattern = neigh_pattern, register = { cr = false } },
+          ["`"] = { action = "closeopen", pair = "``", neigh_pattern = neigh_pattern, register = { cr = false } },
+        },
+      }
+    end,
+  },
 }
