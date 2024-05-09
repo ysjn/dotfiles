@@ -100,19 +100,39 @@ return {
           },
         },
         highlights = {
-          buffer_visible = {
-            fg = colors.fg,
-            bg = colors.guide_normal,
-          },
           buffer_selected = {
             fg = colors.bg,
             bg = colors.special,
             bold = false,
             italic = false,
           },
+          buffer_visible = {
+            fg = colors.fg,
+            bg = colors.guide_normal,
+          },
+          modified = {
+            fg = colors.vcs_removed,
+          },
           modified_selected = {
             fg = colors.vcs_removed,
             bg = colors.special,
+          },
+          modified_visible = {
+            fg = colors.vcs_removed,
+            bg = colors.guide_normal,
+          },
+          duplicate_selected = {
+            fg = colors.bg,
+            bg = colors.special,
+            italic = false,
+          },
+          duplicate_visible = {
+            fg = colors.fg,
+            bg = colors.guide_normal,
+            italic = false,
+          },
+          duplicate = {
+            italic = false,
           },
         },
       })
