@@ -194,4 +194,18 @@ return {
       },
     },
   },
+
+  {
+    "hrsh7th/nvim-cmp",
+    event = "InsertEnter",
+    opts = function(_, opts)
+      local cmp = require("cmp")
+      local winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None"
+      local border = { " ", " ", " ", " ", " ", " ", " ", " " }
+      opts.window = {
+        completion = cmp.config.window.bordered({ winhighlight = winhighlight, border = border }),
+        documentation = cmp.config.window.bordered({ winhighlight = winhighlight, border = border }),
+      }
+    end,
+  },
 }
