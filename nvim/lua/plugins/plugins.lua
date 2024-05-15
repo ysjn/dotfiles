@@ -5,6 +5,7 @@ return {
 
   { "mg979/vim-visual-multi", event = "VeryLazy" },
   { "vimpostor/vim-tpipeline", event = "VeryLazy" },
+  { "github/copilot.vim", event = "VeryLazy" },
 
   {
     "andrewferrier/debugprint.nvim",
