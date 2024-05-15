@@ -80,8 +80,14 @@ return {
           max_name_length = 50,
           name_formatter = function(buf)
             if string.match(buf.path, "/pc/") then
+              if string.match(buf.path, "stories") then
+                return "[PC][Story]" .. vim.fn.fnamemodify(buf.path, ":t")
+              end
               return "[PC]" .. vim.fn.fnamemodify(buf.path, ":t")
             elseif string.match(buf.path, "/smp/") then
+              if string.match(buf.path, "stories") then
+                return "[SMP][Story]" .. vim.fn.fnamemodify(buf.path, ":t")
+              end
               return "[SMP]" .. vim.fn.fnamemodify(buf.path, ":t")
             end
           end,
