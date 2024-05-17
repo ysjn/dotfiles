@@ -26,8 +26,6 @@ return {
             bg = "None",
           },
 
-          TreesitterContext = { bg = colors.line },
-
           ["@lsp.typemod.variable.local"] = { fg = colors.lsp_parameter },
           ["@lsp.type.property.typescriptreact"] = { fg = colors.fg },
           ["@lsp.type.member.typescriptreact"] = { fg = colors.func },
