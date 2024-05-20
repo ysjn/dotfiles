@@ -69,8 +69,15 @@ return {
           lualine_z = {},
         },
       })
+    end,
+  },
 
-      require("bufferline").setup({
+  {
+    "akinsho/bufferline.nvim",
+    opts = function()
+      local colors = require("ayu.colors")
+      colors.generate(true)
+      return {
         options = {
           themable = true,
           show_buffer_close_icons = false,
@@ -139,7 +146,7 @@ return {
             italic = false,
           },
         },
-      })
+      }
     end,
   },
 

@@ -1,10 +1,14 @@
 return {
-  { "christoomey/vim-tmux-navigator", lazy = false },
-  { "RyanMillerC/better-vim-tmux-resizer", lazy = false },
-  { "akinsho/git-conflict.nvim", config = true },
-
+  { "christoomey/vim-tmux-navigator", event = "VeryLazy" },
+  { "RyanMillerC/better-vim-tmux-resizer", event = "VeryLazy" },
   { "mg979/vim-visual-multi", event = "VeryLazy" },
   { "vimpostor/vim-tpipeline", event = "VeryLazy" },
+
+  {
+    "akinsho/git-conflict.nvim",
+    event = "BufRead",
+    config = true,
+  },
 
   {
     "andrewferrier/debugprint.nvim",
@@ -54,11 +58,13 @@ return {
   {
     "Wansmer/treesj",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
+    event = "BufRead",
     opts = { use_default_keymaps = false },
   },
 
   {
     "chentoast/marks.nvim",
+    event = "BufRead",
     opts = { default_mappings = false },
   },
 
@@ -129,6 +135,7 @@ return {
 
   {
     "stevearc/oil.nvim",
+    event = "VeryLazy",
     opts = {
       keymaps = {
         ["<C-v>"] = "actions.select_vsplit",
