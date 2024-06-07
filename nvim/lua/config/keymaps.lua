@@ -39,6 +39,9 @@ vim.keymap.set("n", "<c-d>", "<c-d>zz", opts())
 
 -- Close all buffer and open dashboard
 vim.keymap.set("n", "<leader>bx", "<Cmd>%bd<CR><Cmd>Dashboard<CR>", opts("Close all buffer"))
+-- Mover buffers
+vim.keymap.set("n", "<leader>b<", "<Cmd>BufferLineMovePrev<CR>", opts("Move buffer prev"))
+vim.keymap.set("n", "<leader>b>", "<Cmd>BufferLineMoveNext<CR>", opts("Move buffer next"))
 
 -- Re-open most recent buffer
 vim.keymap.set("n", "<leader>bz", "<c-o>", opts("Close all buffer"))
