@@ -266,6 +266,7 @@ return {
         },
       },
       "davidmh/cspell.nvim",
+      "nvimtools/none-ls-extras.nvim",
     },
     opts = function()
       local null_ls = require("null-ls")
@@ -297,6 +298,8 @@ return {
             end,
           }),
           cspell.code_actions,
+          require("none-ls.diagnostics.eslint"),
+          require("none-ls.code_actions.eslint"),
         },
       }
     end,
