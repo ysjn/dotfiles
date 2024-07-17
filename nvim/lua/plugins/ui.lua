@@ -19,7 +19,6 @@ return {
           FoldColumn = { bg = "None" },
           CursorLine = { bg = "None" },
           CursorColumn = { bg = "None" },
-          WhichKeyFloat = { bg = "None" },
 
           VertSplit = {
             fg = colors.panel_border,
@@ -212,5 +211,15 @@ return {
         documentation = cmp.config.window.bordered({ winhighlight = winhighlight, border = border }),
       }
     end,
+  },
+
+  {
+    "folke/which-key.nvim",
+    opts = {
+      preset = "helix",
+      win = {
+        padding = { 1, 5 },
+      },
+    },
   },
 }
