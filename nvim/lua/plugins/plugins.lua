@@ -269,6 +269,7 @@ return {
       local cspell = require("cspell")
       return {
         debounce = 500,
+        temp_dir = "/tmp",
         sources = {
           null_ls.builtins.diagnostics.markuplint.with({
             filetypes = { "html", "javascriptreact", "typescriptreact" },
