@@ -243,6 +243,9 @@ return {
             },
           },
         },
+        pickers = {
+          find_files = { hidden = true }, -- include hidden files and directories
+        },
       }
     end,
   },
