@@ -88,8 +88,17 @@ vim.keymap.set("n", "m", marks.next, opts("Next mark"))
 vim.keymap.set("n", "M", marks.prev, opts("Previous mark"))
 
 -- Oil
+local oil = require("oil")
 vim.keymap.set("n", "<leader>e", "<CMD>Oil --float<CR>", opts("Open parent directory (float)"))
-vim.keymap.set("n", "<leader>E", "<CMD>Oil<CR>", opts("Open parent directory"))
+vim.keymap.set("n", "<leader>E", function()
+  oil.open()
+  vim.wait(1000, function()
+    return oil.get_cursor_entry() ~= nil
+  end)
+  if oil.get_cursor_entry() then
+    oil.open_preview()
+  end
+end, opts("Open parent directory"))
 
 -- lazygit integration
 -- @see: https://github.com/kdheepak/lazygit.nvim/issues/22#issuecomment-1815426074
