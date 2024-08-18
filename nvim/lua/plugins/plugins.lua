@@ -265,6 +265,8 @@ return {
           end)
         end,
       },
+      document_highlight = { enabled = false },
+      inlay_hints = { enabled = false },
     },
   },
 
