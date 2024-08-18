@@ -28,6 +28,9 @@ GIT_PS1_SHOWUPSTREAM=auto
 setopt PROMPT_SUBST; PS1=$'%F{green}%~%f %F{cyan}$(__git_ps1 "(%s)")%f
 👉 '
 
+alias vi='nvim'
+alias vim='nvim'
+
 alias ls='ls -Ga'
 alias gs='git status'
 alias ga='git add'
