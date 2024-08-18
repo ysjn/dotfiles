@@ -25,29 +25,6 @@ return {
   },
 
   {
-    "andrewferrier/debugprint.nvim",
-    event = "VeryLazy",
-    opts = function()
-      local my_fileformat = {
-        left = 'console.log("',
-        mid_var = '", ',
-        right = ")",
-      }
-      return {
-        move_to_debugline = true,
-        display_snippet = false,
-        print_tag = "[DEBUG]",
-        filetypes = {
-          ["javascript"] = my_fileformat,
-          ["typescript"] = my_fileformat,
-          ["javascriptreact"] = my_fileformat,
-          ["typescriptreact"] = my_fileformat,
-        },
-      }
-    end,
-  },
-
-  {
     "folke/noice.nvim",
     opts = function(_, opts)
       table.insert(opts.routes, {

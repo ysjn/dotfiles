@@ -42,3 +42,13 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     vim.highlight.on_yank()
   end,
 })
+
+vim.api.nvim_create_augroup("ConsoleLog", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+  group = "ConsoleLog",
+  pattern = "javascript,javascriptreact,typescript,typescriptreact",
+  callback = function()
+    vim.keymap.set("n", "<c-c>", "A<CR>console.log()<Esc>")
+    vim.keymap.set("x", "<c-c>", "yA<CR>console.log(<Esc>pA)<Esc>")
+  end,
+})
