@@ -154,6 +154,7 @@ return {
     keys = {
       -- Override <leader>/
       -- @see: https://github.com/LazyVim/LazyVim/issues/63#issuecomment-1383718679
+      { "<leader><space>", vim.NIL },
       { "<leader>/", vim.NIL },
     },
     opts = function()

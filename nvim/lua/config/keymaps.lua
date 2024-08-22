@@ -70,9 +70,13 @@ vim.keymap.set("n", "<A-L>", "<cmd>TmuxResizeRight<CR>", opts())
 vim.keymap.set("n", "<leader>v", "<cmd>vsplit<CR>", opts("Split window right"))
 vim.keymap.set("n", "<leader>h", "<cmd>split<CR>", opts("Split window below"))
 
+-- Use oil.nvim current directory to scope Telescope find_files
+vim.keymap.set("n", "<leader><space>", function()
+  require("telescope.builtin").find_files({ cwd = require("oil").get_current_dir() or LazyVim.root() })
+end, opts("Find Files"))
 -- Use egrepify instead of default live_grep
 vim.keymap.set("n", "<leader>/", function()
-  require("telescope").extensions.egrepify.egrepify({ cwd = LazyVim.root() })
+  require("telescope").extensions.egrepify.egrepify({ cwd = require("oil").get_current_dir() or LazyVim.root() })
 end, opts("Grep with args (root dir)"))
 
 -- Clear all marks
