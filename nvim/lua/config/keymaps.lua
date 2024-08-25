@@ -70,15 +70,6 @@ vim.keymap.set("n", "<A-L>", "<cmd>TmuxResizeRight<CR>", opts())
 vim.keymap.set("n", "<leader>v", "<cmd>vsplit<CR>", opts("Split window right"))
 vim.keymap.set("n", "<leader>h", "<cmd>split<CR>", opts("Split window below"))
 
--- Use oil.nvim current directory to scope Telescope find_files
-vim.keymap.set("n", "<leader><space>", function()
-  require("telescope.builtin").find_files({ cwd = require("oil").get_current_dir() or LazyVim.root() })
-end, opts("Find Files"))
--- Use egrepify instead of default live_grep
-vim.keymap.set("n", "<leader>/", function()
-  require("telescope").extensions.egrepify.egrepify({ cwd = require("oil").get_current_dir() or LazyVim.root() })
-end, opts("Grep with args (root dir)"))
-
 -- Clear all marks
 vim.keymap.set("n", "<A-m>", "<cmd>delm! | delm A-Z0-9<CR><cmd>wviminfo!<CR><cmd>echo 'Clear all marks'<CR>", opts())
 
@@ -91,8 +82,29 @@ vim.keymap.set("n", "<c-m>", marks.set_next, opts("Set next available lowercase 
 vim.keymap.set("n", "m", marks.next, opts("Next mark"))
 vim.keymap.set("n", "M", marks.prev, opts("Previous mark"))
 
--- Oil
 local oil = require("oil")
+-- Use oil.nvim current directory to scope Telescope find_files
+vim.keymap.set("n", "<leader><space>", function()
+  local cwd = oil.get_current_dir()
+  if cwd == nil then
+    cwd = LazyVim.root()
+  else
+    oil.close()
+  end
+  require("telescope.builtin").find_files({ cwd = cwd })
+end, opts("Find Files"))
+-- Use egrepify instead of default live_grep
+vim.keymap.set("n", "<leader>/", function()
+  local cwd = oil.get_current_dir()
+  if cwd == nil then
+    cwd = LazyVim.root()
+  else
+    oil.close()
+  end
+  require("telescope").extensions.egrepify.egrepify({ cwd = cwd })
+end, opts("Grep with args (root dir)"))
+
+-- Oil
 vim.keymap.set("n", "<leader>e", "<CMD>Oil --float<CR>", opts("Open parent directory (float)"))
 vim.keymap.set("n", "<leader>E", function()
   oil.open()
