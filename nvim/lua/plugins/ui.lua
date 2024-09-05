@@ -20,6 +20,10 @@ return {
           CursorLine = { bg = "None" },
           CursorColumn = { bg = "None" },
 
+          WinSeparator = {
+            fg = colors.panel_border,
+            bg = "None",
+          },
           VertSplit = {
             fg = colors.panel_border,
             bg = "None",
