@@ -82,31 +82,34 @@ vim.keymap.set("n", "<c-m>", marks.set_next, opts("Set next available lowercase 
 vim.keymap.set("n", "m", marks.next, opts("Next mark"))
 vim.keymap.set("n", "M", marks.prev, opts("Previous mark"))
 
-local oil = require("oil")
--- Use oil.nvim current directory to scope Telescope find_files
-vim.keymap.set("n", "<leader><space>", function()
+local function get_current_oil_dir()
+  local oil = require("oil")
   local cwd = oil.get_current_dir()
   if cwd == nil then
     cwd = LazyVim.root()
   else
     oil.close()
   end
-  require("telescope.builtin").find_files({ cwd = cwd })
+  local short_cwd = require("plenary.path"):new(cwd):make_relative(LazyVim.root())
+  return {
+    cwd = cwd,
+    results_title = "Results in " .. short_cwd .. "/",
+  }
+end
+
+-- Use oil.nvim current directory to scope Telescope find_files
+vim.keymap.set("n", "<leader><space>", function()
+  require("telescope.builtin").find_files(get_current_oil_dir())
 end, opts("Find Files"))
 -- Use egrepify instead of default live_grep
 vim.keymap.set("n", "<leader>/", function()
-  local cwd = oil.get_current_dir()
-  if cwd == nil then
-    cwd = LazyVim.root()
-  else
-    oil.close()
-  end
-  require("telescope").extensions.egrepify.egrepify({ cwd = cwd })
+  require("telescope").extensions.egrepify.egrepify(get_current_oil_dir())
 end, opts("Grep with args (root dir)"))
 
 -- Oil
 vim.keymap.set("n", "<leader>e", "<CMD>Oil --float<CR>", opts("Open parent directory (float)"))
 vim.keymap.set("n", "<leader>E", function()
+  local oil = require("oil")
   oil.open()
   vim.wait(1000, function()
     return oil.get_cursor_entry() ~= nil
