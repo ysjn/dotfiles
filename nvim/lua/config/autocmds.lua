@@ -48,7 +48,8 @@ vim.api.nvim_create_autocmd("FileType", {
   group = "ConsoleLog",
   pattern = "javascript,javascriptreact,typescript,typescriptreact",
   callback = function()
-    vim.keymap.set("n", "<c-c>", "A<CR>console.log()<Esc>")
-    vim.keymap.set("x", "<c-c>", "yA<CR>console.log(<Esc>pA)<Esc>")
+    vim.keymap.set("n", "<c-c>", "A<CR>console.log()<Esc>i")
+    vim.keymap.set("i", "<c-c>", "<Esc>Aconsole.log()<Esc>i")
+    vim.keymap.set("x", "<c-c>", "yA<CR>console.log(`<Esc>pA: `, <Esc>pA)<Esc>")
   end,
 })
