@@ -29,13 +29,28 @@ vim.keymap.set({ "n", "v" }, "S", '"_S', opts("Delete Right"))
 vim.keymap.set({ "n", "v" }, "c", '"_c', opts("Change"))
 vim.keymap.set({ "n", "v" }, "C", '"_C', opts("Change Right"))
 
+-- yank to end of line
+vim.keymap.set("n", "Y", "y$", opts("yank to end of line"))
+
+-- use q as prefix
+vim.keymap.set("n", "q", function()
+  if vim.fn.reg_recording() == "" then
+    vim.api.nvim_feedkeys("qq", "n", false)
+  else
+    vim.api.nvim_feedkeys("q", "n", false)
+  end
+end, opts("record macro"))
+vim.keymap.set("n", "@", function()
+  if vim.fn.reg_recording() == "" then
+    vim.api.nvim_feedkeys("@q", "n", false)
+  else
+    vim.api.nvim_feedkeys("q@q", "n", false)
+  end
+end, opts("execute macro"))
+
 -- Move caret to start/end of line
 vim.keymap.set({ "n", "v" }, "<c-h>", "^", opts())
 vim.keymap.set({ "n", "v" }, "<c-l>", "$", opts())
-
--- Move page up/down then re-center buffer
-vim.keymap.set("n", "<c-u>", "<c-u>zz", opts())
-vim.keymap.set("n", "<c-d>", "<c-d>zz", opts())
 
 -- Close all buffer and open dashboard
 vim.keymap.set("n", "<leader>bx", "<Cmd>%bd<CR><Cmd>Dashboard<CR>", opts("Close all buffer"))
