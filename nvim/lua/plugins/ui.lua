@@ -56,6 +56,28 @@ return {
           component_separators = { left = "|", right = "|" },
         },
         sections = {
+          lualine_a = {
+            {
+              "mode",
+              separator = { left = "", right = "" },
+              cond = function()
+                return not package.loaded["noice"] or not (require("noice").api.status.mode.has())
+              end,
+            },
+            {
+              function()
+                return "RECORD"
+              end,
+              separator = { left = "", right = "" },
+              cond = function()
+                return package.loaded["noice"] and require("noice").api.status.mode.has()
+              end,
+              color = {
+                fg = colors.bg,
+                bg = colors.vcs_removed,
+              },
+            },
+          },
           lualine_c = {
             {
               "diagnostics",
