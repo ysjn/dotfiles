@@ -211,17 +211,10 @@ return {
   },
 
   {
-    "levouh/tint.nvim",
-    event = "VeryLazy",
-    config = {
-      tint = -70,
-      saturation = 0.5,
-      highlight_ignore_patterns = {
-        "LineNr",
-        "WinSeparator",
-        "DiagnosticHint",
-        "Comment",
-      },
+    "miversen33/sunglasses.nvim",
+    event = "UIEnter",
+    opts = {
+      filter_percent = 0.30,
     },
   },
 
