@@ -272,14 +272,4 @@ return {
       },
     },
   },
-
-  {
-    "folke/which-key.nvim",
-    opts = {
-      preset = "helix",
-      win = {
-        padding = { 1, 5 },
-      },
-    },
-  },
 }
