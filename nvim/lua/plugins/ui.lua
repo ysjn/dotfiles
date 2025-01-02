@@ -1,4 +1,5 @@
 return {
+  { "vimpostor/vim-tpipeline" },
   {
     "Shatur/neovim-ayu",
     lazy = true,
