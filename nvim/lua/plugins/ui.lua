@@ -213,9 +213,7 @@ return {
   {
     "miversen33/sunglasses.nvim",
     event = "UIEnter",
-    opts = {
-      filter_percent = 0.30,
-    },
+    opts = { filter_percent = 0.40 },
   },
 
   {
@@ -230,6 +228,49 @@ return {
         documentation = cmp.config.window.bordered({ winhighlight = winhighlight, border = border }),
       }
     end,
+  },
+
+  {
+    "folke/snacks.nvim",
+    opts = {
+      dashboard = {
+        sections = {
+          { section = "header" },
+          {
+            icon = " ",
+            title = "Shortcuts",
+            section = "keys",
+            padding = 1,
+            indent = 3,
+          },
+          {
+            pane = 2,
+            {
+              height = 9,
+              section = "terminal",
+              cmd = "",
+            },
+            {
+              icon = " ",
+              title = "Recent Files",
+              section = "recent_files",
+              padding = 1,
+              indent = 3,
+            },
+            {
+              icon = " ",
+              title = "Current Branch",
+              section = "terminal",
+              padding = 1,
+              indent = 3,
+              ttl = 5 * 60,
+              cmd = "git branch",
+            },
+          },
+          { section = "startup" },
+        },
+      },
+    },
   },
 
   {
