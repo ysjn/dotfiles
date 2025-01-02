@@ -12,6 +12,7 @@ vim.keymap.del({ "n", "v" }, "s")
 vim.keymap.del({ "n", "v" }, "S")
 vim.keymap.del("n", "<leader>|")
 vim.keymap.del("n", "<leader>-")
+vim.keymap.set("n", "<cr>", "<cr>")
 vim.keymap.set("n", "q:", "<nop>", opts())
 vim.keymap.set("v", "g?", "<nop>", opts())
 
@@ -53,7 +54,12 @@ vim.keymap.set({ "n", "v" }, "<c-h>", "^", opts())
 vim.keymap.set({ "n", "v" }, "<c-l>", "$", opts())
 
 -- Close all buffer and open dashboard
-vim.keymap.set("n", "<leader>bx", "<Cmd>%bd<CR><Cmd>Dashboard<CR>", opts("Close all buffer"))
+vim.keymap.set(
+  "n",
+  "<leader>bx",
+  "<Cmd>lua Snacks.bufdelete.all()<CR><Cmd>lua Snacks.dashboard()<CR>",
+  opts("Close all buffer")
+)
 -- Mover buffers
 vim.keymap.set("n", "<leader>b<", "<Cmd>BufferLineMovePrev<CR>", opts("Move buffer prev"))
 vim.keymap.set("n", "<leader>b>", "<Cmd>BufferLineMoveNext<CR>", opts("Move buffer next"))
@@ -82,7 +88,7 @@ vim.keymap.set("n", "<A-K>", "<cmd>TmuxResizeUp<CR>", opts())
 vim.keymap.set("n", "<A-L>", "<cmd>TmuxResizeRight<CR>", opts())
 
 -- Split windows
-vim.keymap.set("n", "<leader>v", "<cmd>vsplit<CR>", opts("Split window right"))
+vim.keymap.set("n", "<leader>v", "<cmd>vsplit<CR><c-w>h<cmd>:bn<cr><c-w>l", opts("Split window right"))
 vim.keymap.set("n", "<leader>h", "<cmd>split<CR>", opts("Split window below"))
 
 -- Clear all marks
@@ -184,7 +190,7 @@ end
 -- Function to start Lazygit in a floating terminal
 function StartLazygit()
   local current_buffer = vim.api.nvim_get_current_buf()
-  local float_term = Util.terminal.open({ "lazygit" }, { cwd = Util.root(), esc_esc = false, ctrl_hjkl = false })
+  local float_term = Snacks.terminal.open({ "lazygit" }, { cwd = Util.root(), esc_esc = false, ctrl_hjkl = false })
 
   vim.api.nvim_buf_set_keymap(
     float_term.buf,
