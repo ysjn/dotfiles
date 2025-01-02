@@ -1,0 +1,61 @@
+[window]
+padding = { x = 10, y = 5 }
+dynamic_padding = true
+decorations = "Buttonless"
+opacity = 0.95
+startup_mode = "SimpleFullscreen"
+option_as_alt = "Both"
+
+[font]
+normal = { family = "JetBrainsMonoNL Nerd Font Mono" }
+size = 14
+offset = { x = 0, y = 1 }
+
+[colors.primary]
+background = '#1f2430'
+foreground = '#cbccc6'
+bright_foreground = '#f28779'
+
+[colors.normal]
+black = '#1a1e29'
+red = '#f28779'
+green = '#bae67e'
+yellow = '#ffd580'
+blue = '#73d0ff' 
+magenta = '#d4bfff'
+cyan = '#95e6cb'
+white = '#fafafa'
+
+[colors.bright]
+black = '#686868'
+red = '#f28779'
+green = '#bae67e'
+yellow = '#ffd580'
+blue = '#73d0ff'
+magenta = '#d4bfff'
+cyan = '#95e6cb'
+white = '#ffffff'
+
+[colors.cursor]
+text = "#ffffff"
+cursor = "#ff4057"
+
+[colors.vi_mode_cursor]
+text = "#1f2430"
+cursor = "#ffffff"
+
+[cursor]
+style = { blinking = "Always" }
+vi_mode_style = { shape = "Block" }
+blink_timeout = 0
+blink_interval = 400
+
+[mouse]
+hide_when_typing = true
+
+[keyboard]
+bindings = [
+  { key = "Escape", action = 'ToggleViMode', mode = "Vi" },
+  { key = "q", action = 'ToggleViMode', mode = "Vi" },
+  { key= "f", mods="Command", action='ToggleMaximized' }
+]
