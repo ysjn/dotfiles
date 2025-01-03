@@ -1,4 +1,5 @@
 return {
+  { "vimpostor/vim-tpipeline" },
   {
     "Shatur/neovim-ayu",
     lazy = true,
@@ -269,16 +270,6 @@ return {
           },
           { section = "startup" },
         },
-      },
-    },
-  },
-
-  {
-    "folke/which-key.nvim",
-    opts = {
-      preset = "helix",
-      win = {
-        padding = { 1, 5 },
       },
     },
   },

@@ -2,7 +2,6 @@ return {
   { "christoomey/vim-tmux-navigator", event = "VeryLazy" },
   { "RyanMillerC/better-vim-tmux-resizer", event = "VeryLazy" },
   { "mg979/vim-visual-multi", event = "VeryLazy" },
-  { "vimpostor/vim-tpipeline", event = "VeryLazy" },
 
   {
     "akinsho/git-conflict.nvim",
@@ -143,89 +142,6 @@ return {
         padding = 10,
       },
     },
-  },
-
-  {
-    "nvim-telescope/telescope.nvim",
-    dependencies = {
-      -- "nvim-telescope/telescope-live-grep-args.nvim",
-      "fdschmidt93/telescope-egrepify.nvim",
-    },
-    keys = {
-      -- Override <leader>/
-      -- @see: https://github.com/LazyVim/LazyVim/issues/63#issuecomment-1383718679
-      { "<leader><space>", vim.NIL },
-      { "<leader>/", vim.NIL },
-    },
-    opts = function()
-      local actions = require("telescope.actions")
-      require("telescope").load_extension("egrepify")
-      return {
-        defaults = {
-          file_ignore_patterns = { ".git/", "/node_modules/", "package-lock.json", "yarn.lock" },
-          vimgrep_arguments = {
-            "rg",
-            "--color=never",
-            "--no-heading",
-            "--with-filename",
-            "--line-number",
-            "--column",
-            "--smart-case",
-            "--hidden", -- include hidden files and directories
-            "--trim", -- remove indentations in search results
-          },
-          mappings = {
-            n = {
-              ["q"] = "close",
-              ["<C-a>"] = {
-                function(p_bufnr)
-                  actions.send_selected_to_qflist(p_bufnr)
-                  vim.cmd.cfdo("edit")
-                end,
-                type = "action",
-                opts = {
-                  nowait = true,
-                  silent = true,
-                  desc = "Open selected files",
-                },
-              },
-              ["<C-r>"] = {
-                function(p_bufnr)
-                  -- send results to quick fix list
-                  actions.send_to_qflist(p_bufnr)
-
-                  local qflist = vim.fn.getqflist()
-                  local paths = {}
-                  local hash = {}
-                  for k in pairs(qflist) do
-                    local path = vim.fn.bufname(qflist[k]["bufnr"]) -- extract path from quick fix list
-                    if not hash[path] then -- add to paths table, if not already appeared
-                      paths[#paths + 1] = path
-                      hash[path] = true -- remember existing paths
-                    end
-                  end
-
-                  -- show search scope with message
-                  vim.notify("find in ...\n  " .. table.concat(paths, "\n  "))
-
-                  -- execute live_grep_args with search scope
-                  require("telescope").extensions.egrepify.egrepify({ search_dirs = paths })
-                end,
-                type = "action",
-                opts = {
-                  nowait = true,
-                  silent = true,
-                  desc = "Live grep on results",
-                },
-              },
-            },
-          },
-        },
-        pickers = {
-          find_files = { hidden = true }, -- include hidden files and directories
-        },
-      }
-    end,
   },
 
   {
