@@ -111,20 +111,20 @@ local function get_current_oil_dir()
   else
     oil.close()
   end
-  local short_cwd = require("plenary.path"):new(cwd):make_relative(LazyVim.root())
-  return {
-    cwd = cwd,
-    results_title = "Results in " .. short_cwd .. "/",
-  }
+  return cwd
 end
 
--- Use oil.nvim current directory to scope Telescope find_files
+-- load fzf-lua here to prevent keymaps being overwritten to LazyVim default
+local fzfLua = require("fzf-lua")
+
+-- Use oil.nvim's cwd to scope find_files
 vim.keymap.set("n", "<leader><space>", function()
-  require("telescope.builtin").find_files(get_current_oil_dir())
+  fzfLua.files({ cwd = get_current_oil_dir() })
 end, opts("Find Files"))
--- Use egrepify instead of default live_grep
+
+-- Use oil.nvim's cwd to scope live_grep
 vim.keymap.set("n", "<leader>/", function()
-  require("telescope").extensions.egrepify.egrepify(get_current_oil_dir())
+  fzfLua.live_grep({ cwd = get_current_oil_dir() })
 end, opts("Grep with args (root dir)"))
 
 -- Oil
