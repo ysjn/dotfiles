@@ -169,6 +169,7 @@ return {
     lazy = true,
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
+      "nvim-lua/plenary.nvim",
       "williamboman/mason.nvim",
       {
         "jay-babu/mason-null-ls.nvim",
@@ -186,24 +187,17 @@ return {
       local cspell = require("cspell")
       return {
         debounce = 500,
-        temp_dir = "/tmp",
         sources = {
           null_ls.builtins.diagnostics.markuplint.with({
-            filetypes = { "html", "javascriptreact", "typescriptreact" },
+            extra_filetypes = {
+              "javascriptreact",
+              "typescriptreact",
+            },
+            extra_args = { "--locale", "ja" },
             prefer_local = "node_modules/.bin",
             condition = function(utils)
-              return vim.fn.executable("markuplint") > 0
-                and utils.root_has_file({
-                  ".markuplintrc",
-                  ".markuplintrc.json",
-                  ".markuplintrc.yaml",
-                  ".markuplintrc.yml",
-                  ".markuplintrc.js",
-                  ".markuplintrc.ts",
-                })
-            end,
-            diagnostics_postprocess = function(diagnostic)
-              diagnostic.severity = vim.diagnostic.severity["WARN"]
+              -- execute only when config file is found
+              return vim.fn.executable("markuplint") > 0 and utils.root_has_file_matches("%.?markuplint.*")
             end,
           }),
           cspell.diagnostics.with({
@@ -212,6 +206,7 @@ return {
             end,
           }),
           cspell.code_actions,
+          -- none-ls-extras
           require("none-ls.diagnostics.eslint"),
           require("none-ls.code_actions.eslint"),
         },
