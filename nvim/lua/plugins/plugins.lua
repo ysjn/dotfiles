@@ -187,6 +187,7 @@ return {
       local cspell = require("cspell")
       return {
         debounce = 500,
+        temp_dir = "/tmp",
         sources = {
           null_ls.builtins.diagnostics.markuplint.with({
             extra_filetypes = {
@@ -195,6 +196,7 @@ return {
             },
             extra_args = { "--locale", "ja" },
             prefer_local = "node_modules/.bin",
+            to_temp_file = false,
             condition = function(utils)
               -- execute only when config file is found
               return vim.fn.executable("markuplint") > 0 and utils.root_has_file_matches("%.?markuplint.*")
