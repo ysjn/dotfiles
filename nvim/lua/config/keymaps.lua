@@ -91,17 +91,15 @@ vim.keymap.set("n", "<A-L>", "<cmd>TmuxResizeRight<CR>", opts())
 vim.keymap.set("n", "<leader>v", "<cmd>vsplit<CR><c-w>h<cmd>:bn<cr><c-w>l", opts("Split window right"))
 vim.keymap.set("n", "<leader>h", "<cmd>split<CR>", opts("Split window below"))
 
--- Clear all marks
-vim.keymap.set("n", "<A-m>", "<cmd>delm! | delm A-Z0-9<CR><cmd>wviminfo!<CR><cmd>echo 'Clear all marks'<CR>", opts())
-
 -- Tree split join
 vim.keymap.set("n", "<leader>j", require("treesj").toggle, opts("Split or Join"))
 
 -- Marks
 local marks = require("marks")
-vim.keymap.set("n", "<c-m>", marks.set_next, opts("Set next available lowercase mark"))
+vim.keymap.set("n", "<A-m>", marks.toggle, opts("Set next available lowercase mark"))
 vim.keymap.set("n", "m", marks.next, opts("Next mark"))
 vim.keymap.set("n", "M", marks.prev, opts("Previous mark"))
+vim.keymap.set("n", "<A-M>", "<cmd>delm! | delm A-Z0-9<CR><cmd>wviminfo!<CR><cmd>echo 'Clear all marks'<CR>", opts())
 
 local function get_current_oil_dir()
   local oil = require("oil")
