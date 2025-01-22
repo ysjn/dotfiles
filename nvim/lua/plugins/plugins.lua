@@ -185,6 +185,8 @@ return {
     opts = function()
       local null_ls = require("null-ls")
       local cspell = require("cspell")
+      local DIAGNOSTICS_ON_OPEN = null_ls.methods.DIAGNOSTICS_ON_OPEN
+      local DIAGNOSTICS_ON_SAVE = null_ls.methods.DIAGNOSTICS_ON_SAVE
       return {
         debounce = 500,
         temp_dir = "/tmp",
@@ -201,6 +203,7 @@ return {
               -- execute only when config file is found
               return vim.fn.executable("markuplint") > 0 and utils.root_has_file_matches("%.?markuplint.*")
             end,
+            method = { DIAGNOSTICS_ON_OPEN, DIAGNOSTICS_ON_SAVE },
           }),
           cspell.diagnostics.with({
             diagnostics_postprocess = function(diagnostic)
