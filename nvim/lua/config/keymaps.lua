@@ -88,7 +88,7 @@ vim.keymap.set("n", "<A-K>", "<cmd>TmuxResizeUp<CR>", opts())
 vim.keymap.set("n", "<A-L>", "<cmd>TmuxResizeRight<CR>", opts())
 
 -- Split windows
-vim.keymap.set("n", "<leader>v", "<cmd>vsplit<CR><c-w>h<cmd>:bn<cr><c-w>l", opts("Split window right"))
+vim.keymap.set("n", "<leader>v", "<cmd>vsplit<CR><c-w>h<cmd>:bp<cr><c-w>l", opts("Split window right"))
 vim.keymap.set("n", "<leader>h", "<cmd>split<CR>", opts("Split window below"))
 
 -- Tree split join
