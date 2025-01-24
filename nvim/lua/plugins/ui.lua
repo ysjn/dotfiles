@@ -212,9 +212,21 @@ return {
   },
 
   {
-    "miversen33/sunglasses.nvim",
-    event = "UIEnter",
-    opts = { filter_percent = 0.40 },
+    "tadaa/vimade",
+    event = "VeryLazy",
+    opts = {
+      recipe = {
+        "minimalist",
+        { animate = true },
+      },
+      fadelevel = 0.6,
+      blocklist = {
+        default = {
+          highlights = { "LineNr", "DiagnosticHint" },
+        },
+      },
+      enablefocusfading = true,
+    },
   },
 
   {
