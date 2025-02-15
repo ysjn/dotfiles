@@ -2,6 +2,27 @@ return {
   { "christoomey/vim-tmux-navigator", event = "VeryLazy" },
   { "RyanMillerC/better-vim-tmux-resizer", event = "VeryLazy" },
   { "mg979/vim-visual-multi", event = "VeryLazy" },
+  { "OlegGulevskyy/better-ts-errors.nvim", event = "VeryLazy" },
+
+  {
+    "folke/snacks.nvim",
+    opts = function()
+      local urls = {
+        branch = "/tree/{branch}",
+        file = "/blob/{branch}/{file}#L{line_start}-L{line_end}",
+        permalink = "/blob/{commit}/{file}#L{line_start}-L{line_end}",
+        commit = "/commit/{commit}",
+      }
+      return {
+        gitbrowse = {
+          url_patterns = {
+            ["ghe"] = urls,
+            ["partner"] = urls,
+          },
+        },
+      }
+    end,
+  },
 
   {
     "akinsho/git-conflict.nvim",
