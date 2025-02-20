@@ -5,6 +5,9 @@ vim.opt.breakindent = true
 vim.opt.scrolloff = 30
 vim.opt.foldmethod = "indent"
 
+-- set root to .git or cwd
+vim.g.root_spec = { ".git", "cwd" }
+
 vim.diagnostic.config({
   float = {
     header = false,
