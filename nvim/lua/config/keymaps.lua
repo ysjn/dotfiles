@@ -54,12 +54,10 @@ vim.keymap.set({ "n", "v" }, "<c-h>", "^", opts())
 vim.keymap.set({ "n", "v" }, "<c-l>", "$", opts())
 
 -- Close all buffer and open dashboard
-vim.keymap.set(
-  "n",
-  "<leader>bx",
-  "<Cmd>lua Snacks.bufdelete.all()<CR><Cmd>lua Snacks.dashboard()<CR>",
-  opts("Close all buffer")
-)
+vim.keymap.set("n", "<leader>bx", function()
+  vim.fn.execute("bufdo bwipeout", "silent")
+end, opts("Close all buffer"))
+
 -- Mover buffers
 vim.keymap.set("n", "<leader>b<", "<Cmd>BufferLineMovePrev<CR>", opts("Move buffer prev"))
 vim.keymap.set("n", "<leader>b>", "<Cmd>BufferLineMoveNext<CR>", opts("Move buffer next"))
