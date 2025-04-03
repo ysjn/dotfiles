@@ -3,6 +3,20 @@ return {
   { "RyanMillerC/better-vim-tmux-resizer", event = "VeryLazy" },
   { "mg979/vim-visual-multi", event = "VeryLazy" },
   { "OlegGulevskyy/better-ts-errors.nvim", event = "VeryLazy" },
+  { "ray-x/lsp_signature.nvim", event = "VeryLazy" },
+  { "nacro90/numb.nvim", event = "VeryLazy", config = true },
+
+  {
+    "yetone/avante.nvim",
+    event = "VeryLazy",
+    lazy = false,
+    version = false,
+    opts = {
+      provider = "copilot",
+      auto_suggestions_provider = "copilot",
+    },
+    build = "make",
+  },
 
   {
     "folke/snacks.nvim",
