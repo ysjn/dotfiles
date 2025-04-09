@@ -1,5 +1,19 @@
 return {
   { "vimpostor/vim-tpipeline" },
+
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy",
+    priority = 1000,
+    opts = {
+      preset = "powerline",
+      options = {
+        show_source = true,
+        virt_texts = { priority = 9999 },
+      },
+    },
+  },
+
   {
     "Shatur/neovim-ayu",
     lazy = true,
