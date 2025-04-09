@@ -14,8 +14,18 @@ return {
     opts = {
       provider = "copilot",
       auto_suggestions_provider = "copilot",
+      behaviour = {
+        enable_cursor_planning_mode = true,
+      },
     },
     build = "make",
+    dependencies = {
+      {
+        "MeanderingProgrammer/render-markdown.nvim",
+        opts = { file_types = { "markdown", "Avante" } },
+        ft = { "markdown", "Avante" },
+      },
+    },
   },
 
   {
