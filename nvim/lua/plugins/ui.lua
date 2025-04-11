@@ -113,6 +113,16 @@ return {
   },
 
   {
+    "ibhagwan/fzf-lua",
+    opts = {
+      hls = {
+        search = "ErrorMsg",
+        cursorline = "Visual",
+      },
+    },
+  },
+
+  {
     "akinsho/bufferline.nvim",
     opts = function()
       local colors = require("ayu.colors")
