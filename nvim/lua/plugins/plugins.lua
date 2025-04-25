@@ -9,6 +9,13 @@ return {
   {
     "yetone/avante.nvim",
     event = "VeryLazy",
+    dependencies = {
+      {
+        "MeanderingProgrammer/render-markdown.nvim",
+        opts = { file_types = { "markdown", "Avante" } },
+        ft = { "markdown", "Avante" },
+      },
+    },
     lazy = false,
     version = false,
     opts = {
@@ -19,13 +26,6 @@ return {
       },
     },
     build = "make",
-    dependencies = {
-      {
-        "MeanderingProgrammer/render-markdown.nvim",
-        opts = { file_types = { "markdown", "Avante" } },
-        ft = { "markdown", "Avante" },
-      },
-    },
   },
 
   {
