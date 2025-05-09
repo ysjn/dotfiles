@@ -222,7 +222,8 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "williamboman/mason.nvim",
+      { "mason-org/mason.nvim", version = "^1.0.0" },
+      { "mason-org/mason-lspconfig.nvim", version = "^1.0.0" },
       {
         "jay-babu/mason-null-ls.nvim",
         opts = {
