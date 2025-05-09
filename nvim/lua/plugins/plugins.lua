@@ -227,7 +227,6 @@ return {
         "jay-babu/mason-null-ls.nvim",
         opts = {
           ensure_installed = { "cspell", "markuplint" },
-          automatic_installation = true,
           methods = { code_actions = false },
         },
       },
