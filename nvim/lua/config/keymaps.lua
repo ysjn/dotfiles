@@ -123,6 +123,11 @@ vim.keymap.set("n", "<leader>/", function()
   fzfLua.live_grep({ cwd = get_current_oil_dir() })
 end, opts("Grep with args (root dir)"))
 
+-- Use oil.nvim's cwd to open finder
+vim.keymap.set("n", "<leader>fi", function()
+  vim.fn.jobstart({ "open", get_current_oil_dir() })
+end, opts("Open Finder"))
+
 -- Oil
 vim.keymap.set("n", "<leader>e", "<CMD>Oil --float<CR>", opts("Open parent directory (float)"))
 vim.keymap.set("n", "<leader>E", function()
