@@ -263,10 +263,13 @@ return {
             diagnostics_postprocess = function(diagnostic)
               diagnostic.severity = vim.diagnostic.severity["HINT"]
             end,
+            method = { DIAGNOSTICS_ON_OPEN, DIAGNOSTICS_ON_SAVE },
           }),
           cspell.code_actions,
           -- none-ls-extras
-          require("none-ls.diagnostics.eslint"),
+          require("none-ls.diagnostics.eslint").with({
+            method = { DIAGNOSTICS_ON_OPEN, DIAGNOSTICS_ON_SAVE },
+          }),
           require("none-ls.code_actions.eslint"),
         },
       }
