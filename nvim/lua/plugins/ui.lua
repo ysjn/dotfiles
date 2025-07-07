@@ -161,6 +161,12 @@ return {
           },
         },
         highlights = {
+          fill = {
+            bg = colors.bg,
+          },
+          background = {
+            bg = colors.bg,
+          },
           buffer_selected = {
             fg = colors.bg,
             bg = colors.special,
