@@ -185,6 +185,8 @@ return {
         ["<esc>"] = "actions.close",
         ["q"] = "actions.close",
         ["<C-r>"] = "actions.refresh",
+        ["<C-h>"] = false,
+        ["<C-l>"] = false,
       },
       view_options = {
         show_hidden = true,
