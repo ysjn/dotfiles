@@ -1,1 +1,4 @@
 *.log
+.claude/settings.local.json
+.claude/projects
+.claude/todos
