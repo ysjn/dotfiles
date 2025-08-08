@@ -49,7 +49,7 @@ return {
           ["@lsp.type.member.typescriptreact"] = { fg = colors.func },
           ["htmlTagName"] = { fg = colors.markup },
 
-          DiagnosticHint = { fg = colors.guide_normal },
+          DiagnosticHint = { fg = colors.comment },
           DiagnosticUnderlineHint = {
             sp = colors.comment,
             undercurl = true,
