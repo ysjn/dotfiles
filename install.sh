@@ -3,14 +3,14 @@
 # check if homebrew is installed
 which -s brew
 if [[ $? != 0 ]]; then
-	# Install Homebrew
-	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  # Install Homebrew
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-	# update PATH
-	echo 'eval $(/opt/homebrew/bin/brew shellenv)' >>$HOME/.zprofile
-	eval $(/opt/homebrew/bin/brew shellenv)
+  # update PATH
+  echo 'eval $(/opt/homebrew/bin/brew shellenv)' >>$HOME/.zprofile
+  eval $(/opt/homebrew/bin/brew shellenv)
 else
-	brew update
+  brew update
 fi
 
 # install nvm
@@ -55,11 +55,12 @@ curl -o $HOME/.zsh/git-completion.zsh https://raw.githubusercontent.com/git/git/
 curl -o $HOME/.zsh/git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 
 # create symbolic link
-ln -snfv $HOME/dev/dotfiles/.zshrc ~
+ln -snfv $HOME/dev/dotfiles/.zshrc $HOME
 rm -rf $HOME/.config/nvim
-ln -snfv $HOME/dev/dotfiles/nvim ~/.config
+ln -snfv $HOME/dev/dotfiles/nvim $HOME/.config
 ln -snfv $HOME/dev/dotfiles/alacritty.toml $HOME/.config/alacritty.toml
 ln -snfv $HOME/dev/dotfiles/lazygit/config.yml $HOME/Library/Application\ Support/lazygit/config.yml
+ln -snfv $HOME/dev/dotfiles/.claude $HOME/.claude
 
 # load config
 source $HOME/.zshrc
