@@ -54,6 +54,12 @@ curl -o $HOME/.zsh/git-completion.bash https://raw.githubusercontent.com/git/git
 curl -o $HOME/.zsh/git-completion.zsh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
 curl -o $HOME/.zsh/git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 
+# install gh
+brew install gh
+
+# install Syntax Highlight (Quick Look Extension)
+brew install --no-quarantine syntax-highlight
+
 # create symbolic link
 ln -snfv $HOME/dev/dotfiles/.zshrc $HOME
 rm -rf $HOME/.config/nvim
