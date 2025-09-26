@@ -287,7 +287,9 @@ return {
         },
       },
     },
-    config = true,
+    opts = {
+      focus_after_send = true,
+    },
     keys = {
       { "<leader>a", nil, desc = "AI/Claude Code" },
       { "<leader>aa", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
