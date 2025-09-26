@@ -45,6 +45,8 @@ alias yd='yarn dev'
 alias yb='yarn build'
 alias ybs='yarn build && yarn start'
 alias ysb='NODE_OPTIONS="--openssl-legacy-provider" yarn storybook'
+alias bd='bun dev'
+alias bb='bun run build'
 
 gbl() {
   branchList=($(git for-each-ref refs/heads/ --format="%(refname:short)"));
