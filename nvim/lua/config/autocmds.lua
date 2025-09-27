@@ -43,10 +43,9 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end,
 })
 
-vim.api.nvim_create_augroup("ConsoleLog", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
-  group = "ConsoleLog",
-  pattern = "javascript,javascriptreact,typescript,typescriptreact",
+  group = vim.api.nvim_create_augroup("ConsoleLog", { clear = true }),
+  pattern = { "*.ts", "*.tsx", "*.js", "*.jsx" },
   callback = function()
     vim.keymap.set("n", "<c-c>", "A<CR>console.log()<Esc>i")
     vim.keymap.set("i", "<c-c>", "<Esc>Aconsole.log()<Esc>i")
@@ -54,9 +53,8 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Auto organize imports for Biome projects
 vim.api.nvim_create_autocmd("BufWritePost", {
-  group = vim.api.nvim_create_augroup("BiomeOrganizeImports", { clear = true }),
+  group = vim.api.nvim_create_augroup("BiomeFormat", { clear = true }),
   pattern = { "*.ts", "*.tsx", "*.js", "*.jsx" },
   callback = function()
     local bufnr = vim.api.nvim_get_current_buf()
@@ -65,7 +63,6 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 
     if configFound then
       vim.defer_fn(function()
-        -- Use biome command directly to organize imports
         local cmd = { "biome", "check", "--write", filename }
         local cwd = vim.fs.dirname(configFound)
 
