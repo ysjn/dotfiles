@@ -79,3 +79,24 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     end
   end,
 })
+
+vim.api.nvim_create_autocmd("FocusGained", {
+  desc = "Focus visible Snacks Lazygit float, when coming back from other tmux pane",
+  callback = function()
+    if vim.api.nvim_get_mode().mode == "c" then
+      return
+    end
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+      local cfg = vim.api.nvim_win_get_config(win)
+      if cfg and cfg.relative ~= "" then
+        local buf = vim.api.nvim_win_get_buf(win)
+        local name = (vim.api.nvim_buf_get_name(buf) or ""):lower()
+        if name:find("lazygit", 1, true) then
+          pcall(vim.api.nvim_set_current_win, win)
+          pcall(vim.cmd, "startinsert")
+          break
+        end
+      end
+    end
+  end,
+})
