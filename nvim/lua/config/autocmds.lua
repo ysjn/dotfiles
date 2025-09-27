@@ -63,7 +63,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     local filename = vim.api.nvim_buf_get_name(bufnr)
     local configFound = vim.fs.find({ "biome.json" }, { path = filename, upward = true })[1]
 
-    if found then
+    if configFound then
       vim.defer_fn(function()
         -- Use biome command directly to organize imports
         local cmd = { "biome", "check", "--write", filename }
