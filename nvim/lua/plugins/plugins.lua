@@ -256,13 +256,6 @@ return {
             end,
             method = { DIAGNOSTICS_ON_OPEN, DIAGNOSTICS_ON_SAVE },
           }),
-          null_ls.builtins.formatting.biome.with({
-            filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
-            prefer_local = "node_modules/.bin",
-            condition = function(utils)
-              return utils.root_has_file_matches("biome.json")
-            end,
-          }),
           cspell.diagnostics.with({
             diagnostics_postprocess = function(diagnostic)
               diagnostic.severity = vim.diagnostic.severity["HINT"]

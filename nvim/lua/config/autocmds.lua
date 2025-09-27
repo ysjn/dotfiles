@@ -53,3 +53,32 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.keymap.set("x", "<c-c>", "yA<CR>console.log(`<Esc>pA: `, <Esc>pA)<Esc>")
   end,
 })
+
+-- Auto organize imports for Biome projects
+vim.api.nvim_create_autocmd("BufWritePost", {
+  group = vim.api.nvim_create_augroup("BiomeOrganizeImports", { clear = true }),
+  pattern = { "*.ts", "*.tsx", "*.js", "*.jsx" },
+  callback = function()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local filename = vim.api.nvim_buf_get_name(bufnr)
+    local configFound = vim.fs.find({ "biome.json" }, { path = filename, upward = true })[1]
+
+    if found then
+      vim.defer_fn(function()
+        -- Use biome command directly to organize imports
+        local cmd = { "biome", "check", "--write", filename }
+        local cwd = vim.fs.dirname(configFound)
+
+        vim.system(cmd, {
+          cwd = cwd,
+        }, function(obj)
+          if obj.code == 0 then
+            vim.schedule(function()
+              vim.cmd("checktime")
+            end)
+          end
+        end)
+      end, 100)
+    end
+  end,
+})
