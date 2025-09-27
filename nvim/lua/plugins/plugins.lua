@@ -181,7 +181,28 @@ return {
     opts = {
       servers = { eslint = {} },
       setup = {
-        eslint = function()
+        eslint = function(_)
+          local eslint_config_files = {
+            "eslint.config.js",
+            "eslint.config.mjs",
+            "eslint.config.cjs",
+            ".eslintrc.*",
+            ".eslintrc",
+          }
+
+          local function has_eslint_config()
+            for _, pattern in ipairs(eslint_config_files) do
+              if vim.fn.glob(pattern) ~= "" then
+                return true
+              end
+            end
+            return false
+          end
+
+          if not has_eslint_config() then
+            return true
+          end
+
           require("lazyvim.util").lsp.on_attach(function(client)
             if client.name == "eslint" then
               client.server_capabilities.documentFormattingProvider = true
@@ -245,8 +266,19 @@ return {
           -- none-ls-extras
           require("none-ls.diagnostics.eslint").with({
             method = { DIAGNOSTICS_ON_OPEN, DIAGNOSTICS_ON_SAVE },
+            condition = function(utils)
+              return utils.root_has_file_matches("eslint.config.*")
+                or utils.root_has_file_matches(".eslintrc.*")
+                or utils.root_has_file_matches(".eslintrc")
+            end,
           }),
-          require("none-ls.code_actions.eslint"),
+          require("none-ls.code_actions.eslint").with({
+            condition = function(utils)
+              return utils.root_has_file_matches("eslint.config.*")
+                or utils.root_has_file_matches(".eslintrc.*")
+                or utils.root_has_file_matches(".eslintrc")
+            end,
+          }),
         },
       }
     end,
