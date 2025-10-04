@@ -92,6 +92,12 @@ vim.keymap.set("n", "<leader>h", "<cmd>split<CR>", opts("Split window below"))
 -- Tree split join
 vim.keymap.set("n", "<leader>j", require("treesj").toggle, opts("Split or Join"))
 
+-- Notifications
+vim.keymap.set("n", "<leader>nh", function()
+  Snacks.notifier.show_history()
+end, opts("Notification History"))
+vim.keymap.set("n", "<leader>nd", "<cmd>NoiceDismiss<cr>", opts("Dismiss Notification"))
+
 -- Marks
 local marks = require("marks")
 vim.keymap.set("n", "<A-m>", marks.toggle, opts("Set next available lowercase mark"))
