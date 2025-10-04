@@ -20,7 +20,7 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 brew install --cask alacritty
 
 # install neovim
-brew install neovim ripgrep fd lazygit
+brew install neovim ripgrep fd lazygit tree-sitter-cli
 
 # install LazyVim
 mv $HOME/.config/nvim{,.bak}
