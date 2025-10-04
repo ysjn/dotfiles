@@ -1,4 +1,2 @@
 *.log
 .claude/
-!.claude/claude.md
-!.claude/settings.json
