@@ -81,22 +81,43 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 })
 
 vim.api.nvim_create_autocmd("FocusGained", {
-  desc = "Focus visible Snacks Lazygit float, when coming back from other tmux pane",
+  group = vim.api.nvim_create_augroup("RefocusFloatSimple", { clear = true }),
+  desc = "Refocus Lazygit or fzf-lua input terminal when coming back from tmux pane",
   callback = function()
+    -- コマンドライン編集中は奪わない
     if vim.api.nvim_get_mode().mode == "c" then
       return
     end
+
+    local best_win, best_z = nil, -1
+
     for _, win in ipairs(vim.api.nvim_list_wins()) do
       local cfg = vim.api.nvim_win_get_config(win)
-      if cfg and cfg.relative ~= "" then
+      if cfg and cfg.relative ~= "" and cfg.focusable ~= false then -- float & フォーカス可
         local buf = vim.api.nvim_win_get_buf(win)
-        local name = (vim.api.nvim_buf_get_name(buf) or ""):lower()
-        if name:find("lazygit", 1, true) then
-          pcall(vim.api.nvim_set_current_win, win)
-          pcall(vim.cmd, "startinsert")
-          break
+        if vim.api.nvim_buf_is_valid(buf) then
+          local bt = vim.bo[buf].buftype
+          local ft = vim.bo[buf].filetype
+          local name = (vim.api.nvim_buf_get_name(buf) or ""):lower()
+          local z = tonumber(cfg.zindex) or 0
+
+          local is_lazygit = ft == "lazygit" or name:find("lazygit", 1, true)
+          local is_fzf = ft == "fzf" or ft == "fzf-lua" or name:find("fzf", 1, true)
+
+          -- Lazygit はそのまま対象、fzf は "入力側(terminal)" のみ対象
+          local is_target = is_lazygit or (is_fzf and bt == "terminal")
+
+          if is_target and z > best_z then
+            best_win, best_z = win, z
+          end
         end
       end
+    end
+
+    if best_win and best_win ~= vim.api.nvim_get_current_win() then
+      pcall(vim.api.nvim_set_current_win, best_win)
+      -- 入力系なので insert 開始
+      pcall(vim.cmd, "startinsert")
     end
   end,
 })
