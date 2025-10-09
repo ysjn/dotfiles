@@ -307,32 +307,42 @@ return {
   },
 
   {
-    "coder/claudecode.nvim",
-    dependencies = {
-      {
-        "folke/snacks.nvim",
-        -- workaround for pane switch not working in coder/claudecode.nvim
-        -- https://github.com/coder/claudecode.nvim/issues/53#issuecomment-3146728231
-        keys = {
-          { "<A-h>", "<cmd>TmuxNavigateLeft<cr>", mode = "t" },
-          { "<A-l>", "<cmd>TmuxNavigateRight<cr>", mode = "t" },
+    "folke/sidekick.nvim",
+    opts = {
+      cli = {
+        win = {
+          keys = {
+            navigate_left = {
+              "<A-h>",
+              function()
+                vim.cmd("TmuxNavigateLeft")
+              end,
+            },
+            navigate_right = {
+              "<A-l>",
+              function()
+                vim.cmd("TmuxNavigateRight")
+              end,
+            },
+          },
         },
       },
     },
-    opts = {
-      focus_after_send = true,
-    },
     keys = {
-      { "<leader>a", nil, desc = "AI/Claude Code" },
-      { "<leader>aa", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
-      { "<leader>af", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude" },
-      { "<leader>ar", "<cmd>ClaudeCode --resume<cr>", desc = "Resume Claude" },
-      { "<leader>aC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
-      { "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", desc = "Add current buffer" },
-      { "<leader>ae", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
-      { "<leader>ae", "<cmd>ClaudeCodeTreeAdd<cr>", desc = "Add file", ft = { "oil" } },
-      { "<leader>ay", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
-      { "<leader>an", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
+      {
+        "<leader>aa",
+        function()
+          require("sidekick.cli").toggle({ filter = { installed = true } })
+        end,
+        desc = "Sidekick Toggle",
+      },
+      {
+        "<leader>as",
+        function()
+          require("sidekick.cli").select({ filter = { installed = true } })
+        end,
+        desc = "Sidekick Select CLI",
+      },
     },
   },
 }
