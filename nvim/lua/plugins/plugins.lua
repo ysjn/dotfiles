@@ -324,6 +324,18 @@ return {
                 vim.cmd("TmuxNavigateRight")
               end,
             },
+            new_line = {
+              "<CR>",
+              function(t)
+                t:send("\n")
+              end,
+            },
+            submit = {
+              "<A-CR>",
+              function()
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, false, true), "n", false)
+              end,
+            },
           },
         },
       },
