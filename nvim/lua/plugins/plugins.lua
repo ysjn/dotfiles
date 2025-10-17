@@ -330,7 +330,24 @@ return {
             new_line = {
               "<CR>",
               function(t)
-                t:send("\n")
+                local buf = vim.api.nvim_get_current_buf()
+                local total_lines = vim.api.nvim_buf_line_count(buf)
+                local last_non_empty_line = ""
+                for i = total_lines, 1, -1 do
+                  local line = vim.api.nvim_buf_get_lines(buf, i - 1, i, false)[1] or ""
+                  if line:match("%S") then
+                    last_non_empty_line = line
+                    break
+                  end
+                end
+
+                local is_insert_mode = last_non_empty_line:match("^%s*%-%- INSERT %-%-%s*$") ~= nil
+
+                if is_insert_mode then
+                  t:send("\n")
+                else
+                  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, false, true), "n", false)
+                end
               end,
             },
             submit = {
