@@ -341,7 +341,7 @@ return {
                   end
                 end
 
-                local is_insert_mode = last_non_empty_line:match("^%s*%-%- INSERT %-%-%s*$") ~= nil
+                local is_insert_mode = last_non_empty_line:match("^%s*%-%- INSERT") ~= nil
 
                 if is_insert_mode then
                   t:send("\n")
