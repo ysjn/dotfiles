@@ -311,6 +311,9 @@ return {
     opts = {
       cli = {
         win = {
+          config = function()
+            vim.b.miniindentscope_disable = true
+          end,
           keys = {
             navigate_left = {
               "<A-h>",
