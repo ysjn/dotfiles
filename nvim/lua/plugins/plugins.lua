@@ -311,9 +311,6 @@ return {
     opts = {
       cli = {
         win = {
-          config = function()
-            vim.b.miniindentscope_disable = true
-          end,
           keys = {
             navigate_left = {
               "<A-h>",
@@ -336,7 +333,7 @@ return {
                 local check_lines = math.min(5, total_lines)
                 for i = total_lines, math.max(1, total_lines - check_lines + 1), -1 do
                   local line = vim.api.nvim_buf_get_lines(buf, i - 1, i, false)[1] or ""
-                  if line:match("^%s*%-%- INSERT") then
+                  if line:match("^%s*%-%- INSERT.*") then
                     is_insert_mode = true
                     break
                   end
