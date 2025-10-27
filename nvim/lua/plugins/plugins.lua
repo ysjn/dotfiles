@@ -308,13 +308,19 @@ return {
                 local buf = vim.api.nvim_get_current_buf()
                 local total_lines = vim.api.nvim_buf_line_count(buf)
                 local is_insert_mode = false
-                local check_lines = math.min(5, total_lines)
-                for i = total_lines, math.max(1, total_lines - check_lines + 1), -1 do
-                  local line = vim.api.nvim_buf_get_lines(buf, i - 1, i, false)[1] or ""
-                  if line:match("^%s*%-%- INSERT.*") then
+
+                local max_check = math.min(30, total_lines)
+                local start_line = math.max(1, total_lines - max_check + 1)
+                local lines = vim.api.nvim_buf_get_lines(buf, start_line - 1, total_lines, false)
+
+                -- 末尾から逆順にチェック
+                for i = #lines, 1, -1 do
+                  local line = lines[i] or ""
+                  if line:match("^%s*%-%-%s*INSERT") then
                     is_insert_mode = true
                     break
                   end
+                  -- 空行ではない行に遭遇したら停止
                   if line:match("%S") then
                     break
                   end
