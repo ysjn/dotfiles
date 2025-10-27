@@ -124,7 +124,6 @@ return {
     end,
   },
 
-
   {
     "stevearc/oil.nvim",
     event = "VeryLazy",
@@ -179,13 +178,16 @@ return {
             return true
           end
 
-          require("lazyvim.util").lsp.on_attach(function(client)
-            if client.name == "eslint" then
-              client.server_capabilities.documentFormattingProvider = true
-            elseif client.name == "tsserver" then
-              client.server_capabilities.documentFormattingProvider = false
-            end
-          end)
+          vim.api.nvim_create_autocmd("LspAttach", {
+            callback = function(event)
+              local client = vim.lsp.get_client_by_id(event.data.client_id)
+              if client and client.name == "eslint" then
+                client.server_capabilities.documentFormattingProvider = true
+              elseif client and client.name == "tsserver" then
+                client.server_capabilities.documentFormattingProvider = false
+              end
+            end,
+          })
         end,
       },
       document_highlight = { enabled = false },
