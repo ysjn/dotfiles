@@ -254,44 +254,27 @@ return {
 
   {
     "folke/snacks.nvim",
-    opts = {
-      dashboard = {
-        sections = {
-          { section = "header" },
-          {
-            icon = " ",
-            title = "Shortcuts",
-            section = "keys",
-            padding = 1,
-            indent = 3,
+    opts = function()
+      local urls = {
+        branch = "/tree/{branch}",
+        file = "/blob/{branch}/{file}#L{line_start}-L{line_end}",
+        permalink = "/blob/{commit}/{file}#L{line_start}-L{line_end}",
+        commit = "/commit/{commit}",
+      }
+      return {
+        dashboard = {
+          sections = {
+            { section = "header" },
+            { section = "keys" },
           },
-          {
-            pane = 2,
-            {
-              height = 9,
-              section = "terminal",
-              cmd = "",
-            },
-            {
-              icon = " ",
-              title = "Recent Files",
-              section = "recent_files",
-              padding = 1,
-              indent = 3,
-            },
-            {
-              icon = " ",
-              title = "Current Branch",
-              section = "terminal",
-              padding = 1,
-              indent = 3,
-              ttl = 5 * 60,
-              cmd = "git branch",
-            },
-          },
-          { section = "startup" },
         },
-      },
-    },
+        gitbrowse = {
+          url_patterns = {
+            ["ghe"] = urls,
+            ["partner"] = urls,
+          },
+        },
+      }
+    end,
   },
 }

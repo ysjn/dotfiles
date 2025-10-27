@@ -7,26 +7,6 @@ return {
   { "nacro90/numb.nvim", event = "VeryLazy", config = true },
 
   {
-    "folke/snacks.nvim",
-    opts = function()
-      local urls = {
-        branch = "/tree/{branch}",
-        file = "/blob/{branch}/{file}#L{line_start}-L{line_end}",
-        permalink = "/blob/{commit}/{file}#L{line_start}-L{line_end}",
-        commit = "/commit/{commit}",
-      }
-      return {
-        gitbrowse = {
-          url_patterns = {
-            ["ghe"] = urls,
-            ["partner"] = urls,
-          },
-        },
-      }
-    end,
-  },
-
-  {
     "akinsho/git-conflict.nvim",
     event = "BufRead",
     config = true,
