@@ -151,14 +151,6 @@ return {
             style = "icon",
           },
           separator_style = { "", "" },
-          offsets = {
-            {
-              filetype = "neo-tree",
-              text = "Neo-tree",
-              highlight = "Directory",
-              text_align = "left",
-            },
-          },
         },
         highlights = {
           fill = {
@@ -258,7 +250,6 @@ return {
       enablefocusfading = true,
     },
   },
-
 
   {
     "folke/snacks.nvim",

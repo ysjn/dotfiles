@@ -124,34 +124,6 @@ return {
     end,
   },
 
-  {
-    "nvim-neo-tree/neo-tree.nvim",
-    keys = {
-      { "<leader>e", vim.NIL },
-      { "<leader>E", vim.NIL },
-      {
-        "<leader>fe",
-        function()
-          require("neo-tree.command").execute({ toggle = true, dir = LazyVim.root() })
-        end,
-        desc = "Explorer NeoTree (Root Dir)",
-      },
-      {
-        "<leader>fE",
-        function()
-          require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
-        end,
-        desc = "Explorer NeoTree (cwd)",
-      },
-    },
-    opts = {
-      filesystem = {
-        filtered_items = {
-          visible = true,
-        },
-      },
-    },
-  },
 
   {
     "stevearc/oil.nvim",
