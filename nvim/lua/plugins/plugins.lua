@@ -56,14 +56,6 @@ return {
         },
         opts = { skip = true },
       })
-      table.insert(opts.routes, {
-        filter = {
-          event = "notify",
-          find = "Failed to run `config` for lualine.nvim",
-        },
-        opts = { skip = true },
-      })
-
       opts.presets.lsp_doc_border = true
     end,
   },

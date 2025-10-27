@@ -1,5 +1,6 @@
 return {
   { "vimpostor/vim-tpipeline" },
+  { "nvim-lualine/lualine.nvim", dependencies = { "folke/snacks.nvim" } },
 
   {
     "rachartier/tiny-inline-diagnostic.nvim",
