@@ -172,6 +172,10 @@ return {
       delete_to_trash = true,
       float = {
         padding = 10,
+        border = "rounded",
+      },
+      confirmation = {
+        border = "rounded",
       },
     },
   },
