@@ -1,6 +1,30 @@
 return {
   { "vimpostor/vim-tpipeline" },
-  { "nvim-lualine/lualine.nvim", dependencies = { "folke/snacks.nvim" } },
+
+  {
+    "nvim-lualine/lualine.nvim",
+    dependencies = { "folke/snacks.nvim" },
+  },
+
+  {
+    "shortcuts/no-neck-pain.nvim",
+    opts = {
+      width = 200,
+      autocmds = {
+        enableOnVimEnter = true,
+      },
+      buffers = {
+        right = {
+          enabled = false,
+        },
+      },
+      integrations = {
+        dashboard = {
+          enabled = true,
+        },
+      },
+    },
+  },
 
   {
     "rachartier/tiny-inline-diagnostic.nvim",
