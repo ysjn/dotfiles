@@ -49,6 +49,8 @@ alias ysb='NODE_OPTIONS="--openssl-legacy-provider" yarn storybook'
 alias bd='bun dev'
 alias bb='bun run build'
 
+alias difit='npx difit@latest @ origin/develop'
+
 gbl() {
   branchList=($(git for-each-ref refs/heads/ --format="%(refname:short)"));
   for b in $branchList; do
