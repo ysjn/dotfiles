@@ -287,6 +287,13 @@ return {
                     break
                   end
                   if line:match("%S") then
+                    -- 空白以外の文字が見つかった場合、その一つ上の行もチェック
+                    if i > 1 then
+                      local prev_line = vim.api.nvim_buf_get_lines(buf, i - 2, i - 1, false)[1] or ""
+                      if prev_line:match("^%s*%-%-%s*INSERT") then
+                        is_insert_mode = true
+                      end
+                    end
                     break
                   end
                 end
