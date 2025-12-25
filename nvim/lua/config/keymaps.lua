@@ -145,7 +145,7 @@ end, opts("Copy current directory to clipboard"))
 vim.keymap.set("n", "<leader>e", "<CMD>Oil --float<CR>", opts("Open parent directory (float)"))
 vim.keymap.set("n", "<leader>E", function()
   local oil = require("oil")
-  oil.open()
+  oil.open_float()
   vim.wait(1000, function()
     return oil.get_cursor_entry() ~= nil
   end)
