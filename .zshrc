@@ -9,6 +9,7 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 nvm use default >/dev/null
 
 export NODE_PATH=$(realpath $(dirname $(nvm which current))/../lib/node_modules)
+export COREPACK_ENABLE_AUTO_PIN=0
 
 [ -f ${HOME}/.zsh/git-completion.bash ] && zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash 
 [ -f ${HOME}/.zsh/git-prompt.sh ] && source ${HOME}/.zsh/git-prompt.sh
