@@ -153,3 +153,5 @@ vim.keymap.set("n", "<leader>E", function()
     oil.open_preview()
   end
 end, opts("Open parent directory"))
+
+vim.keymap.set("n", "<leader>z", ":SimpleZoomToggle<CR>")
