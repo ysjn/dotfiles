@@ -54,12 +54,10 @@ vim.keymap.set({ "n", "v" }, "<c-h>", "^", opts())
 vim.keymap.set({ "n", "v" }, "<c-l>", "$", opts())
 
 -- Close all buffer and open dashboard
-vim.keymap.set(
-  "n",
-  "<leader>bx",
-  "<Cmd>lua Snacks.bufdelete.all()<CR><Cmd>lua Snacks.dashboard()<CR>",
-  opts("Close all buffer")
-)
+vim.keymap.set("n", "<leader>bx", function()
+  vim.fn.execute("bufdo bwipeout", "silent")
+end, opts("Close all buffer"))
+
 -- Mover buffers
 vim.keymap.set("n", "<leader>b<", "<Cmd>BufferLineMovePrev<CR>", opts("Move buffer prev"))
 vim.keymap.set("n", "<leader>b>", "<Cmd>BufferLineMoveNext<CR>", opts("Move buffer next"))
@@ -88,20 +86,24 @@ vim.keymap.set("n", "<A-K>", "<cmd>TmuxResizeUp<CR>", opts())
 vim.keymap.set("n", "<A-L>", "<cmd>TmuxResizeRight<CR>", opts())
 
 -- Split windows
-vim.keymap.set("n", "<leader>v", "<cmd>vsplit<CR><c-w>h<cmd>:bn<cr><c-w>l", opts("Split window right"))
+vim.keymap.set("n", "<leader>v", "<cmd>vsplit<CR><c-w>h<cmd>:bp<cr><c-w>l", opts("Split window right"))
 vim.keymap.set("n", "<leader>h", "<cmd>split<CR>", opts("Split window below"))
-
--- Clear all marks
-vim.keymap.set("n", "<A-m>", "<cmd>delm! | delm A-Z0-9<CR><cmd>wviminfo!<CR><cmd>echo 'Clear all marks'<CR>", opts())
 
 -- Tree split join
 vim.keymap.set("n", "<leader>j", require("treesj").toggle, opts("Split or Join"))
 
+-- Notifications
+vim.keymap.set("n", "<leader>nh", function()
+  Snacks.notifier.show_history()
+end, opts("Notification History"))
+vim.keymap.set("n", "<leader>nd", "<cmd>NoiceDismiss<cr>", opts("Dismiss Notification"))
+
 -- Marks
 local marks = require("marks")
-vim.keymap.set("n", "<c-m>", marks.set_next, opts("Set next available lowercase mark"))
+vim.keymap.set("n", "<A-m>", marks.toggle, opts("Set next available lowercase mark"))
 vim.keymap.set("n", "m", marks.next, opts("Next mark"))
 vim.keymap.set("n", "M", marks.prev, opts("Previous mark"))
+vim.keymap.set("n", "<A-M>", "<cmd>delm! | delm A-Z0-9<CR><cmd>wviminfo!<CR><cmd>echo 'Clear all marks'<CR>", opts())
 
 local function get_current_oil_dir()
   local oil = require("oil")
@@ -111,27 +113,39 @@ local function get_current_oil_dir()
   else
     oil.close()
   end
-  local short_cwd = require("plenary.path"):new(cwd):make_relative(LazyVim.root())
-  return {
-    cwd = cwd,
-    results_title = "Results in " .. short_cwd .. "/",
-  }
+  return cwd
 end
 
--- Use oil.nvim current directory to scope Telescope find_files
+-- load fzf-lua here to prevent keymaps being overwritten to LazyVim default
+local fzfLua = require("fzf-lua")
+
+-- Use oil.nvim's cwd to scope find_files
 vim.keymap.set("n", "<leader><space>", function()
-  require("telescope.builtin").find_files(get_current_oil_dir())
+  fzfLua.files({ cwd = get_current_oil_dir() })
 end, opts("Find Files"))
--- Use egrepify instead of default live_grep
+
+-- Use oil.nvim's cwd to scope live_grep
 vim.keymap.set("n", "<leader>/", function()
-  require("telescope").extensions.egrepify.egrepify(get_current_oil_dir())
+  fzfLua.live_grep({ cwd = get_current_oil_dir() })
 end, opts("Grep with args (root dir)"))
+
+-- Use oil.nvim's cwd to open finder
+vim.keymap.set("n", "<leader>fi", function()
+  vim.fn.jobstart({ "open", get_current_oil_dir() })
+end, opts("Open Finder"))
+
+-- Copy oil.nvim's cwd to clipboard
+vim.keymap.set("n", "<leader>y", function()
+  local cwd = get_current_oil_dir()
+  vim.fn.setreg("+", cwd)
+  vim.notify("Copied: " .. cwd, vim.log.levels.INFO)
+end, opts("Copy current directory to clipboard"))
 
 -- Oil
 vim.keymap.set("n", "<leader>e", "<CMD>Oil --float<CR>", opts("Open parent directory (float)"))
 vim.keymap.set("n", "<leader>E", function()
   local oil = require("oil")
-  oil.open()
+  oil.open_float()
   vim.wait(1000, function()
     return oil.get_cursor_entry() ~= nil
   end)
@@ -140,65 +154,4 @@ vim.keymap.set("n", "<leader>E", function()
   end
 end, opts("Open parent directory"))
 
--- lazygit integration
--- @see: https://github.com/kdheepak/lazygit.nvim/issues/22#issuecomment-1815426074
-local Util = require("lazyvim.util")
-
--- Function to check clipboard with retries
-local function getRelativeFilepath(retries, delay)
-  local relative_filepath
-  for i = 1, retries do
-    relative_filepath = vim.fn.getreg("+")
-    if relative_filepath ~= "" then
-      return relative_filepath -- Return filepath if clipboard is not empty
-    end
-    vim.loop.sleep(delay) -- Wait before retrying
-  end
-  return nil -- Return nil if clipboard is still empty after retries
-end
-
--- Function to handle editing from Lazygit
-function LazygitEdit(original_buffer)
-  local current_bufnr = vim.fn.bufnr("%")
-  local channel_id = vim.fn.getbufvar(current_bufnr, "terminal_job_id")
-
-  if not channel_id then
-    vim.notify("No terminal job ID found.", vim.log.levels.ERROR)
-    return
-  end
-
-  vim.fn.chansend(channel_id, "\15") -- \15 is <c-o>
-  vim.cmd("close") -- Close Lazygit
-
-  local relative_filepath = getRelativeFilepath(5, 50)
-  if not relative_filepath then
-    vim.notify("Clipboard is empty or invalid.", vim.log.levels.ERROR)
-    return
-  end
-
-  local winid = vim.fn.bufwinid(original_buffer)
-
-  if winid == -1 then
-    vim.notify("Could not find the original window.", vim.log.levels.ERROR)
-    return
-  end
-
-  vim.fn.win_gotoid(winid)
-  vim.cmd("e " .. relative_filepath)
-end
-
--- Function to start Lazygit in a floating terminal
-function StartLazygit()
-  local current_buffer = vim.api.nvim_get_current_buf()
-  local float_term = Snacks.terminal.open({ "lazygit" }, { cwd = Util.root(), esc_esc = false, ctrl_hjkl = false })
-
-  vim.api.nvim_buf_set_keymap(
-    float_term.buf,
-    "t",
-    "<c-e>",
-    string.format([[<Cmd>lua LazygitEdit(%d)<CR>]], current_buffer),
-    { noremap = true, silent = true }
-  )
-end
-
-vim.api.nvim_set_keymap("n", "<leader>gg", [[<Cmd>lua StartLazygit()<CR>]], { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>z", ":SimpleZoomToggle<CR>")

@@ -2,7 +2,14 @@ return {
   { "christoomey/vim-tmux-navigator", event = "VeryLazy" },
   { "RyanMillerC/better-vim-tmux-resizer", event = "VeryLazy" },
   { "mg979/vim-visual-multi", event = "VeryLazy" },
-  { "vimpostor/vim-tpipeline", event = "VeryLazy" },
+  { "OlegGulevskyy/better-ts-errors.nvim", event = "VeryLazy" },
+  { "ray-x/lsp_signature.nvim", event = "VeryLazy" },
+  { "nacro90/numb.nvim", event = "VeryLazy", config = true },
+  {
+    "fasterius/simple-zoom.nvim",
+    event = "VeryLazy",
+    opts = { hide_tabline = false },
+  },
 
   {
     "akinsho/git-conflict.nvim",
@@ -34,7 +41,6 @@ return {
         },
         opts = { skip = true },
       })
-
       opts.presets.lsp_doc_border = true
     end,
   },
@@ -60,7 +66,7 @@ return {
   },
 
   {
-    "echasnovski/mini.surround",
+    "nvim-mini/mini.surround",
     opts = {
       mappings = {
         add = "gsa",
@@ -96,35 +102,6 @@ return {
   },
 
   {
-    "nvim-neo-tree/neo-tree.nvim",
-    keys = {
-      { "<leader>e", vim.NIL },
-      { "<leader>E", vim.NIL },
-      {
-        "<leader>fe",
-        function()
-          require("neo-tree.command").execute({ toggle = true, dir = LazyVim.root() })
-        end,
-        desc = "Explorer NeoTree (Root Dir)",
-      },
-      {
-        "<leader>fE",
-        function()
-          require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
-        end,
-        desc = "Explorer NeoTree (cwd)",
-      },
-    },
-    opts = {
-      filesystem = {
-        filtered_items = {
-          visible = true,
-        },
-      },
-    },
-  },
-
-  {
     "stevearc/oil.nvim",
     event = "VeryLazy",
     opts = {
@@ -134,6 +111,8 @@ return {
         ["<esc>"] = "actions.close",
         ["q"] = "actions.close",
         ["<C-r>"] = "actions.refresh",
+        ["<C-h>"] = false,
+        ["<C-l>"] = false,
       },
       view_options = {
         show_hidden = true,
@@ -141,91 +120,12 @@ return {
       delete_to_trash = true,
       float = {
         padding = 10,
+        border = "rounded",
+      },
+      confirmation = {
+        border = "rounded",
       },
     },
-  },
-
-  {
-    "nvim-telescope/telescope.nvim",
-    dependencies = {
-      -- "nvim-telescope/telescope-live-grep-args.nvim",
-      "fdschmidt93/telescope-egrepify.nvim",
-    },
-    keys = {
-      -- Override <leader>/
-      -- @see: https://github.com/LazyVim/LazyVim/issues/63#issuecomment-1383718679
-      { "<leader><space>", vim.NIL },
-      { "<leader>/", vim.NIL },
-    },
-    opts = function()
-      local actions = require("telescope.actions")
-      require("telescope").load_extension("egrepify")
-      return {
-        defaults = {
-          file_ignore_patterns = { ".git/", "/node_modules/", "package-lock.json", "yarn.lock" },
-          vimgrep_arguments = {
-            "rg",
-            "--color=never",
-            "--no-heading",
-            "--with-filename",
-            "--line-number",
-            "--column",
-            "--smart-case",
-            "--hidden", -- include hidden files and directories
-            "--trim", -- remove indentations in search results
-          },
-          mappings = {
-            n = {
-              ["q"] = "close",
-              ["<C-a>"] = {
-                function(p_bufnr)
-                  actions.send_selected_to_qflist(p_bufnr)
-                  vim.cmd.cfdo("edit")
-                end,
-                type = "action",
-                opts = {
-                  nowait = true,
-                  silent = true,
-                  desc = "Open selected files",
-                },
-              },
-              ["<C-r>"] = {
-                function(p_bufnr)
-                  -- send results to quick fix list
-                  actions.send_to_qflist(p_bufnr)
-
-                  local qflist = vim.fn.getqflist()
-                  local paths = {}
-                  local hash = {}
-                  for k in pairs(qflist) do
-                    local path = vim.fn.bufname(qflist[k]["bufnr"]) -- extract path from quick fix list
-                    if not hash[path] then -- add to paths table, if not already appeared
-                      paths[#paths + 1] = path
-                      hash[path] = true -- remember existing paths
-                    end
-                  end
-
-                  -- show search scope with message
-                  vim.notify("find in ...\n  " .. table.concat(paths, "\n  "))
-
-                  -- execute live_grep_args with search scope
-                  require("telescope").extensions.egrepify.egrepify({ search_dirs = paths })
-                end,
-                type = "action",
-                opts = {
-                  nowait = true,
-                  silent = true,
-                  desc = "Live grep on results",
-                },
-              },
-            },
-          },
-        },
-        pickers = {
-          find_files = { hidden = true }, -- include hidden files and directories
-        },
-      }
-    end,
   },
 
   {
@@ -233,14 +133,38 @@ return {
     opts = {
       servers = { eslint = {} },
       setup = {
-        eslint = function()
-          require("lazyvim.util").lsp.on_attach(function(client)
-            if client.name == "eslint" then
-              client.server_capabilities.documentFormattingProvider = true
-            elseif client.name == "tsserver" then
-              client.server_capabilities.documentFormattingProvider = false
+        eslint = function(_)
+          local eslint_config_files = {
+            "eslint.config.js",
+            "eslint.config.mjs",
+            "eslint.config.cjs",
+            ".eslintrc.*",
+            ".eslintrc",
+          }
+
+          local function has_eslint_config()
+            for _, pattern in ipairs(eslint_config_files) do
+              if vim.fn.glob(pattern) ~= "" then
+                return true
+              end
             end
-          end)
+            return false
+          end
+
+          if not has_eslint_config() then
+            return true
+          end
+
+          vim.api.nvim_create_autocmd("LspAttach", {
+            callback = function(event)
+              local client = vim.lsp.get_client_by_id(event.data.client_id)
+              if client and client.name == "eslint" then
+                client.server_capabilities.documentFormattingProvider = true
+              elseif client and client.name == "tsserver" then
+                client.server_capabilities.documentFormattingProvider = false
+              end
+            end,
+          })
         end,
       },
       document_highlight = { enabled = false },
@@ -253,12 +177,11 @@ return {
     lazy = true,
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-      "williamboman/mason.nvim",
+      "nvim-lua/plenary.nvim",
       {
         "jay-babu/mason-null-ls.nvim",
         opts = {
           ensure_installed = { "cspell", "markuplint" },
-          automatic_installation = true,
           methods = { code_actions = false },
         },
       },
@@ -268,43 +191,56 @@ return {
     opts = function()
       local null_ls = require("null-ls")
       local cspell = require("cspell")
+      local DIAGNOSTICS_ON_OPEN = null_ls.methods.DIAGNOSTICS_ON_OPEN
+      local DIAGNOSTICS_ON_SAVE = null_ls.methods.DIAGNOSTICS_ON_SAVE
       return {
         debounce = 500,
         temp_dir = "/tmp",
         sources = {
           null_ls.builtins.diagnostics.markuplint.with({
-            filetypes = { "html", "javascriptreact", "typescriptreact" },
+            extra_filetypes = {
+              "javascriptreact",
+              "typescriptreact",
+            },
+            extra_args = { "--locale", "ja" },
             prefer_local = "node_modules/.bin",
+            to_temp_file = false,
             condition = function(utils)
-              return vim.fn.executable("markuplint") > 0
-                and utils.root_has_file({
-                  ".markuplintrc",
-                  ".markuplintrc.json",
-                  ".markuplintrc.yaml",
-                  ".markuplintrc.yml",
-                  ".markuplintrc.js",
-                  ".markuplintrc.ts",
-                })
+              -- execute only when config file is found
+              return vim.fn.executable("markuplint") > 0 and utils.root_has_file_matches("%.?markuplint.*")
             end,
-            diagnostics_postprocess = function(diagnostic)
-              diagnostic.severity = vim.diagnostic.severity["WARN"]
-            end,
+            method = { DIAGNOSTICS_ON_OPEN, DIAGNOSTICS_ON_SAVE },
           }),
           cspell.diagnostics.with({
             diagnostics_postprocess = function(diagnostic)
               diagnostic.severity = vim.diagnostic.severity["HINT"]
             end,
+            method = { DIAGNOSTICS_ON_OPEN, DIAGNOSTICS_ON_SAVE },
           }),
           cspell.code_actions,
-          require("none-ls.diagnostics.eslint"),
-          require("none-ls.code_actions.eslint"),
+          -- none-ls-extras
+          require("none-ls.diagnostics.eslint").with({
+            method = { DIAGNOSTICS_ON_OPEN, DIAGNOSTICS_ON_SAVE },
+            condition = function(utils)
+              return utils.root_has_file_matches("eslint.config.*")
+                or utils.root_has_file_matches(".eslintrc.*")
+                or utils.root_has_file_matches(".eslintrc")
+            end,
+          }),
+          require("none-ls.code_actions.eslint").with({
+            condition = function(utils)
+              return utils.root_has_file_matches("eslint.config.*")
+                or utils.root_has_file_matches(".eslintrc.*")
+                or utils.root_has_file_matches(".eslintrc")
+            end,
+          }),
         },
       }
     end,
   },
 
   {
-    "echasnovski/mini.pairs",
+    "nvim-mini/mini.pairs",
     opts = function()
       local neigh_pattern = "[%s][%s]"
       return {
@@ -323,5 +259,76 @@ return {
         },
       }
     end,
+  },
+
+  {
+    "folke/sidekick.nvim",
+    opts = {
+      cli = {
+        win = {
+          keys = {
+            navigate_left = {
+              "<A-h>",
+              function()
+                vim.cmd("TmuxNavigateLeft")
+              end,
+            },
+            navigate_right = {
+              "<A-l>",
+              function()
+                vim.cmd("TmuxNavigateRight")
+              end,
+            },
+            new_line_or_submit = {
+              "<CR>",
+              function(t)
+                local buf = vim.api.nvim_get_current_buf()
+                local total_lines = vim.api.nvim_buf_line_count(buf)
+                local is_insert_mode = false
+                for i = total_lines, math.max(1, total_lines - total_lines + 1), -1 do
+                  local line = vim.api.nvim_buf_get_lines(buf, i - 1, i, false)[1] or ""
+                  if line:match("^%s*%-%-%s*INSERT") then
+                    is_insert_mode = true
+                    break
+                  end
+                  if line:match("%S") then
+                    -- 空白以外の文字が見つかった場合、その一つ上の行もチェック
+                    if i > 1 then
+                      local prev_line = vim.api.nvim_buf_get_lines(buf, i - 2, i - 1, false)[1] or ""
+                      if prev_line:match("^%s*%-%-%s*INSERT") then
+                        is_insert_mode = true
+                      end
+                    end
+                    break
+                  end
+                end
+
+                if is_insert_mode then
+                  t:send("\n")
+                else
+                  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, false, true), "n", false)
+                end
+              end,
+            },
+          },
+        },
+      },
+    },
+    keys = {
+      {
+        "<leader>aa",
+        function()
+          require("sidekick.cli").toggle({ filter = { installed = true } })
+        end,
+        desc = "Sidekick Toggle",
+      },
+      {
+        "<leader>as",
+        function()
+          require("sidekick.cli").select({ filter = { installed = true } })
+        end,
+        desc = "Sidekick Select CLI",
+      },
+    },
   },
 }

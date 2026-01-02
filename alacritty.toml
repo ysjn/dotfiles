@@ -57,5 +57,7 @@ hide_when_typing = true
 bindings = [
   { key = "Escape", action = 'ToggleViMode', mode = "Vi" },
   { key = "q", action = 'ToggleViMode', mode = "Vi" },
-  { key= "f", mods="Command", action='ToggleMaximized' }
+  { key = "f", mods = "Command", action = 'ToggleMaximized' },
+  { key = "¥", chars = "\\" },
+  { key = "Backslash", chars = "\\" }
 ]

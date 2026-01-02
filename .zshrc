@@ -1,6 +1,3 @@
-# Fig pre block. Keep at the top of this file.
-[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
-
 export CLICOLOR=1
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
@@ -9,8 +6,10 @@ export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+nvm use default >/dev/null
 
 export NODE_PATH=$(realpath $(dirname $(nvm which current))/../lib/node_modules)
+export COREPACK_ENABLE_AUTO_PIN=0
 
 [ -f ${HOME}/.zsh/git-completion.bash ] && zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash 
 [ -f ${HOME}/.zsh/git-prompt.sh ] && source ${HOME}/.zsh/git-prompt.sh
@@ -48,6 +47,10 @@ alias yd='yarn dev'
 alias yb='yarn build'
 alias ybs='yarn build && yarn start'
 alias ysb='NODE_OPTIONS="--openssl-legacy-provider" yarn storybook'
+alias bd='bun dev'
+alias bb='bun run build'
+
+alias difit='npx difit@latest @ origin/develop --clean'
 
 gbl() {
   branchList=($(git for-each-ref refs/heads/ --format="%(refname:short)"));
@@ -83,6 +86,3 @@ gbl() {
     fi
   done
 }
-
-# Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"

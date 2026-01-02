@@ -1,4 +1,44 @@
 return {
+  { "vimpostor/vim-tpipeline" },
+
+  {
+    "nvim-lualine/lualine.nvim",
+    dependencies = { "folke/snacks.nvim" },
+  },
+
+  {
+    "shortcuts/no-neck-pain.nvim",
+    opts = {
+      width = 200,
+      autocmds = {
+        enableOnVimEnter = true,
+      },
+      buffers = {
+        right = {
+          enabled = false,
+        },
+      },
+      integrations = {
+        dashboard = {
+          enabled = true,
+        },
+      },
+    },
+  },
+
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy",
+    priority = 1000,
+    opts = {
+      preset = "powerline",
+      options = {
+        show_source = true,
+        virt_texts = { priority = 9999 },
+      },
+    },
+  },
+
   {
     "Shatur/neovim-ayu",
     lazy = true,
@@ -34,7 +74,7 @@ return {
           ["@lsp.type.member.typescriptreact"] = { fg = colors.func },
           ["htmlTagName"] = { fg = colors.markup },
 
-          DiagnosticHint = { fg = colors.guide_normal },
+          DiagnosticHint = { fg = colors.comment },
           DiagnosticUnderlineHint = {
             sp = colors.comment,
             undercurl = true,
@@ -98,6 +138,16 @@ return {
   },
 
   {
+    "ibhagwan/fzf-lua",
+    opts = {
+      hls = {
+        search = "ErrorMsg",
+        cursorline = "Visual",
+      },
+    },
+  },
+
+  {
     "akinsho/bufferline.nvim",
     opts = function()
       local colors = require("ayu.colors")
@@ -126,16 +176,14 @@ return {
             style = "icon",
           },
           separator_style = { "", "" },
-          offsets = {
-            {
-              filetype = "neo-tree",
-              text = "Neo-tree",
-              highlight = "Directory",
-              text_align = "left",
-            },
-          },
         },
         highlights = {
+          fill = {
+            bg = colors.bg,
+          },
+          background = {
+            bg = colors.bg,
+          },
           buffer_selected = {
             fg = colors.bg,
             bg = colors.special,
@@ -211,75 +259,46 @@ return {
   },
 
   {
-    "miversen33/sunglasses.nvim",
-    event = "UIEnter",
-    opts = { filter_percent = 0.40 },
-  },
-
-  {
-    "hrsh7th/nvim-cmp",
-    event = "InsertEnter",
-    opts = function(_, opts)
-      local cmp = require("cmp")
-      local winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None"
-      local border = { " ", " ", " ", " ", " ", " ", " ", " " }
-      opts.window = {
-        completion = cmp.config.window.bordered({ winhighlight = winhighlight, border = border }),
-        documentation = cmp.config.window.bordered({ winhighlight = winhighlight, border = border }),
-      }
-    end,
+    "tadaa/vimade",
+    event = "VeryLazy",
+    opts = {
+      recipe = {
+        "minimalist",
+        { animate = true },
+      },
+      fadelevel = 0.6,
+      blocklist = {
+        default = {
+          highlights = { "LineNr", "DiagnosticHint" },
+        },
+      },
+      enablefocusfading = true,
+    },
   },
 
   {
     "folke/snacks.nvim",
-    opts = {
-      dashboard = {
-        sections = {
-          { section = "header" },
-          {
-            icon = " ",
-            title = "Shortcuts",
-            section = "keys",
-            padding = 1,
-            indent = 3,
+    opts = function()
+      local urls = {
+        branch = "/tree/{branch}",
+        file = "/blob/{branch}/{file}#L{line_start}-L{line_end}",
+        permalink = "/blob/{commit}/{file}#L{line_start}-L{line_end}",
+        commit = "/commit/{commit}",
+      }
+      return {
+        dashboard = {
+          sections = {
+            { section = "header" },
+            { section = "keys" },
           },
-          {
-            pane = 2,
-            {
-              height = 9,
-              section = "terminal",
-              cmd = "",
-            },
-            {
-              icon = " ",
-              title = "Recent Files",
-              section = "recent_files",
-              padding = 1,
-              indent = 3,
-            },
-            {
-              icon = " ",
-              title = "Current Branch",
-              section = "terminal",
-              padding = 1,
-              indent = 3,
-              ttl = 5 * 60,
-              cmd = "git branch",
-            },
-          },
-          { section = "startup" },
         },
-      },
-    },
-  },
-
-  {
-    "folke/which-key.nvim",
-    opts = {
-      preset = "helix",
-      win = {
-        padding = { 1, 5 },
-      },
-    },
+        gitbrowse = {
+          url_patterns = {
+            ["ghe"] = urls,
+            ["partner"] = urls,
+          },
+        },
+      }
+    end,
   },
 }
