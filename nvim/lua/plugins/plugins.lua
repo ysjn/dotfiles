@@ -267,18 +267,8 @@ return {
       cli = {
         win = {
           keys = {
-            navigate_left = {
-              "<A-h>",
-              function()
-                vim.cmd("TmuxNavigateLeft")
-              end,
-            },
-            navigate_right = {
-              "<A-l>",
-              function()
-                vim.cmd("TmuxNavigateRight")
-              end,
-            },
+            nav_left = { "<A-h>", "nav_left" },
+            nav_right = { "<A-l>", "nav_right" },
             new_line_or_submit = {
               "<CR>",
               function(t)
