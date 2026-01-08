@@ -267,6 +267,10 @@ return {
       cli = {
         win = {
           keys = {
+            buffers = false,
+            files = false,
+            start_insert = { "q", mode = "n", "startinsert" },
+            stop_insert = { "<c-b>", mode = "t", "stopinsert" },
             nav_left = { "<A-h>", "nav_left" },
             nav_right = { "<A-l>", "nav_right" },
             new_line_or_submit = {
