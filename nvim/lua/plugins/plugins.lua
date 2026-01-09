@@ -34,13 +34,18 @@ return {
   {
     "folke/noice.nvim",
     opts = function(_, opts)
-      table.insert(opts.routes, {
-        filter = {
-          event = "notify",
-          find = "No information",
-        },
-        opts = { skip = true },
-      })
+      local filters = {
+        { event = "notify", find = "No information" },
+        { event = "notify", find = "[Copilot.lua] Node.js version 22 or newer required" },
+      }
+
+      for _, filter in ipairs(filters) do
+        table.insert(opts.routes, {
+          filter = filter,
+          opts = { skip = true },
+        })
+      end
+
       opts.presets.lsp_doc_border = true
     end,
   },
