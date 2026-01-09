@@ -36,7 +36,7 @@ return {
     opts = function(_, opts)
       local filters = {
         { event = "notify", find = "No information" },
-        { event = "notify", find = "[Copilot.lua] Node.js version 22 or newer required" },
+        { event = "notify", find = "%[Copilot%.lua%] Node%.js version 22 or newer required.*" },
       }
 
       for _, filter in ipairs(filters) do
@@ -48,13 +48,6 @@ return {
 
       opts.presets.lsp_doc_border = true
     end,
-  },
-
-  {
-    "rcarriga/nvim-notify",
-    opts = {
-      timeout = 5000,
-    },
   },
 
   {
