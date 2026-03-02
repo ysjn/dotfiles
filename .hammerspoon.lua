@@ -47,4 +47,4 @@ local function tileCurrentSpaceAllWindows()
 end
 
 -- ctrl + alt + ↓
-hs.hotkey.bind({ "ctrl", "alt" }, "down", tileCurrentSpaceAllWindows)
+hs.hotkey.bind({ "ctrl", "shift", "alt" }, "down", tileCurrentSpaceAllWindows)
