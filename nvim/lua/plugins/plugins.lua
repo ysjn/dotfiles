@@ -34,22 +34,20 @@ return {
   {
     "folke/noice.nvim",
     opts = function(_, opts)
-      table.insert(opts.routes, {
-        filter = {
-          event = "notify",
-          find = "No information",
-        },
-        opts = { skip = true },
-      })
+      local filters = {
+        { event = "notify", find = "No information" },
+        { event = "notify", find = "%[Copilot%.lua%] Node%.js version 22 or newer required.*" },
+      }
+
+      for _, filter in ipairs(filters) do
+        table.insert(opts.routes, {
+          filter = filter,
+          opts = { skip = true },
+        })
+      end
+
       opts.presets.lsp_doc_border = true
     end,
-  },
-
-  {
-    "rcarriga/nvim-notify",
-    opts = {
-      timeout = 5000,
-    },
   },
 
   {
@@ -267,13 +265,17 @@ return {
       cli = {
         win = {
           keys = {
-            navigate_left = {
+            buffers = false,
+            files = false,
+            start_insert = { "q", mode = "n", "startinsert" },
+            stop_insert = { "<c-b>", mode = "t", "stopinsert" },
+            nav_left = {
               "<A-h>",
               function()
                 vim.cmd("TmuxNavigateLeft")
               end,
             },
-            navigate_right = {
+            nav_right = {
               "<A-l>",
               function()
                 vim.cmd("TmuxNavigateRight")
