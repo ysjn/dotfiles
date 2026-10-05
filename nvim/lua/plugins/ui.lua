@@ -11,7 +11,7 @@ return {
     opts = {
       width = 200,
       autocmds = {
-        enableOnVimEnter = true,
+        enableOnVimEnter = "safe",
       },
       buffers = {
         right = {
