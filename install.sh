@@ -16,9 +16,6 @@ fi
 # install nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 
-# install alacritty
-brew install --cask alacritty
-
 # install neovim
 brew install neovim ripgrep fd lazygit tree-sitter-cli
 
