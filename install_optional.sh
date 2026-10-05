@@ -13,6 +13,9 @@ else
   brew update
 fi
 
+# better touch tool
+brew install --cask bettertouchtool
+
 # raycast
 brew install --cask raycast
 
