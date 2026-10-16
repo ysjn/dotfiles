@@ -25,8 +25,16 @@ return {
       require("ts_context_commentstring").setup({
         enable_autocmd = false,
       })
+      local pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook()
       require("Comment").setup({
-        pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
+        pre_hook = function(ctx)
+          -- Neovim 0.12 returns nil for missing parsers, which Comment.nvim cannot handle.
+          local ok, parser = pcall(vim.treesitter.get_parser, 0)
+          if ok and parser == nil then
+            return require("Comment.ft").get(vim.bo.filetype, ctx.ctype) or vim.bo.commentstring
+          end
+          return pre_hook(ctx)
+        end,
       })
     end,
   },
