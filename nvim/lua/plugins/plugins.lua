@@ -101,9 +101,9 @@ return {
         "yaml",
       },
     },
-    config = function()
+    init = function()
       vim.filetype.add({ extension = { mdx = "markdown.mdx" } })
-      vim.treesitter.language.register("markdown", "mdx")
+      vim.treesitter.language.register("markdown", { "mdx", "markdown.mdx" })
     end,
   },
 
