@@ -25,8 +25,16 @@ return {
       require("ts_context_commentstring").setup({
         enable_autocmd = false,
       })
+      local pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook()
       require("Comment").setup({
-        pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
+        pre_hook = function(ctx)
+          -- Neovim 0.12 returns nil for missing parsers, which Comment.nvim cannot handle.
+          local ok, parser = pcall(vim.treesitter.get_parser, 0)
+          if ok and parser == nil then
+            return require("Comment.ft").get(vim.bo.filetype, ctx.ctype) or vim.bo.commentstring
+          end
+          return pre_hook(ctx)
+        end,
       })
     end,
   },
@@ -34,22 +42,20 @@ return {
   {
     "folke/noice.nvim",
     opts = function(_, opts)
-      table.insert(opts.routes, {
-        filter = {
-          event = "notify",
-          find = "No information",
-        },
-        opts = { skip = true },
-      })
+      local filters = {
+        { event = "notify", find = "No information" },
+        { event = "notify", find = "%[Copilot%.lua%] Node%.js version 22 or newer required.*" },
+      }
+
+      for _, filter in ipairs(filters) do
+        table.insert(opts.routes, {
+          filter = filter,
+          opts = { skip = true },
+        })
+      end
+
       opts.presets.lsp_doc_border = true
     end,
-  },
-
-  {
-    "rcarriga/nvim-notify",
-    opts = {
-      timeout = 5000,
-    },
   },
 
   {
@@ -95,9 +101,9 @@ return {
         "yaml",
       },
     },
-    config = function()
+    init = function()
       vim.filetype.add({ extension = { mdx = "markdown.mdx" } })
-      vim.treesitter.language.register("markdown", "mdx")
+      vim.treesitter.language.register("markdown", { "mdx", "markdown.mdx" })
     end,
   },
 
@@ -267,13 +273,17 @@ return {
       cli = {
         win = {
           keys = {
-            navigate_left = {
+            buffers = false,
+            files = false,
+            start_insert = { "q", mode = "n", "startinsert" },
+            stop_insert = { "<c-b>", mode = "t", "stopinsert" },
+            nav_left = {
               "<A-h>",
               function()
                 vim.cmd("TmuxNavigateLeft")
               end,
             },
-            navigate_right = {
+            nav_right = {
               "<A-l>",
               function()
                 vim.cmd("TmuxNavigateRight")

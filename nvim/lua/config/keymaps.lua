@@ -155,3 +155,26 @@ vim.keymap.set("n", "<leader>E", function()
 end, opts("Open parent directory"))
 
 vim.keymap.set("n", "<leader>z", ":SimpleZoomToggle<CR>")
+
+-- copy diagnostic message
+vim.keymap.set("n", "<leader>dc", function()
+  local line = vim.fn.line(".") - 1
+  local diags = vim.diagnostic.get(0, { lnum = line })
+  if #diags == 0 then
+    print("No diagnostics on this line")
+    return
+  end
+
+  local seen = {}
+  local msgs = {}
+
+  for _, d in ipairs(diags) do
+    if not seen[d.message] then
+      seen[d.message] = true
+      table.insert(msgs, d.message)
+    end
+  end
+
+  vim.fn.setreg("+", table.concat(msgs, "\n"))
+  print("Copied " .. #msgs .. " unique diagnostic(s)")
+end, { desc = "Copy unique diagnostics on line" })

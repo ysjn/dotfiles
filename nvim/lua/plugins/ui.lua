@@ -11,7 +11,7 @@ return {
     opts = {
       width = 200,
       autocmds = {
-        enableOnVimEnter = true,
+        enableOnVimEnter = "safe",
       },
       buffers = {
         right = {
@@ -231,7 +231,7 @@ return {
   },
 
   {
-    "ggandor/leap.nvim",
+    url = "https://codeberg.org/andyg/leap.nvim",
     config = function()
       local colors = require("ayu.colors")
       colors.generate(true)
