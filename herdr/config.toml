@@ -6,6 +6,7 @@ prefix = "ctrl+k"
 new_workspace = "prefix+c"
 copy_mode = ["prefix+[", "prefix+V"]
 split_horizontal = "prefix+h"
+focus_agent = "prefix+1..9"
 
 # navigation
 previous_workspace = "prefix+shift+p"
