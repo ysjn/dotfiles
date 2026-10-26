@@ -13,8 +13,8 @@ previous_workspace = "prefix+shift+p"
 next_workspace = "prefix+shift+n"
 previous_agent = "prefix+p"
 next_agent = "prefix+n"
-navigate_workspace_up = ["up", "ctrl+p"]
-navigate_workspace_down = ["down", "ctrl+n"]
+navigate_workspace_up = ["up", "k", "ctrl+p"]
+navigate_workspace_down = ["down", "j", "ctrl+n"]
 
 # disable tabs
 new_tab = ""
