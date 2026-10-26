@@ -37,6 +37,14 @@ swap_pane_right = "prefix+W"
 rename_pane = ""
 rename_workspace = ""
 
+goto = ""
+
+[[keys.command]]
+key = "prefix+g"
+type = "plugin_action"
+command = "herdr-bar.open"
+description = "command bar"
+
 [[keys.command]]
 key = "prefix+ctrl+p"
 type = "plugin_action"
