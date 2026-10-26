@@ -76,3 +76,11 @@ command = "herdr-splits.resize-up"
 key = "alt+L"
 type = "plugin_action"
 command = "herdr-splits.resize-right"
+
+[ui]
+hide_tab_bar_when_single_tab = true
+toast.delivery = 'system'
+status_indicators = "symbols"
+
+[theme]
+name = "kanagawa"
