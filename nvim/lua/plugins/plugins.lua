@@ -1,6 +1,27 @@
 return {
-  { "christoomey/vim-tmux-navigator", event = "VeryLazy" },
-  { "RyanMillerC/better-vim-tmux-resizer", event = "VeryLazy" },
+  {
+    "christoomey/vim-tmux-navigator",
+    cond = vim.env.TMUX and vim.env.TMUX ~= "" and vim.env.HERDR_ENV ~= "1",
+    event = "VeryLazy",
+  },
+  {
+    "RyanMillerC/better-vim-tmux-resizer",
+    cond = vim.env.TMUX and vim.env.TMUX ~= "" and vim.env.HERDR_ENV ~= "1",
+    event = "VeryLazy",
+  },
+  {
+    "lmilojevicc/herdr-splits.nvim",
+    cond = vim.env.HERDR_ENV == "1",
+    event = "VeryLazy",
+    config = function()
+      require("herdr-splits").setup({
+        nav_keys = { left = "<M-h>", down = "<M-j>", up = "<M-k>", right = "<M-l>" },
+        resize_keys = { left = "<M-H>", down = "<M-J>", up = "<M-K>", right = "<M-L>" },
+        nav_at_edge = "stop",
+      })
+    end,
+  },
+
   { "mg979/vim-visual-multi", event = "VeryLazy" },
   { "OlegGulevskyy/better-ts-errors.nvim", event = "VeryLazy" },
   { "ray-x/lsp_signature.nvim", event = "VeryLazy" },
@@ -280,13 +301,25 @@ return {
             nav_left = {
               "<A-h>",
               function()
-                vim.cmd("TmuxNavigateLeft")
+                if vim.env.HERDR_ENV == "1" then
+                  require("herdr-splits").move_cursor_left()
+                elseif vim.env.TMUX and vim.env.TMUX ~= "" then
+                  vim.cmd("TmuxNavigateLeft")
+                else
+                  vim.cmd("wincmd h")
+                end
               end,
             },
             nav_right = {
               "<A-l>",
               function()
-                vim.cmd("TmuxNavigateRight")
+                if vim.env.HERDR_ENV == "1" then
+                  require("herdr-splits").move_cursor_right()
+                elseif vim.env.TMUX and vim.env.TMUX ~= "" then
+                  vim.cmd("TmuxNavigateRight")
+                else
+                  vim.cmd("wincmd l")
+                end
               end,
             },
             new_line_or_submit = {

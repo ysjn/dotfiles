@@ -73,17 +73,47 @@ vim.keymap.set("i", "<A-C-k>", "<esc><cmd>m .-2<cr>==gi", opts("Move up"))
 vim.keymap.set("v", "<A-C-j>", ":m '>+1<cr>gv=gv", opts("Move down"))
 vim.keymap.set("v", "<A-C-k>", ":m '<-2<cr>gv=gv", opts("Move up"))
 
--- Move between splits in NeoVim windows and Tmux panes
-vim.keymap.set("n", "<A-h>", "<cmd>TmuxNavigateLeft<CR>", opts())
-vim.keymap.set("n", "<A-j>", "<cmd>TmuxNavigateDown<CR>", opts())
-vim.keymap.set("n", "<A-k>", "<cmd>TmuxNavigateUp<CR>", opts())
-vim.keymap.set("n", "<A-l>", "<cmd>TmuxNavigateRight<CR>", opts())
+if vim.env.TMUX and vim.env.TMUX ~= "" and vim.env.HERDR_ENV ~= "1" then
+  -- Move between splits in NeoVim windows and Tmux panes
+  vim.keymap.set("n", "<A-h>", "<cmd>TmuxNavigateLeft<CR>", opts())
+  vim.keymap.set("n", "<A-j>", "<cmd>TmuxNavigateDown<CR>", opts())
+  vim.keymap.set("n", "<A-k>", "<cmd>TmuxNavigateUp<CR>", opts())
+  vim.keymap.set("n", "<A-l>", "<cmd>TmuxNavigateRight<CR>", opts())
 
--- Resize splits for NeoVim windows Panes and Tmux panes
-vim.keymap.set("n", "<A-H>", "<cmd>TmuxResizeLeft<CR>", opts())
-vim.keymap.set("n", "<A-J>", "<cmd>TmuxResizeDown<CR>", opts())
-vim.keymap.set("n", "<A-K>", "<cmd>TmuxResizeUp<CR>", opts())
-vim.keymap.set("n", "<A-L>", "<cmd>TmuxResizeRight<CR>", opts())
+  -- Resize splits for NeoVim windows Panes and Tmux panes
+  vim.keymap.set("n", "<A-H>", "<cmd>TmuxResizeLeft<CR>", opts())
+  vim.keymap.set("n", "<A-J>", "<cmd>TmuxResizeDown<CR>", opts())
+  vim.keymap.set("n", "<A-K>", "<cmd>TmuxResizeUp<CR>", opts())
+  vim.keymap.set("n", "<A-L>", "<cmd>TmuxResizeRight<CR>", opts())
+end
+
+-- Move and resize Neovim splits and Herdr panes
+if vim.env.HERDR_ENV == "1" then
+  vim.keymap.set("n", "<M-h>", function()
+    require("herdr-splits").move_cursor_left()
+  end, opts("Navigate left"))
+  vim.keymap.set("n", "<M-j>", function()
+    require("herdr-splits").move_cursor_down()
+  end, opts("Navigate down"))
+  vim.keymap.set("n", "<M-k>", function()
+    require("herdr-splits").move_cursor_up()
+  end, opts("Navigate up"))
+  vim.keymap.set("n", "<M-l>", function()
+    require("herdr-splits").move_cursor_right()
+  end, opts("Navigate right"))
+  vim.keymap.set("n", "<M-H>", function()
+    require("herdr-splits").resize_left()
+  end, opts("Resize left"))
+  vim.keymap.set("n", "<M-J>", function()
+    require("herdr-splits").resize_down()
+  end, opts("Resize down"))
+  vim.keymap.set("n", "<M-K>", function()
+    require("herdr-splits").resize_up()
+  end, opts("Resize up"))
+  vim.keymap.set("n", "<M-L>", function()
+    require("herdr-splits").resize_right()
+  end, opts("Resize right"))
+end
 
 -- Split windows
 vim.keymap.set("n", "<leader>v", "<cmd>vsplit<CR><c-w>h<cmd>:bp<cr><c-w>l", opts("Split window right"))

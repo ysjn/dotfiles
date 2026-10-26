@@ -42,6 +42,13 @@ git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 mkdir -p $HOME/.config/tmux
 ln -snfv $HOME/dev/dotfiles/tmux.conf $HOME/.config/tmux/tmux.conf
 
+# install herdr
+brew install herdr
+
+# create symbolic link for herdr config
+mkdir -p "$HOME/.config/herdr"
+ln -snfv "$HOME/dev/dotfiles/herdr/config.toml" "$HOME/.config/herdr/config.toml"
+
 # install fzf (for tmux-fzf-url)
 brew install fzf
 
