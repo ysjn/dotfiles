@@ -134,12 +134,26 @@ vim.keymap.set("n", "<leader>fi", function()
   vim.fn.jobstart({ "open", get_current_oil_dir() })
 end, opts("Open Finder"))
 
--- Copy oil.nvim's cwd to clipboard
-vim.keymap.set("n", "<leader>y", function()
-  local cwd = get_current_oil_dir()
-  vim.fn.setreg("+", cwd)
-  vim.notify("Copied: " .. cwd, vim.log.levels.INFO)
-end, opts("Copy current directory to clipboard"))
+-- Copy Oil's directory or the current file path and lines to clipboard
+vim.keymap.set({ "n", "x" }, "<leader>y", function()
+  local text
+  if vim.bo.filetype == "oil" then
+    text = get_current_oil_dir()
+  else
+    local path = vim.fn.expand("%:~"):gsub("^~/", "")
+    local line1, line2 = vim.fn.line("."), vim.fn.line(".")
+    if vim.fn.mode():match("^[vV\022]") then
+      line1, line2 = math.min(line1, vim.fn.line("v")), math.max(line2, vim.fn.line("v"))
+    end
+    local lines = "L" .. line1
+    if line1 ~= line2 then
+      lines = lines .. "-L" .. line2
+    end
+    text = "@" .. path .. " :" .. lines
+  end
+  vim.fn.setreg("+", text)
+  vim.notify("Copied: " .. text, vim.log.levels.INFO)
+end, opts("Copy directory or file path and lines to clipboard"))
 
 -- Oil
 vim.keymap.set("n", "<leader>e", "<CMD>Oil --float<CR>", opts("Open parent directory (float)"))
