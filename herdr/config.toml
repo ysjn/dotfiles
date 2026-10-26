@@ -38,6 +38,12 @@ rename_pane = ""
 rename_workspace = ""
 
 [[keys.command]]
+key = "prefix+ctrl+p"
+type = "plugin_action"
+command = "ray.plugin-manager.open"
+description = "open plugin manager"
+
+[[keys.command]]
 key = "alt+h"
 type = "plugin_action"
 command = "herdr-splits.nav-left"
