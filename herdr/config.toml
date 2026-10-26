@@ -53,6 +53,12 @@ command = "attention.jump.next"
 description = "jump to next agent needing attention"
 
 [[keys.command]]
+key = "prefix+E"
+type = "plugin_action"
+command = "shibayu36.equalize-panes.equalize"
+description = "equalize panes"
+
+[[keys.command]]
 key = "prefix+ctrl+p"
 type = "plugin_action"
 command = "ray.plugin-manager.open"
