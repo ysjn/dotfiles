@@ -112,10 +112,15 @@ toast.delivery = 'system'
 status_indicators = "symbols"
 
 [ui.sidebar.agents]
-rows = [["state_icon", { token = "$num", fg = "#D3C6AA", dim = false }, "machine", "workspace", "tab"], ["agent"]]
-
-[ui.sidebar.agents.rows_by_agent]
-claude = [["state_icon", { token = "$num", fg = "#D3C6AA", dim = false }, "machine", "workspace", "tab"], ["terminal_title_stripped"], ["agent"]]
+rows = [
+  [
+    { token = "$num", fg = "#D3C6AA", dim = false },
+    { token = "$spin", fg = "#e0af68", dim = false, bold = true },
+    "state_icon",
+    "workspace",
+  ], 
+  ["terminal_title_stripped"]
+]
 
 [theme]
 name = "kanagawa"
