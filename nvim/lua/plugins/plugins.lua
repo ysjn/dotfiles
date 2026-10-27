@@ -16,7 +16,7 @@ return {
     config = function()
       require("herdr-splits").setup({
         nav_keys = { left = "<M-h>", down = "<M-j>", up = "<M-k>", right = "<M-l>" },
-        resize_keys = { left = "<M-H>", down = "<M-J>", up = "<M-K>", right = "<M-L>" },
+        resize_keys = { left = "<M-S-h>", down = "<M-S-j>", up = "<M-S-k>", right = "<M-S-l>" },
         nav_at_edge = "stop",
       })
     end,
