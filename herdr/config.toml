@@ -4,7 +4,7 @@ onboarding = false
 # general
 prefix = "ctrl+k"
 new_workspace = "prefix+c"
-copy_mode = ["prefix+[", "prefix+V"]
+copy_mode = ["prefix+[", "ctrl+u"]
 split_horizontal = "prefix+h"
 focus_agent = "prefix+1..9"
 
@@ -35,12 +35,6 @@ rename_pane = ""
 rename_workspace = ""
 
 goto = ""
-
-[[keys.command]]
-key = "prefix+g"
-type = "plugin_action"
-command = "herdr-bar.open"
-description = "command bar"
 
 [[keys.command]]
 key = "prefix+k"
@@ -104,6 +98,12 @@ command = "herdr-splits.resize-right"
 hide_tab_bar_when_single_tab = true
 toast.delivery = 'system'
 status_indicators = "symbols"
+
+[ui.sidebar.agents]
+rows = [["state_icon", { token = "$num", fg = "#D3C6AA", dim = false }, "machine", "workspace", "tab"], ["agent"]]
+
+[ui.sidebar.agents.rows_by_agent]
+claude = [["state_icon", { token = "$num", fg = "#D3C6AA", dim = false }, "machine", "workspace", "tab"], ["terminal_title_stripped"], ["agent"]]
 
 [theme]
 name = "kanagawa"
