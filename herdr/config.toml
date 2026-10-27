@@ -55,6 +55,12 @@ command = "hosikiti.open-links.pick"
 description = "open links from pane"
 
 [[keys.command]]
+key = "command+shift+p"
+type = "plugin_action"
+command = "vjeantet.palette.open"
+description = "Command palette"
+
+[[keys.command]]
 key = "prefix+ctrl+p"
 type = "plugin_action"
 command = "ray.plugin-manager.open"
