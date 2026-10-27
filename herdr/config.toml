@@ -49,6 +49,12 @@ command = "shibayu36.equalize-panes.equalize"
 description = "equalize panes"
 
 [[keys.command]]
+key = "prefix+u"
+type = "plugin_action"
+command = "hosikiti.open-links.pick"
+description = "open links from pane"
+
+[[keys.command]]
 key = "prefix+ctrl+p"
 type = "plugin_action"
 command = "ray.plugin-manager.open"
