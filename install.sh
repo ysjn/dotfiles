@@ -52,6 +52,9 @@ ln -snfv "$HOME/dev/dotfiles/herdr/config.toml" "$HOME/.config/herdr/config.toml
 # install fzf (for tmux-fzf-url)
 brew install fzf
 
+# install zoxide (smarter cd)
+brew install zoxide
+
 # install github completion
 mkdir -p $HOME/.zsh
 curl -o $HOME/.zsh/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
