@@ -51,8 +51,8 @@ description = "equalize panes"
 [[keys.command]]
 key = "prefix+u"
 type = "plugin_action"
-command = "hosikiti.open-links.pick"
-description = "open links from pane"
+command = "nathan-poncet.herdr-fingers.start"
+description = "open URLs and paths with hints"
 
 [[keys.command]]
 key = "command+shift+p"
