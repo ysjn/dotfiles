@@ -49,7 +49,7 @@ command = "shibayu36.equalize-panes.equalize"
 description = "equalize panes"
 
 [[keys.command]]
-key = "prefix+u"
+key = "prefix+f"
 type = "plugin_action"
 command = "nathan-poncet.herdr-fingers.start"
 description = "open URLs and paths with hints"
