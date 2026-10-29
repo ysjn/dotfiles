@@ -65,7 +65,6 @@ return {
     opts = function(_, opts)
       local filters = {
         { event = "notify", find = "No information" },
-        { event = "notify", find = "%[Copilot%.lua%] Node%.js version 22 or newer required.*" },
       }
 
       for _, filter in ipairs(filters) do
@@ -291,6 +290,7 @@ return {
   {
     "folke/sidekick.nvim",
     opts = {
+      nes = { enabled = false },
       cli = {
         win = {
           keys = {
