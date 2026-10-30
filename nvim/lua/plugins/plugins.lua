@@ -1,6 +1,27 @@
 return {
-  { "christoomey/vim-tmux-navigator", event = "VeryLazy" },
-  { "RyanMillerC/better-vim-tmux-resizer", event = "VeryLazy" },
+  {
+    "christoomey/vim-tmux-navigator",
+    cond = vim.env.TMUX and vim.env.TMUX ~= "" and vim.env.HERDR_ENV ~= "1",
+    event = "VeryLazy",
+  },
+  {
+    "RyanMillerC/better-vim-tmux-resizer",
+    cond = vim.env.TMUX and vim.env.TMUX ~= "" and vim.env.HERDR_ENV ~= "1",
+    event = "VeryLazy",
+  },
+  {
+    "lmilojevicc/herdr-splits.nvim",
+    cond = vim.env.HERDR_ENV == "1",
+    event = "VeryLazy",
+    config = function()
+      require("herdr-splits").setup({
+        nav_keys = { left = "<M-h>", down = "<M-j>", up = "<M-k>", right = "<M-l>" },
+        resize_keys = { left = "<M-S-h>", down = "<M-S-j>", up = "<M-S-k>", right = "<M-S-l>" },
+        nav_at_edge = "stop",
+      })
+    end,
+  },
+
   { "mg979/vim-visual-multi", event = "VeryLazy" },
   { "OlegGulevskyy/better-ts-errors.nvim", event = "VeryLazy" },
   { "ray-x/lsp_signature.nvim", event = "VeryLazy" },
@@ -25,8 +46,16 @@ return {
       require("ts_context_commentstring").setup({
         enable_autocmd = false,
       })
+      local pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook()
       require("Comment").setup({
-        pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
+        pre_hook = function(ctx)
+          -- Neovim 0.12 returns nil for missing parsers, which Comment.nvim cannot handle.
+          local ok, parser = pcall(vim.treesitter.get_parser, 0)
+          if ok and parser == nil then
+            return require("Comment.ft").get(vim.bo.filetype, ctx.ctype) or vim.bo.commentstring
+          end
+          return pre_hook(ctx)
+        end,
       })
     end,
   },
@@ -34,22 +63,19 @@ return {
   {
     "folke/noice.nvim",
     opts = function(_, opts)
-      table.insert(opts.routes, {
-        filter = {
-          event = "notify",
-          find = "No information",
-        },
-        opts = { skip = true },
-      })
+      local filters = {
+        { event = "notify", find = "No information" },
+      }
+
+      for _, filter in ipairs(filters) do
+        table.insert(opts.routes, {
+          filter = filter,
+          opts = { skip = true },
+        })
+      end
+
       opts.presets.lsp_doc_border = true
     end,
-  },
-
-  {
-    "rcarriga/nvim-notify",
-    opts = {
-      timeout = 5000,
-    },
   },
 
   {
@@ -95,9 +121,9 @@ return {
         "yaml",
       },
     },
-    config = function()
+    init = function()
       vim.filetype.add({ extension = { mdx = "markdown.mdx" } })
-      vim.treesitter.language.register("markdown", "mdx")
+      vim.treesitter.language.register("markdown", { "mdx", "markdown.mdx" })
     end,
   },
 
@@ -264,19 +290,36 @@ return {
   {
     "folke/sidekick.nvim",
     opts = {
+      nes = { enabled = false },
       cli = {
         win = {
           keys = {
-            navigate_left = {
+            buffers = false,
+            files = false,
+            start_insert = { "q", mode = "n", "startinsert" },
+            stop_insert = { "<c-b>", mode = "t", "stopinsert" },
+            nav_left = {
               "<A-h>",
               function()
-                vim.cmd("TmuxNavigateLeft")
+                if vim.env.HERDR_ENV == "1" then
+                  require("herdr-splits").move_cursor_left()
+                elseif vim.env.TMUX and vim.env.TMUX ~= "" then
+                  vim.cmd("TmuxNavigateLeft")
+                else
+                  vim.cmd("wincmd h")
+                end
               end,
             },
-            navigate_right = {
+            nav_right = {
               "<A-l>",
               function()
-                vim.cmd("TmuxNavigateRight")
+                if vim.env.HERDR_ENV == "1" then
+                  require("herdr-splits").move_cursor_right()
+                elseif vim.env.TMUX and vim.env.TMUX ~= "" then
+                  vim.cmd("TmuxNavigateRight")
+                else
+                  vim.cmd("wincmd l")
+                end
               end,
             },
             new_line_or_submit = {
@@ -330,5 +373,12 @@ return {
         desc = "Sidekick Select CLI",
       },
     },
+  },
+  {
+    "UN-9BOT/sidekick_herdr",
+    dependencies = { "folke/sidekick.nvim" },
+    config = function()
+      require("sidekick_herdr").setup({})
+    end,
   },
 }

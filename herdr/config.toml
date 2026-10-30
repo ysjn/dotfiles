@@ -1,0 +1,129 @@
+onboarding = false
+
+[keys]
+# general
+prefix = "ctrl+k"
+new_workspace = "prefix+c"
+copy_mode = ["prefix+[", "ctrl+u"]
+split_horizontal = "prefix+h"
+switch_workspace = "prefix+1..9"
+
+# navigation
+previous_workspace = "prefix+shift+p"
+next_workspace = "prefix+shift+n"
+previous_agent = "prefix+p"
+next_agent = "prefix+n"
+navigate_workspace_up = ["up", "k", "ctrl+p"]
+navigate_workspace_down = ["down", "j", "ctrl+n"]
+
+# disable tabs
+new_tab = ""
+previous_tab = ""
+next_tab = ""
+rename_tab = ""
+move_tab_previous = ""
+move_tab_next = ""
+switch_tab = ""
+close_tab = ""
+
+# panes and workspaces
+focus_pane_left = ""
+focus_pane_down = ""
+focus_pane_up = ""
+focus_pane_right = ""
+rename_pane = ""
+rename_workspace = ""
+
+goto = ""
+
+[[keys.command]]
+key = "prefix+k"
+type = "plugin_action"
+command = "attention.jump.next"
+description = "jump to next agent needing attention"
+
+[[keys.command]]
+key = "prefix+E"
+type = "plugin_action"
+command = "shibayu36.equalize-panes.equalize"
+description = "equalize panes"
+
+[[keys.command]]
+key = "prefix+f"
+type = "plugin_action"
+command = "nathan-poncet.herdr-fingers.start"
+description = "open URLs and paths with hints"
+
+[[keys.command]]
+key = "command+shift+p"
+type = "plugin_action"
+command = "vjeantet.palette.open"
+description = "Command palette"
+
+[[keys.command]]
+key = "prefix+ctrl+p"
+type = "plugin_action"
+command = "ray.plugin-manager.open"
+description = "open plugin manager"
+
+[[keys.command]]
+key = "prefix+comma"
+type = "plugin_action"
+command = "hhdebb.herdr-radar.settings"
+description = "Radar settings"
+
+[[keys.command]]
+key = "alt+h"
+type = "plugin_action"
+command = "herdr-splits.nav-left"
+
+[[keys.command]]
+key = "alt+j"
+type = "plugin_action"
+command = "herdr-splits.nav-down"
+
+[[keys.command]]
+key = "alt+k"
+type = "plugin_action"
+command = "herdr-splits.nav-up"
+
+[[keys.command]]
+key = "alt+l"
+type = "plugin_action"
+command = "herdr-splits.nav-right"
+
+[[keys.command]]
+type = "plugin_action"
+key = "alt+H"
+command = "herdr-splits.resize-left"
+
+[[keys.command]]
+key = "alt+J"
+type = "plugin_action"
+command = "herdr-splits.resize-down"
+
+[[keys.command]]
+key = "alt+K"
+type = "plugin_action"
+command = "herdr-splits.resize-up"
+
+[[keys.command]]
+key = "alt+L"
+type = "plugin_action"
+command = "herdr-splits.resize-right"
+
+[ui]
+agent_panel_sort = "spaces"
+hide_tab_bar_when_single_tab = true
+toast.delivery = 'system'
+status_indicators = "symbols"
+
+[theme]
+name = "kanagawa"
+
+[ui.sidebar.spaces]
+rows = [[{ token = "$space_label", fg = "#a8abbd", dim = false }, "branch", "git_status"]]
+
+[ui.sidebar.agents]
+rows = [[{ token = "$group_parent", fg = "#8b8e9c", bold = true, dim = false }], [{ token = "$group", fg = "#a8abbd", bold = true, dim = false }, { token = "$group_stale", fg = "#8b8e9c", bold = true, dim = false }], [{ token = "$split_mark", fg = "#8b8e9c", bold = false, dim = false }, { token = "$logo", fg = "#e9e9f0", bold = false, dim = false, rules = [{ contains = "", fg = "#d97757" }, { contains = "", fg = "#4285f4" }, { contains = "", fg = "#1783ff" }, { contains = "", fg = "#4d6bfe" }, { contains = "", fg = "#615ced" }, { contains = "", fg = "#9046ff" }, { contains = "", fg = "#586876" }, { contains = "", fg = "#9a9808" }, { contains = "", fg = "#ff521d" }, { contains = "", fg = "#0082fb" }, { contains = "", fg = "#ff388b" }] }, { token = "$logo_working", fg = "#e9e9f0", bold = false, dim = false, rules = [{ contains = "", fg = "#d97757" }, { contains = "", fg = "#4285f4" }, { contains = "", fg = "#1783ff" }, { contains = "", fg = "#4d6bfe" }, { contains = "", fg = "#615ced" }, { contains = "", fg = "#9046ff" }, { contains = "", fg = "#586876" }, { contains = "", fg = "#9a9808" }, { contains = "", fg = "#ff521d" }, { contains = "", fg = "#0082fb" }, { contains = "", fg = "#ff388b" }] }, { token = "$logo_stale", fg = "#8b8e9c", bold = false, dim = false }, { token = "$title_working", fg = "#c78a1f", bold = true, dim = false }, { token = "$title_done", fg = "#4c9a5a", bold = false, dim = false }, { token = "$title_blocked", fg = "#c04a4a", bold = false, dim = false }, { token = "$title_idle_fresh", fg = "#95bba2", bold = false, dim = false }, { token = "$title_idle", fg = "#a99e92", bold = false, dim = false }, { token = "$title_idle_stale", fg = "#8b8e9c", bold = false, dim = false }, { token = "$title_unknown", fg = "#907aa9", bold = false, dim = false }], ["$gap"]]
+

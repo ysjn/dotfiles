@@ -7,26 +7,6 @@ return {
   },
 
   {
-    "shortcuts/no-neck-pain.nvim",
-    opts = {
-      width = 200,
-      autocmds = {
-        enableOnVimEnter = true,
-      },
-      buffers = {
-        right = {
-          enabled = false,
-        },
-      },
-      integrations = {
-        dashboard = {
-          enabled = true,
-        },
-      },
-    },
-  },
-
-  {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = "VeryLazy",
     priority = 1000,
@@ -231,7 +211,7 @@ return {
   },
 
   {
-    "ggandor/leap.nvim",
+    url = "https://codeberg.org/andyg/leap.nvim",
     config = function()
       local colors = require("ayu.colors")
       colors.generate(true)

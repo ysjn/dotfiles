@@ -16,9 +16,6 @@ fi
 # install nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 
-# install alacritty
-brew install --cask alacritty
-
 # install neovim
 brew install neovim ripgrep fd lazygit tree-sitter-cli
 
@@ -45,8 +42,21 @@ git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 mkdir -p $HOME/.config/tmux
 ln -snfv $HOME/dev/dotfiles/tmux.conf $HOME/.config/tmux/tmux.conf
 
+# install herdr
+brew install herdr
+
+# create symbolic link for herdr config
+mkdir -p "$HOME/.config/herdr"
+ln -snfv "$HOME/dev/dotfiles/herdr/config.toml" "$HOME/.config/herdr/config.toml"
+
 # install fzf (for tmux-fzf-url)
 brew install fzf
+
+# install zoxide (smarter cd)
+brew install zoxide
+
+# install Obsidian and seed a portable Markdown vault
+bash "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/obsidian/install.sh" || exit 1
 
 # install github completion
 mkdir -p $HOME/.zsh
@@ -65,6 +75,8 @@ ln -snfv $HOME/dev/dotfiles/.zshrc $HOME
 rm -rf $HOME/.config/nvim
 ln -snfv $HOME/dev/dotfiles/nvim $HOME/.config
 ln -snfv $HOME/dev/dotfiles/alacritty.toml $HOME/.config/alacritty.toml
+
+mkdir -p $HOME/Library/Application\ Support/lazygit
 ln -snfv $HOME/dev/dotfiles/lazygit/config.yml $HOME/Library/Application\ Support/lazygit/config.yml
 
 # load config
