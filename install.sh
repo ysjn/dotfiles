@@ -55,6 +55,9 @@ brew install fzf
 # install zoxide (smarter cd)
 brew install zoxide
 
+# install Obsidian and seed a portable Markdown vault
+bash "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/obsidian/install.sh" || exit 1
+
 # install github completion
 mkdir -p $HOME/.zsh
 curl -o $HOME/.zsh/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
