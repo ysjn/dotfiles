@@ -186,6 +186,19 @@ vim.keymap.set({ "n", "x" }, "<leader>y", function()
 end, opts("Copy directory or file path and lines to clipboard"))
 
 -- Oil
+vim.keymap.set("n", "<leader>fo", function()
+  vim.ui.input({ prompt = "Open file: ", completion = "file" }, function(path)
+    if path and path ~= "" then
+      path = vim.fs.normalize(path)
+      if vim.fn.isdirectory(path) == 1 then
+        require("oil").open_float(path)
+      else
+        vim.api.nvim_cmd({ cmd = "edit", args = { path }, magic = { file = false } }, {})
+      end
+    end
+  end)
+end, opts("Open file by path"))
+
 vim.keymap.set("n", "<leader>e", "<CMD>Oil --float<CR>", opts("Open parent directory (float)"))
 vim.keymap.set("n", "<leader>E", function()
   local oil = require("oil")

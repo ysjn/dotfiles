@@ -53,6 +53,13 @@ blink_interval = 400
 [mouse]
 hide_when_typing = true
 
+[[hints.enabled]]
+regex = '(https?://[^\s <>"\[\]{}]+|(?:/|~/|\.\.?/)[^\s <>:"|?*\[\]{}()]*|[[:alnum:]_.@+-]+(?:/[^\s <>:"|?*\[\]{}()/]+)+/?|[[:alnum:]_@+-][[:alnum:]_.@+-]*\.[[:alpha:]][[:alnum:]_-]*|[[:alnum:]_.@+-]+/)'
+hyperlinks = false
+post_processing = true
+command = { program = "/bin/zsh", args = ["-c", 'exec /bin/zsh "$HOME/dev/dotfiles/scripts/open-hint.zsh" "$1"', "--"] }
+binding = { key = "O", mods = "Control|Shift" }
+
 [keyboard]
 bindings = [
   { key = "Escape", action = 'ToggleViMode', mode = "Vi" },
