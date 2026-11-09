@@ -4,3 +4,6 @@
 .obsidian/cache/
 .trash/
 *.backup-*
+
+# Local Dreaming state and run ownership
+.dreaming/
