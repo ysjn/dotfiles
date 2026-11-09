@@ -11,8 +11,8 @@ switch_workspace = "prefix+1..9"
 # navigation
 previous_workspace = "prefix+shift+p"
 next_workspace = "prefix+shift+n"
-previous_agent = "prefix+p"
-next_agent = "prefix+n"
+previous_agent = "alt+p"
+next_agent = "alt+n"
 navigate_workspace_up = ["up", "k", "ctrl+p"]
 navigate_workspace_down = ["down", "j", "ctrl+n"]
 
