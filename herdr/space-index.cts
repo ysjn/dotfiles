@@ -25,3 +25,28 @@ function labelWithIndex(label, workspaceId) {
 }
 
 module.exports = { workspace: labelWithIndex, branch: labelWithIndex };
+
+let taskTitles = new Map();
+let taskTitlesAt = -Infinity;
+
+function taskTitle(original, paneId) {
+  const now = Date.now();
+  if (now - taskTitlesAt >= 1000) {
+    taskTitlesAt = now;
+    taskTitles.clear();
+    try {
+      const output = execFileSync(process.env.HERDR_BIN_PATH || 'herdr', ['agent', 'list'], {
+        encoding: 'utf8', timeout: 1000,
+      });
+      for (const agent of JSON.parse(output).result.agents) {
+        const task = agent.tokens?.task;
+        if (typeof task === 'string' && task.trim()) taskTitles.set(agent.pane_id, task);
+      }
+    } catch {
+      // 取得できなければ元のタイトルを使う。
+    }
+  }
+  return taskTitles.get(paneId) ?? original;
+}
+
+module.exports.title = taskTitle;
