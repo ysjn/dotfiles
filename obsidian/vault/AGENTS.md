@@ -37,7 +37,7 @@ Codex では ~/.codex/AGENTS.md の symlink 先から場所を確認できる。
 ## Dreaming
 
 - 日々の記録と内省を分け、通常会話の開始・終了時や週初のVault更新ではDreamingを起動・期限確認しない。専用の定期枠または明示的な内省依頼だけで実行する。
-- 手順の正本は `30_Areas/agent-operations/skills/vault-dreaming/SKILL.md`。日次の差分内省と週次の横断確認を一つの処理とし、履歴を `50_Knowledge/dreaming-log.md`、期間レポートを対象週の月曜日付き `50_Knowledge/dreaming-YYYY-MM-DD.md` に残す。週はユーザーのタイムゾーンの月曜〜日曜。
+- 手順の正本は `30_Areas/agent-operations/skills/dreaming/SKILL.md`。日次の差分内省と週次の横断確認を一つの処理とし、履歴を `50_Knowledge/dreaming-log.md`、期間レポートを対象週の月曜日付き `50_Knowledge/dreaming-YYYY-MM-DD.md` に残す。週はユーザーのタイムゾーンの月曜〜日曜。
 - Vaultと必要な参照元資料を照合し、確認済みの知識・状態・関連リンクは反映できる。行動の優先順位・権限・実行頻度・推奨手順・一般化ルールの変更は保存先にかかわらず提案までとする。本人がすでに明示した訂正・認可は再確認しない。
 - Dailyと一次資料の原文は保持する。未確認を確定情報にせず、同じ根拠・同じ主張を重複記録しない。長期記憶は短い要点と詳細へのリンクにする。
 - Macが停止中の実行は前提にせず、次に実際に起動できた定期枠で未処理分を回収する。中断や同時編集を完了扱いにしない。内省完了とGit同期完了を分ける。
