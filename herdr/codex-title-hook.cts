@@ -81,19 +81,42 @@ function paneContext(input, hookFile) {
     .replace('If this prompt starts a new task or changes the current one, first run:',
       'Reassess the title against the latest work and current stage. If its source is terminal or the focus or stage has changed, run:')
     .replace('Skip it when the task is unchanged.', 'Keep an agent title only while it still describes the current work.');
-  const command = `bash '${resolve(dirname(hookFile), '..', 'agent-title.sh')}'`;
+  const titleScript = resolve(dirname(hookFile), '..', 'agent-title.sh');
+  const command = `bash '${titleScript}'`;
+  const updateCommand = [process.execPath, __filename, '--title', titleScript]
+    .map(arg => `'${arg.replaceAll("'", "'\\''")}'`).join(' ');
   const quotedId = `'${paneId.replaceAll("'", "'\\''")}'`;
-  context.additionalContext = context.additionalContext.replaceAll(command, `HERDR_PANE_ID=${quotedId} ${command}`);
+  context.additionalContext = context.additionalContext.replaceAll(command, `HERDR_PANE_ID=${quotedId} ${updateCommand}`);
   return result;
 }
 
-module.exports = { promptContext };
+function updateTitle(titleScript, args) {
+  const options = { encoding: 'utf8', timeout: 5000 };
+  const output = childProcess.execFileSync('bash', [titleScript, ...args], options);
+  if (!['auto', 'set', 'clear'].includes(args[0])) return output;
+  const herdr = process.env.HERDR_BIN_PATH || 'herdr';
+  const paneId = process.env.HERDR_PANE_ID;
+  const pane = JSON.parse(childProcess.execFileSync(herdr, ['pane', 'get', paneId], options)).result.pane;
+  // Sync the resolved display title so user pins and upstream normalization win.
+  const title = pane.tokens?.task;
+  if (typeof title === 'string' && title.trim() && pane.label !== title) {
+    // Herdr trims the final space; an extra word keeps "--clear" literal.
+    childProcess.execFileSync(herdr, ['pane', 'rename', paneId, title, ''], options);
+  }
+  return output;
+}
+
+module.exports = { promptContext, updateTitle };
 
 if (require.main === module) {
-  try {
-    const result = promptContext(JSON.parse(fs.readFileSync(0, 'utf8')), process.argv[2]);
-    if (result) process.stdout.write(`${JSON.stringify(result)}\n`);
-  } catch {
-    // Missing context or a disconnected Herdr must not block the user prompt.
+  if (process.argv[2] === '--title') {
+    process.stdout.write(updateTitle(process.argv[3], process.argv.slice(4)));
+  } else {
+    try {
+      const result = promptContext(JSON.parse(fs.readFileSync(0, 'utf8')), process.argv[2]);
+      if (result) process.stdout.write(`${JSON.stringify(result)}\n`);
+    } catch {
+      // Missing context or a disconnected Herdr must not block the user prompt.
+    }
   }
 }

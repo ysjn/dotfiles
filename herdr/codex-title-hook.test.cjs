@@ -4,7 +4,9 @@ const fs = require('node:fs');
 const childProcess = require('node:child_process');
 const { tmpdir } = require('node:os');
 const { join } = require('node:path');
-const { promptContext } = require('./codex-title-hook.cts');
+const { promptContext, updateTitle } = require('./codex-title-hook.cts');
+const titleCommand = [process.execPath, require.resolve('./codex-title-hook.cts'), '--title', '/plugin/agent-title.sh']
+  .map(arg => `'${arg.replaceAll("'", "'\\''")}'`).join(' ');
 
 test('Codex title context targets only a unique matching pane and keeps upstream naming instructions', () => {
   const previous = { HERDR_ENV: process.env.HERDR_ENV, HERDR_PANE_ID: process.env.HERDR_PANE_ID, CODEX_HOME: process.env.CODEX_HOME };
@@ -36,7 +38,7 @@ test('Codex title context targets only a unique matching pane and keeps upstream
   try {
     let result = promptContext(input, '/plugin/hooks/prompt-context.sh');
     assert.equal(result.hookSpecificOutput.additionalContext,
-      note.replace("bash '/plugin/agent-title.sh'", "HERDR_PANE_ID='wC:pE' bash '/plugin/agent-title.sh'"));
+      note.replace("bash '/plugin/agent-title.sh'", `HERDR_PANE_ID='wC:pE' ${titleCommand}`));
     assert.equal(hookCalls, 1);
 
     agents.push({ ...agents[1], pane_id: 'wC:pF' });
@@ -107,7 +109,7 @@ test('PostToolUse reassesses every ten minutes per session, while prompts remain
     assert.equal(result.hookEventName, 'PostToolUse');
     assert.match(result.additionalContext, /latest work and current stage/);
     assert.match(result.additionalContext, /source is terminal/);
-    assert.match(result.additionalContext, /HERDR_PANE_ID='wC:pE' bash/);
+    assert.ok(result.additionalContext.includes(`HERDR_PANE_ID='wC:pE' ${titleCommand}`));
     assert.match(result.additionalContext, /short noun phrase.*about 30 columns.*user's language/);
     assert.doesNotMatch(result.additionalContext, /Skip it when the task is unchanged/);
     assert.equal(command.mock.callCount(), 4);
@@ -149,5 +151,68 @@ test('PostToolUse reassesses every ten minutes per session, while prompts remain
       if (value === undefined) delete process.env[key];
       else process.env[key] = value;
     }
+  }
+});
+
+test('title updates sync the resolved title to the same pane and report failures', () => {
+  const previous = process.env.HERDR_PANE_ID;
+  process.env.HERDR_PANE_ID = 'wC:pE';
+  let title = '手動の固定名';
+  let label;
+  let failure;
+  const renamed = [];
+  const output = 'label: codex · 手動の固定名\ntitle: 手動の固定名\nsource: user\n';
+  const command = mock.method(childProcess, 'execFileSync', (binary, args) => {
+    if (binary === 'bash') {
+      if (failure === 'plugin') throw new Error('plugin failed');
+      assert.equal(args[0], '/plugin/agent-title.sh');
+      return output;
+    }
+    if (args[1] === 'get') {
+      assert.deepEqual(args, ['pane', 'get', 'wC:pE']);
+      return JSON.stringify({ result: { pane: { label, tokens: { task: title } } } });
+    }
+    if (failure === 'rename') throw new Error('rename failed');
+    assert.deepEqual(args.slice(0, 3), ['pane', 'rename', 'wC:pE']);
+    assert.equal(args[4], '');
+    renamed.push(args[3]);
+    label = args[3];
+    return '{}';
+  });
+  try {
+    // The agent's requested title must not override an effective user pin.
+    assert.equal(updateTitle('/plugin/agent-title.sh', ['auto', '別の名前']), output);
+    assert.deepEqual(renamed, ['手動の固定名']);
+    updateTitle('/plugin/agent-title.sh', ['auto', '別の名前']);
+    assert.equal(renamed.length, 1);
+
+    title = "--引用 ' $(touch /tmp/should-not-exist)";
+    updateTitle('/plugin/agent-title.sh', ['set', title]);
+    assert.equal(renamed.at(-1), title);
+    title = '通常タイトル';
+    updateTitle('/plugin/agent-title.sh', ['clear']);
+    assert.equal(renamed.at(-1), title);
+    title = '--clear';
+    updateTitle('/plugin/agent-title.sh', ['set', title]);
+    assert.equal(renamed.at(-1), title);
+
+    for (title of [undefined, '', ' ', 123]) {
+      updateTitle('/plugin/agent-title.sh', ['auto', '表示名']);
+    }
+    assert.equal(renamed.length, 4);
+    const before = command.mock.callCount();
+    updateTitle('/plugin/agent-title.sh', ['show']);
+    assert.equal(command.mock.callCount(), before + 1);
+
+    title = '新しい名前';
+    failure = 'plugin';
+    assert.throws(() => updateTitle('/plugin/agent-title.sh', ['auto', title]), /plugin failed/);
+    failure = 'rename';
+    assert.throws(() => updateTitle('/plugin/agent-title.sh', ['auto', title]), /rename failed/);
+    assert.equal(renamed.length, 4);
+  } finally {
+    mock.restoreAll();
+    if (previous === undefined) delete process.env.HERDR_PANE_ID;
+    else process.env.HERDR_PANE_ID = previous;
   }
 });
