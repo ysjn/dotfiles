@@ -2,7 +2,6 @@
 padding = { x = 10, y = 5 }
 dynamic_padding = true
 decorations = "Buttonless"
-# opacity = 0.95
 startup_mode = "SimpleFullscreen"
 option_as_alt = "Both"
 
@@ -49,9 +48,6 @@ style = { blinking = "Always" }
 vi_mode_style = { shape = "Block" }
 blink_timeout = 0
 blink_interval = 400
-
-[mouse]
-hide_when_typing = true
 
 [[hints.enabled]]
 regex = '(https?://[^\s <>"\[\]{}]+|(?:/|~/|\.\.?/)[^\s <>:"|?*\[\]{}()]*|[[:alnum:]_.@+-]+(?:/[^\s <>:"|?*\[\]{}()/]+)+/?|[[:alnum:]_@+-][[:alnum:]_.@+-]*\.[[:alpha:]][[:alnum:]_-]*|[[:alnum:]_.@+-]+/)'
