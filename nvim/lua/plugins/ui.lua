@@ -266,6 +266,15 @@ return {
         commit = "/commit/{commit}",
       }
       return {
+        lazygit = {
+          config = {
+            os = {
+              -- Keep file edits in the current tab instead of the preset's --remote-tab.
+              edit = [[nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{filename}}]],
+              editAtLine = [[nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{filename}} && nvim --server "$NVIM" --remote-send ":{{line}}<CR>"]],
+            },
+          },
+        },
         dashboard = {
           sections = {
             { section = "header" },
