@@ -49,6 +49,10 @@ brew install herdr
 mkdir -p "$HOME/.config/herdr"
 ln -snfv "$HOME/dev/dotfiles/herdr/config.toml" "$HOME/.config/herdr/config.toml"
 
+# create symbolic link for Rex config
+mkdir -p "$HOME/.config/rex"
+ln -snfv "$HOME/dev/dotfiles/rex/init.lua" "$HOME/.config/rex/init.lua"
+
 # install fzf (for tmux-fzf-url)
 brew install fzf
 

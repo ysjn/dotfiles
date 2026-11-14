@@ -1,12 +1,12 @@
 return {
   {
     "christoomey/vim-tmux-navigator",
-    cond = vim.env.TMUX and vim.env.TMUX ~= "" and vim.env.HERDR_ENV ~= "1",
+    cond = vim.env.TMUX ~= nil and vim.env.TMUX ~= "" and vim.env.HERDR_ENV ~= "1",
     event = "VeryLazy",
   },
   {
     "RyanMillerC/better-vim-tmux-resizer",
-    cond = vim.env.TMUX and vim.env.TMUX ~= "" and vim.env.HERDR_ENV ~= "1",
+    cond = vim.env.TMUX ~= nil and vim.env.TMUX ~= "" and vim.env.HERDR_ENV ~= "1",
     event = "VeryLazy",
   },
   {
@@ -305,6 +305,13 @@ return {
                   require("herdr-splits").move_cursor_left()
                 elseif vim.env.TMUX and vim.env.TMUX ~= "" then
                   vim.cmd("TmuxNavigateLeft")
+                elseif
+                  vim.env.REX_SESSION
+                  and vim.env.REX_SESSION ~= ""
+                  and vim.env.REX_BLOCK
+                  and vim.env.REX_BLOCK ~= ""
+                then
+                  require("smart-splits").move_cursor_left()
                 else
                   vim.cmd("wincmd h")
                 end
@@ -317,6 +324,13 @@ return {
                   require("herdr-splits").move_cursor_right()
                 elseif vim.env.TMUX and vim.env.TMUX ~= "" then
                   vim.cmd("TmuxNavigateRight")
+                elseif
+                  vim.env.REX_SESSION
+                  and vim.env.REX_SESSION ~= ""
+                  and vim.env.REX_BLOCK
+                  and vim.env.REX_BLOCK ~= ""
+                then
+                  require("smart-splits").move_cursor_right()
                 else
                   vim.cmd("wincmd l")
                 end
