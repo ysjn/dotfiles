@@ -10,6 +10,6 @@ while [ "$#" -gt 0 ]; do
   fi
 done
 
-# Buffer-local overrides keep cancellation scoped to the copy-mode viewer.
+# Keep the quit mapping local to the copy-mode viewer.
 exec /opt/homebrew/bin/nvim "${nvim_arguments[@]}" \
-  -c 'lua for _, key in ipairs({ "q", "<Esc>" }) do vim.keymap.set({ "n", "x", "t" }, key, "<Cmd>qa!<CR>", { buffer = true, silent = true }) end'
+  -c 'lua vim.keymap.set({ "n", "x", "t" }, "q", "<Cmd>qa!<CR>", { buffer = true, silent = true })'

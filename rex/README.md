@@ -9,8 +9,9 @@ when Codex is the foreground process.
 
 The plugin's `nvim` option points to `copy-mode-nvim` in this repository. This
 wrapper removes the plugin's `-u NONE`, so Neovim loads the usual user config,
-then adds viewer-local `q` / `Esc` mappings after the plugin's startup commands.
-Both keys close the viewer without copying, including while selecting text.
+then adds a viewer-local `q` mapping after the plugin's startup commands.
+`q` closes the viewer without copying, including while selecting text.
+`Esc` retains its normal selection and terminal-mode cancellation behavior.
 `y` and visual-mode `Enter` retain the plugin's copy behavior.
 
 The viewer still overrides display options needed for scrollback, such as

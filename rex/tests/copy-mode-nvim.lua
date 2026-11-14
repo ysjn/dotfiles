@@ -13,10 +13,9 @@ vim.schedule(function()
     assert(vim.o.shadafile == 'NONE', 'Keep the upstream history setting')
     assert(vim.o.updatecount == 0, 'Keep the upstream swap setting')
     for _, mode in ipairs({ 'n', 'x', 't' }) do
-      for _, key in ipairs({ 'q', '<Esc>' }) do
-        local mapping = vim.fn.maparg(key, mode, false, true)
-        assert(mapping.buffer ~= 0 and mapping.rhs == '<Cmd>qa!<CR>')
-      end
+      local mapping = vim.fn.maparg('q', mode, false, true)
+      assert(mapping.buffer ~= 0 and mapping.rhs == '<Cmd>qa!<CR>')
+      assert(vim.fn.maparg('<Esc>', mode, false, true).rhs ~= '<Cmd>qa!<CR>')
     end
   end)
   if ok then vim.cmd('qa!') else io.stderr:write(tostring(err)); vim.cmd('cquit') end
