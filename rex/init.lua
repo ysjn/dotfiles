@@ -47,8 +47,32 @@ rex.bind("ctrl+k>shift+l", "pane.move.right")
 rex.bind("ctrl+k>shift+e", "pane.balance")
 rex.bind("shift+cmd+p", "client.palette.toggle")
 
--- Herdr-only: copy mode (ctrl+k>[, ctrl+u)
--- agent navigation (ctrl+k>p/n), attention jump (ctrl+k>k), Fingers (ctrl+k>f),
+dofile(os.getenv("HOME") .. "/.local/share/rex/plugins/rex-copy-mode/copy-mode.lua").setup({
+	key = false,
+	nvim = os.getenv("HOME") .. "/dev/dotfiles/rex/copy-mode-nvim",
+	rex = "/Applications/Rex Beta.app/Contents/Helpers/Rex Server.rex/Contents/MacOS/rex",
+})
+rex.bind("ctrl+shift+l", function(ctx)
+	local process, err = rex.block.call("com.superlogical.terminal", "process", {
+		session_id = ctx.session_id,
+		block_id = ctx.block_id,
+	})
+	if not process then
+		error(err or "Cannot determine the foreground process for copy mode", 0)
+	end
+	-- Codex owns its alternate-screen history, so it must receive the original key.
+	-- shortcut: detects foreground Codex only; extend for SSH/tmux if needed.
+	if process.foreground and process.foreground.name == "codex" then
+		return false
+	end
+	local _, copy_err = rex.invoke("copy_mode")
+	if copy_err then
+		error(copy_err, 0)
+	end
+	return true
+end)
+
+-- Herdr-only: agent navigation (ctrl+k>p/n), attention jump (ctrl+k>k), Fingers (ctrl+k>f),
 -- plugin manager (ctrl+k>ctrl+p), and Radar (ctrl+k>,) have no equivalent action.
 -- Navigate-mode keys stay unbound so ordinary terminal input is preserved.
 
