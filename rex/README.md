@@ -1,4 +1,11 @@
-# Rex copy mode
+# Rex configuration
+
+This directory manages custom Rex settings and shortcuts in `init.lua`,
+along with supporting scripts and tests.
+
+After changing `init.lua`, run `rex config check` and `rex config reload`.
+
+## Copy mode
 
 `init.lua` loads [CJNE/rex-copy-mode](https://github.com/CJNE/rex-copy-mode) from
 `~/.local/share/rex/plugins/rex-copy-mode`. The installed upstream revision is
@@ -22,6 +29,5 @@ The plugin's runtime files remain unmodified. Updating those files preserves
 the custom keys; keep the `nvim` option pointing to this executable wrapper.
 The wrapper uses `/opt/homebrew/bin/nvim`, matching this Mac's installation.
 
-After changing `init.lua`, run `rex config check` and `rex config reload`.
 Wrapper changes apply to newly opened viewers. An already open viewer keeps
 its existing mappings until it closes.
