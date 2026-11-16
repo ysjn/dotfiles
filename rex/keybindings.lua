@@ -5,8 +5,6 @@ return function(plugins)
 	rex.bind("ctrl+k>x", "close_pane_or_session")
 
 	rex.bind("ctrl+k>c", "session.new")
-	rex.bind("ctrl+k>shift+p", "session.previous")
-	rex.bind("ctrl+k>shift+n", "session.next")
 
 	for index = 1, 9 do
 		rex.bind("ctrl+k>" .. index, "session_goto_number", { index = index })
@@ -40,7 +38,7 @@ return function(plugins)
 	rex.bind("resize/escape", "client.mode.exit")
 
 	rex.mode("sidebar", { exclusive = true })
-	rex.bind("ctrl+k>g", "client.mode.enter", { name = "sidebar" })
+	rex.bind("ctrl+s", "client.mode.enter", { name = "sidebar" })
 	rex.bind("sidebar/j", "client.tab.next")
 	rex.bind("sidebar/k", "client.tab.previous")
 	rex.bind("sidebar/enter", "client.mode.exit")
