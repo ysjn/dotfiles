@@ -210,10 +210,6 @@ rex.action({
 })
 rex.bind("ctrl+k>k", "attention_jump")
 
--- Herdr-only: agent navigation (ctrl+k>p/n),
--- plugin manager (ctrl+k>ctrl+p), and Radar (ctrl+k>,) have no equivalent action.
--- Navigate-mode keys stay unbound so ordinary terminal input is preserved.
-
 rex.mode("resize", { exclusive = true })
 rex.bind("ctrl+k>r", "client.mode.enter", { name = "resize" })
 rex.bind("resize/h", "pane.resize", { direction = "left" })
@@ -226,9 +222,6 @@ rex.bind("resize/escape", "client.mode.exit")
 rex.mode("sidebar", { exclusive = true })
 rex.bind("ctrl+k>g", "client.mode.enter", { name = "sidebar" })
 rex.bind("sidebar/j", "client.tab.next")
-rex.bind("sidebar/ctrl+n", "client.tab.next")
 rex.bind("sidebar/k", "client.tab.previous")
-rex.bind("sidebar/ctrl+p", "client.tab.previous")
-rex.bind("sidebar/cmd+.", "client.sidebar.activity.toggle")
 rex.bind("sidebar/enter", "client.mode.exit")
 rex.bind("sidebar/escape", "client.mode.exit")
