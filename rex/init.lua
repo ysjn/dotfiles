@@ -143,7 +143,12 @@ rex.bind("ctrl+shift+l", function(ctx)
 	return true
 end)
 
--- Herdr-only: agent navigation (ctrl+k>p/n), attention jump (ctrl+k>k), Fingers (ctrl+k>f),
+dofile("/opt/homebrew/opt/rexflash/share/rexflash/rexflash.lua")({
+	hint_key = "ctrl+k>f",
+	flash_key = "ctrl+k>/",
+})
+
+-- Herdr-only: agent navigation (ctrl+k>p/n), attention jump (ctrl+k>k),
 -- plugin manager (ctrl+k>ctrl+p), and Radar (ctrl+k>,) have no equivalent action.
 -- Navigate-mode keys stay unbound so ordinary terminal input is preserved.
 

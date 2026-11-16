@@ -27,6 +27,9 @@ setfenv(
 			end,
 		},
 		dofile = function(file)
+			if file:match("/rexflash%.lua$") then
+				return function() end
+			end
 			return {
 				setup = function(value)
 					if file:match("/copy%-mode%.lua$") then
