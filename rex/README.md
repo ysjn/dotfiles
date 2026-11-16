@@ -31,3 +31,13 @@ The wrapper uses `/opt/homebrew/bin/nvim`, matching this Mac's installation.
 
 Wrapper changes apply to newly opened viewers. An already open viewer keeps
 its existing mappings until it closes.
+
+## Closing panes and sessions
+
+`Ctrl+K`, then `x` closes the focused pane using Rex's normal close action.
+For the last pane in the session, including other tabs and detached panes,
+it asks before closing the session and its running process. The macOS dialog
+defaults to Close (Enter), supports Cancel (Esc), and cancels after 20 seconds.
+If the pane layout changes while the dialog is open, nothing is closed.
+
+Run `luajit rex/tests/close-pane-or-session.lua` to check this behavior.

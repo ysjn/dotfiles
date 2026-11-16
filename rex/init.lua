@@ -1,7 +1,78 @@
 rex.bind("ctrl+k>v", "pane.split.right")
 rex.bind("ctrl+k>h", "pane.split.down")
 rex.bind("ctrl+k>z", "pane.zoom")
-rex.bind("ctrl+k>x", "pane.close")
+
+local confirming_sessions = {}
+rex.action({
+	name = "close_pane_or_session",
+	title = "Close Pane or Session",
+	run = function(ctx)
+		if not ctx.session_id or not ctx.block_id then
+			error("閉じるpaneを特定できません。", 0)
+		end
+		if confirming_sessions[ctx.session_id] then
+			return
+		end
+		local result, err = rex.call("session.list_blocks", { session_id = ctx.session_id })
+		if not result then
+			error(err, 0)
+		end
+		if #result.blocks > 1 then
+			rex.client.queue("pane.close")
+			return
+		end
+		if #result.blocks ~= 1 or result.blocks[1].block_id ~= ctx.block_id then
+			error("閉じるpaneの構成が変わりました。", 0)
+		end
+		local view, view_err = rex.call("session.view", { session_id = ctx.session_id })
+		if not view then
+			error(view_err, 0)
+		end
+		confirming_sessions[ctx.session_id] = true
+		local ok, confirmation, exec_err = pcall(rex.exec, {
+			"/usr/bin/osascript",
+			"-e",
+			[[on run argv
+try
+	set answer to display dialog "セッション「" & (item 1 of argv) & "」を閉じますか？" & return & "最後のpaneと、そこで実行中の処理を終了します。" with title "Rex" buttons {"キャンセル", "閉じる"} default button "閉じる" cancel button "キャンセル" giving up after 20
+	if gave up of answer then return "cancel"
+	return "close"
+on error number -128
+	return "cancel"
+end try
+end run]],
+			view.label or "無題",
+		}, { timeout = 25 })
+		confirming_sessions[ctx.session_id] = nil
+		if not ok then
+			error(confirmation, 0)
+		end
+		if not confirmation then
+			error(exec_err, 0)
+		end
+		if confirmation.timed_out then
+			return
+		end
+		if not confirmation.ok then
+			error(confirmation.stderr, 0)
+		end
+		if not confirmation.stdout:match("^close%s*$") then
+			return
+		end
+		result, err = rex.call("session.list_blocks", { session_id = ctx.session_id })
+		if not result then
+			error(err, 0)
+		end
+		if #result.blocks ~= 1 or result.blocks[1].block_id ~= ctx.block_id then
+			error("確認中にpane構成が変わったため、閉じませんでした。", 0)
+		end
+		local closed, close_err = rex.call("session.destroy", { session_id = ctx.session_id })
+		if not closed then
+			error(close_err, 0)
+		end
+	end,
+})
+rex.bind("ctrl+k>x", "close_pane_or_session")
 
 rex.bind("ctrl+k>c", "session.new")
 rex.bind("ctrl+k>shift+p", "session.previous")
