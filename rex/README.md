@@ -32,6 +32,20 @@ The wrapper uses `/opt/homebrew/bin/nvim`, matching this Mac's installation.
 Wrapper changes apply to newly opened viewers. An already open viewer keeps
 its existing mappings until it closes.
 
+## Jump to an agent needing attention
+
+`Ctrl+K`, then `k` uses Rex's built-in program status API to jump directly to
+another pane across sessions and tabs. Approval or question waits (`blocked`)
+come first, followed by completed or failed work (`done` / `error`). Within
+each priority, the most recently reported status wins. The current pane,
+detached panes, and `idle` / `working` statuses are skipped. With no candidate,
+focus stays where it is.
+
+This needs no additional plugin. It depends on programs reporting OSC 7501
+status; programs without status reports are not included.
+
+Run `luajit rex/tests/attention-jump.lua` to check selection and error handling.
+
 ## Closing panes and sessions
 
 `Ctrl+K`, then `x` closes the focused pane using Rex's normal close action.
