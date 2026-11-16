@@ -37,10 +37,6 @@ return function(plugins)
 	rex.bind("resize/enter", "client.mode.exit")
 	rex.bind("resize/escape", "client.mode.exit")
 
-	rex.mode("sidebar", { exclusive = true })
-	rex.bind("ctrl+s", "client.mode.enter", { name = "sidebar" })
-	rex.bind("sidebar/j", "client.tab.next")
-	rex.bind("sidebar/k", "client.tab.previous")
-	rex.bind("sidebar/enter", "client.mode.exit")
-	rex.bind("sidebar/escape", "client.mode.exit")
+	rex.bind("alt+j", "client.tab.next")
+	rex.bind("alt+k", "client.tab.previous")
 end
