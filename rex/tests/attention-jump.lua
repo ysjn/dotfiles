@@ -5,7 +5,7 @@ local ctx = { session_id = "session:here", block_id = "block:here" }
 local function block(id, placement)
 	return { block_id = id, window_id = "window:" .. id, creator_name = "com.superlogical.terminal", placement = placement or "placed" }
 end
-local config = assert(loadfile(root .. "../init.lua"))
+local config = assert(loadfile(root .. "../actions.lua"))
 actions, bindings = {}, {}
 setfenv(config, setmetatable({
 	rex = {
@@ -35,9 +35,10 @@ setfenv(config, setmetatable({
 			queued = args
 		end },
 	},
-	dofile = function() return setmetatable({ setup = function() end }, { __call = function() end }) end,
 }, { __index = _G }))
 config()
+local keybindings = assert(loadfile(root .. "../keybindings.lua"))
+setfenv(keybindings, getfenv(config))()({ copy_mode = function() end })
 assert(bindings["ctrl+k>k"] == "attention_jump")
 local jump = assert(actions.attention_jump)
 local function reset()

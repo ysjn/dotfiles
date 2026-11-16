@@ -6,7 +6,7 @@ local current = { block_id = ctx.block_id, window_id = "window:first" }
 local other = { block_id = "block:other", window_id = "window:second", placement = "detached" }
 local blocks, after_dialog, lookups, queued, prompts, destroyed, exec_result, call_error, on_prompt, exec_throw
 local label = [[名前 "quoted"; $(not-a-command)]]
-local config = assert(loadfile(root .. "../init.lua"))
+local config = assert(loadfile(root .. "../actions.lua"))
 setfenv(config, setmetatable({
 	rex = {
 		bind = function(key, name) bindings[key] = name end,
@@ -42,11 +42,10 @@ setfenv(config, setmetatable({
 			return exec_result, "could not start dialog"
 		end,
 	},
-	dofile = function()
-		return setmetatable({ setup = function() end }, { __call = function() end })
-	end,
 }, { __index = _G }))
 config()
+local keybindings = assert(loadfile(root .. "../keybindings.lua"))
+setfenv(keybindings, getfenv(config))()({ copy_mode = function() end })
 assert(bindings["ctrl+k>x"] == "close_pane_or_session")
 local close = assert(actions.close_pane_or_session)
 local function reset()

@@ -1,13 +1,24 @@
 # Rex configuration
 
-This directory manages custom Rex settings and shortcuts in `init.lua`,
-along with supporting scripts and tests.
+This directory manages custom Rex settings, supporting scripts, and tests.
 
-After changing `init.lua`, run `rex config check` and `rex config reload`.
+| File | Responsibility |
+| --- | --- |
+| `init.lua` | Loads the configuration files in order. |
+| `actions.lua` | Custom actions, including session closure and attention jumps. |
+| `plugins.lua` | Plugin initialization, options, and plugin-specific behavior. |
+| `keybindings.lua` | All keyboard shortcuts and key modes, including plugin shortcuts. |
+
+`init.lua` reads the other files from `~/dev/dotfiles/rex`, so the existing
+`~/.config/rex/init.lua` symlink needs no change. Files use `dofile` so each
+reload reads their latest contents.
+
+After changing any Lua configuration file, run `rex config check` and
+`rex config reload`.
 
 ## Copy mode
 
-`init.lua` loads [CJNE/rex-copy-mode](https://github.com/CJNE/rex-copy-mode) from
+`plugins.lua` loads [CJNE/rex-copy-mode](https://github.com/CJNE/rex-copy-mode) from
 `~/.local/share/rex/plugins/rex-copy-mode`. The installed upstream revision is
 recorded in that directory's `UPSTREAM` file.
 

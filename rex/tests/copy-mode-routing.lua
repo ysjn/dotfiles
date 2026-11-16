@@ -3,7 +3,7 @@ local root = assert(debug.getinfo(1, "S").source:gsub("^@", ""):match("^(.*[/\\]
 local bindings, options = {}, nil
 local process, process_error, invoke_error, invoked = nil, nil, nil, 0
 local context = { session_id = "test-session", block_id = "test-block" }
-local config = assert(loadfile(root .. "../init.lua"))
+local config = assert(loadfile(root .. "../plugins.lua"))
 setfenv(
 	config,
 	setmetatable({
@@ -28,7 +28,9 @@ setfenv(
 		},
 		dofile = function(file)
 			if file:match("/rexflash%.lua$") then
-				return function() end
+				return function(value)
+					assert(not value.hint_key and not value.flash_key, "Plugin shortcuts belong in keybindings.lua")
+				end
 			end
 			return {
 				setup = function(value)
@@ -42,7 +44,9 @@ setfenv(
 		end,
 	}, { __index = _G })
 )
-config()
+local plugins = config()
+local keybindings = assert(loadfile(root .. "../keybindings.lua"))
+setfenv(keybindings, getfenv(config))()(plugins)
 assert(options and options.key == false, "The plugin must not install its default shortcut")
 assert(bindings["f6"] == nil and bindings["ctrl+a>enter"] == nil)
 local route = assert(bindings["ctrl+shift+l"])
