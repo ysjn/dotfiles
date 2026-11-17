@@ -53,6 +53,18 @@ ln -snfv "$HOME/dev/dotfiles/herdr/config.toml" "$HOME/.config/herdr/config.toml
 mkdir -p "$HOME/.config/rex"
 ln -snfv "$HOME/dev/dotfiles/rex/init.lua" "$HOME/.config/rex/init.lua"
 
+# Link the CLI from an existing Rex installation.
+rex_cli="/Applications/Rex Beta.app/Contents/Helpers/Rex Server.rex/Contents/MacOS/rex"
+if [[ -x "$rex_cli" ]]; then
+  mkdir -p "$HOME/.local/bin"
+  if [[ ! -e "$HOME/.local/bin/rex" && ! -L "$HOME/.local/bin/rex" ]]; then
+    ln -sv "$rex_cli" "$HOME/.local/bin/rex"
+  fi
+  if ! grep -Fqx 'export PATH="$HOME/.local/bin:$PATH"' "$HOME/.zprofile" 2>/dev/null; then
+    printf '\nexport PATH="$HOME/.local/bin:$PATH"\n' >> "$HOME/.zprofile"
+  fi
+fi
+
 # install fzf (for tmux-fzf-url)
 brew install fzf
 
