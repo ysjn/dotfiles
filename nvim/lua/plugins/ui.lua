@@ -202,13 +202,6 @@ return {
   },
 
   {
-    "rcarriga/nvim-notify",
-    opts = {
-      background_colour = "#000000",
-    },
-  },
-
-  {
     url = "https://codeberg.org/andyg/leap.nvim",
     config = function()
       local colors = require("ayu.colors")
@@ -264,6 +257,7 @@ return {
         commit = "/commit/{commit}",
       }
       return {
+        notifier = { enabled = true },
         lazygit = {
           config = {
             os = {
