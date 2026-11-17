@@ -219,18 +219,16 @@ return {
   },
 
   {
+    "mason-org/mason.nvim",
+    opts = { ensure_installed = { "cspell", "markuplint" } },
+  },
+
+  {
     "nvimtools/none-ls.nvim",
     lazy = true,
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "nvim-lua/plenary.nvim",
-      {
-        "jay-babu/mason-null-ls.nvim",
-        opts = {
-          ensure_installed = { "cspell", "markuplint" },
-          methods = { code_actions = false },
-        },
-      },
       "davidmh/cspell.nvim",
       "nvimtools/none-ls-extras.nvim",
     },
