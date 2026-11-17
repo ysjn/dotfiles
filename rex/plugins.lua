@@ -6,7 +6,9 @@ dofile(os.getenv("HOME") .. "/.local/share/rex/plugins/rex-copy-mode/copy-mode.l
 	rex = "/Applications/Rex Beta.app/Contents/Helpers/Rex Server.rex/Contents/MacOS/rex",
 })
 
-dofile("/opt/homebrew/opt/rexflash/share/rexflash/rexflash.lua")({})
+dofile("/opt/homebrew/opt/rexflash/share/rexflash/rexflash.lua")({
+	bin = os.getenv("HOME") .. "/dev/rexflash/target/release/rexflash",
+})
 
 return {
 	copy_mode = function(ctx)
