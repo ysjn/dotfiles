@@ -224,17 +224,29 @@ return {
   },
 
   {
+    "mfussenegger/nvim-lint",
+    opts = function(_, opts)
+      opts.linters_by_ft["*"] = { "cspell" }
+      opts.linters.cspell = require("lint.util").wrap(require("lint").linters.cspell, function(diagnostic)
+        diagnostic.severity = vim.diagnostic.severity.HINT
+        return diagnostic
+      end)
+      opts.linters.cspell.condition = function(ctx)
+        return vim.bo.buftype == "" and ctx.filename ~= ""
+      end
+    end,
+  },
+
+  {
     "nvimtools/none-ls.nvim",
     lazy = true,
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "davidmh/cspell.nvim",
       "nvimtools/none-ls-extras.nvim",
     },
     opts = function()
       local null_ls = require("null-ls")
-      local cspell = require("cspell")
       local DIAGNOSTICS_ON_OPEN = null_ls.methods.DIAGNOSTICS_ON_OPEN
       local DIAGNOSTICS_ON_SAVE = null_ls.methods.DIAGNOSTICS_ON_SAVE
       return {
@@ -255,13 +267,6 @@ return {
             end,
             method = { DIAGNOSTICS_ON_OPEN, DIAGNOSTICS_ON_SAVE },
           }),
-          cspell.diagnostics.with({
-            diagnostics_postprocess = function(diagnostic)
-              diagnostic.severity = vim.diagnostic.severity["HINT"]
-            end,
-            method = { DIAGNOSTICS_ON_OPEN, DIAGNOSTICS_ON_SAVE },
-          }),
-          cspell.code_actions,
           -- none-ls-extras
           require("none-ls.diagnostics.eslint").with({
             method = { DIAGNOSTICS_ON_OPEN, DIAGNOSTICS_ON_SAVE },
