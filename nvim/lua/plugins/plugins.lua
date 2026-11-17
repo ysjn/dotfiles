@@ -420,11 +420,4 @@ return {
       },
     },
   },
-  {
-    "UN-9BOT/sidekick_herdr",
-    dependencies = { "folke/sidekick.nvim" },
-    config = function()
-      require("sidekick_herdr").setup({})
-    end,
-  },
 }
