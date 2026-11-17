@@ -197,7 +197,9 @@ vim.keymap.set("n", "<leader>E", function()
   end
 end, opts("Open parent directory"))
 
-vim.keymap.set("n", "<leader>z", ":SimpleZoomToggle<CR>")
+vim.keymap.set("n", "<leader>z", function()
+  Snacks.zen.zoom()
+end, opts("Toggle Zoom"))
 
 -- copy diagnostic message
 vim.keymap.set("n", "<leader>dc", function()

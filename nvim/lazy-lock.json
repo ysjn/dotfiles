@@ -47,7 +47,6 @@
   "persistence.nvim": { "branch": "main", "commit": "b20b2a7887bd39c1a356980b45e03250f3dce49c" },
   "plenary.nvim": { "branch": "master", "commit": "74b06c6c75e4eeb3108ec01852001636d85a932b" },
   "render-markdown.nvim": { "branch": "main", "commit": "8801162e041e34c64d0d1397cd1f353a14b01950" },
-  "simple-zoom.nvim": { "branch": "main", "commit": "f1de8b5f8bf301c6dd58ecb04935fad2b71f9626" },
   "smart-splits-backend-rex": { "branch": "master", "commit": "68f54325975ad47b03a968a3f201081bfadc0ff5" },
   "smart-splits.nvim": { "branch": "master", "commit": "5fd4fe53c2df2009e689f61511e3c474a9eccbaf" },
   "snacks.nvim": { "branch": "main", "commit": "882c996cf28183f4d63640de0b4c02ec886d01f2" },
