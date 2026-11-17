@@ -73,20 +73,6 @@ vim.keymap.set("i", "<A-C-k>", "<esc><cmd>m .-2<cr>==gi", opts("Move up"))
 vim.keymap.set("v", "<A-C-j>", ":m '>+1<cr>gv=gv", opts("Move down"))
 vim.keymap.set("v", "<A-C-k>", ":m '<-2<cr>gv=gv", opts("Move up"))
 
-if vim.env.TMUX and vim.env.TMUX ~= "" and vim.env.HERDR_ENV ~= "1" then
-  -- Move between splits in NeoVim windows and Tmux panes
-  vim.keymap.set("n", "<A-h>", "<cmd>TmuxNavigateLeft<CR>", opts())
-  vim.keymap.set("n", "<A-j>", "<cmd>TmuxNavigateDown<CR>", opts())
-  vim.keymap.set("n", "<A-k>", "<cmd>TmuxNavigateUp<CR>", opts())
-  vim.keymap.set("n", "<A-l>", "<cmd>TmuxNavigateRight<CR>", opts())
-
-  -- Resize splits for NeoVim windows Panes and Tmux panes
-  vim.keymap.set("n", "<A-H>", "<cmd>TmuxResizeLeft<CR>", opts())
-  vim.keymap.set("n", "<A-J>", "<cmd>TmuxResizeDown<CR>", opts())
-  vim.keymap.set("n", "<A-K>", "<cmd>TmuxResizeUp<CR>", opts())
-  vim.keymap.set("n", "<A-L>", "<cmd>TmuxResizeRight<CR>", opts())
-end
-
 -- Move and resize Neovim splits and Herdr panes
 if vim.env.HERDR_ENV == "1" then
   vim.keymap.set("n", "<M-h>", function()

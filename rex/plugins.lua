@@ -20,7 +20,7 @@ return {
 			error(err or "Cannot determine the foreground process for copy mode", 0)
 		end
 		-- Codex owns its alternate-screen history, so it must receive the original key.
-		-- shortcut: detects foreground Codex only; extend for SSH/tmux if needed.
+		-- shortcut: detects foreground Codex only; extend for SSH if needed.
 		if process.foreground and process.foreground.name == "codex" then
 			return false
 		end

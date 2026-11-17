@@ -32,16 +32,6 @@ rm -rf $HOME/.config/nvim/.git
 brew tap homebrew/cask-fonts
 brew install --cask font-jetbrains-mono-nerd-font
 
-# install tmux
-brew install tmux
-
-# install tmux plugin manager
-git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
-
-# create symbolic link for tmux.conf
-mkdir -p $HOME/.config/tmux
-ln -snfv $HOME/dev/dotfiles/tmux.conf $HOME/.config/tmux/tmux.conf
-
 # install herdr
 brew install herdr
 
@@ -65,7 +55,7 @@ if [[ -x "$rex_cli" ]]; then
   fi
 fi
 
-# install fzf (for tmux-fzf-url)
+# install fzf
 brew install fzf
 
 # install zoxide (smarter cd)

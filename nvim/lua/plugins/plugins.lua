@@ -1,15 +1,5 @@
 return {
   {
-    "christoomey/vim-tmux-navigator",
-    cond = vim.env.TMUX ~= nil and vim.env.TMUX ~= "" and vim.env.HERDR_ENV ~= "1",
-    event = "VeryLazy",
-  },
-  {
-    "RyanMillerC/better-vim-tmux-resizer",
-    cond = vim.env.TMUX ~= nil and vim.env.TMUX ~= "" and vim.env.HERDR_ENV ~= "1",
-    event = "VeryLazy",
-  },
-  {
     "lmilojevicc/herdr-splits.nvim",
     cond = vim.env.HERDR_ENV == "1",
     event = "VeryLazy",
@@ -26,7 +16,6 @@ return {
     version = "^3.0.0",
     cond = function()
       return vim.env.HERDR_ENV ~= "1"
-        and (vim.env.TMUX == nil or vim.env.TMUX == "")
         and vim.env.REX_SESSION ~= nil
         and vim.env.REX_SESSION ~= ""
         and vim.env.REX_BLOCK ~= nil

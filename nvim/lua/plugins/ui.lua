@@ -1,6 +1,4 @@
 return {
-  { "vimpostor/vim-tpipeline" },
-
   {
     "nvim-lualine/lualine.nvim",
     dependencies = { "folke/snacks.nvim" },
