@@ -45,7 +45,6 @@ return {
 
   { "mg979/vim-visual-multi", event = "VeryLazy" },
   { "OlegGulevskyy/better-ts-errors.nvim", event = "VeryLazy" },
-  { "ray-x/lsp_signature.nvim", event = "VeryLazy" },
   { "nacro90/numb.nvim", event = "VeryLazy", config = true },
   {
     "fasterius/simple-zoom.nvim",
