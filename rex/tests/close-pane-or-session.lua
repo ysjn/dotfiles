@@ -4,7 +4,7 @@ local actions, bindings = {}, {}
 local ctx = { session_id = "session:test", block_id = "block:current" }
 local current = { block_id = ctx.block_id, window_id = "window:first" }
 local other = { block_id = "block:other", window_id = "window:second", placement = "detached" }
-local blocks, after_dialog, lookups, queued, prompts, destroyed, exec_result, call_error, on_prompt, exec_throw
+local blocks, after_dialog, lookups, closed_panes, prompts, destroyed, exec_result, call_error, on_prompt, exec_throw
 local label = [[名前 "quoted"; $(not-a-command)]]
 local config = assert(loadfile(root .. "../actions.lua"))
 setfenv(config, setmetatable({
@@ -21,14 +21,18 @@ setfenv(config, setmetatable({
 			elseif method == "session.view" then
 				if call_error == "view" then return nil, "view failed" end
 				return { label = label }
+			elseif method == "block.close" then
+				assert(args.block_id == ctx.block_id, "Close the requested pane, independent of client focus")
+				if call_error == "close_pane" then return nil, "pane close failed" end
+				closed_panes = closed_panes + 1
+				return { block_id = ctx.block_id }
 			end
 			assert(method == "session.destroy")
 			destroyed = destroyed + 1
 			return {}
 		end,
 		client = { queue = function(name)
-			assert(name == "pane.close")
-			queued = queued + 1
+			error("Pane closure must not show a client confirmation: " .. name)
 		end },
 		exec = function(argv, opts)
 			prompts = prompts + 1
@@ -50,35 +54,40 @@ assert(bindings["ctrl+k>x"] == "close_pane_or_session")
 local close = assert(actions.close_pane_or_session)
 local function reset()
 	blocks, after_dialog = { current }, nil
-	lookups, queued, prompts, destroyed = 0, 0, 0, 0
+	lookups, closed_panes, prompts, destroyed = 0, 0, 0, 0
 	exec_result = { ok = true, stdout = "close\n" }
 	call_error, on_prompt, exec_throw = nil, nil, nil
 end
 local function fails()
 	assert(not pcall(close, ctx), "Expected safe failure")
-	assert(destroyed == 0 and queued == 0)
+	assert(destroyed == 0 and closed_panes == 0)
 end
 
 reset()
 blocks = { current, other }
 close(ctx)
-assert(queued == 1 and prompts == 0 and destroyed == 0, "Other tabs and detached panes must prevent session closure")
+assert(closed_panes == 1 and prompts == 0 and destroyed == 0, "Close only the requested pane without a confirmation")
+
+reset()
+blocks, call_error = { current, other }, "close_pane"
+fails()
+assert(prompts == 0)
 
 reset()
 close(ctx)
-assert(prompts == 1 and destroyed == 1 and queued == 0 and lookups == 2)
+assert(prompts == 1 and destroyed == 1 and closed_panes == 0 and lookups == 2)
 
 for _, response in ipairs({ "cancel\n", "", "close\nextra" }) do
 	reset()
 	exec_result.stdout = response
 	close(ctx)
-	assert(destroyed == 0 and queued == 0 and lookups == 1, "Only explicit approval may close a session")
+	assert(destroyed == 0 and closed_panes == 0 and lookups == 1, "Only explicit approval may close a session")
 end
 
 reset()
 exec_result = { ok = false, timed_out = true }
 close(ctx)
-assert(destroyed == 0 and queued == 0)
+assert(destroyed == 0 and closed_panes == 0)
 
 for _, failure in ipairs({ 1, 2, "view" }) do
 	reset()

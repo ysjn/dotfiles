@@ -59,7 +59,8 @@ Run `luajit rex/tests/attention-jump.lua` to check selection and error handling.
 
 ## Closing panes and sessions
 
-`Ctrl+K`, then `x` closes the focused pane using Rex's normal close action.
+`Ctrl+K`, then `x` closes the focused pane and its running process without a
+confirmation when other panes remain in the session.
 For the last pane in the session, including other tabs and detached panes,
 it asks before closing the session and its running process. The macOS dialog
 defaults to Close (Enter), supports Cancel (Esc), and cancels after 20 seconds.

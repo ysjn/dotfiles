@@ -14,7 +14,13 @@ rex.action({
 			error(err, 0)
 		end
 		if #result.blocks > 1 then
-			rex.client.queue("pane.close")
+			local closed, close_err = rex.call("block.close", {
+				session_id = ctx.session_id,
+				block_id = ctx.block_id,
+			})
+			if not closed then
+				error(close_err, 0)
+			end
 			return
 		end
 		if #result.blocks ~= 1 or result.blocks[1].block_id ~= ctx.block_id then
