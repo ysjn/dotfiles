@@ -1,5 +1,6 @@
 return function(plugins)
 	rex.bind("ctrl+k>v", "pane.split.right")
+	rex.bind("ctrl+k>shift+v", "pane.split.left")
 	rex.bind("ctrl+k>h", "pane.split.down")
 	rex.bind("ctrl+k>z", "pane.zoom")
 	rex.bind("ctrl+k>x", "close_pane_or_session")
