@@ -214,12 +214,27 @@ return {
 
   {
     "mason-org/mason.nvim",
-    opts = { ensure_installed = { "cspell", "markuplint" } },
+    opts = function(_, opts)
+      opts.ensure_installed = vim.tbl_filter(function(tool)
+        return tool ~= "markdownlint-cli2"
+      end, vim.list_extend(opts.ensure_installed, { "cspell", "markuplint" }))
+    end,
+  },
+
+  {
+    "stevearc/conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        markdown = { "prettier", "markdown-toc" },
+        ["markdown.mdx"] = { "prettier", "markdown-toc" },
+      },
+    },
   },
 
   {
     "mfussenegger/nvim-lint",
     opts = function(_, opts)
+      opts.linters_by_ft.markdown = {}
       opts.linters_by_ft["*"] = { "cspell" }
       opts.linters.cspell = require("lint.util").wrap(require("lint").linters.cspell, function(diagnostic)
         diagnostic.severity = vim.diagnostic.severity.HINT
