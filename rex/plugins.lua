@@ -7,7 +7,10 @@ dofile(os.getenv("HOME") .. "/.local/share/rex/plugins/rex-copy-mode/copy-mode.l
 })
 
 dofile("/opt/homebrew/opt/rexflash/share/rexflash/rexflash.lua")({
-	bin = os.getenv("HOME") .. "/dev/rexflash/target/release/rexflash",
+	bin = os.getenv("HOME") .. "/dev/dotfiles/rex/rexflash",
+	main_action = "\"" .. os.getenv("HOME") .. "/dev/dotfiles/rex/rexflash\" --open",
+	ctrl_action = ":paste:",
+	shift_action = ":copy:",
 })
 
 return {

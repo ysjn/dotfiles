@@ -71,3 +71,29 @@ defaults to Close (Enter), supports Cancel (Esc), and cancels after 20 seconds.
 If the pane layout changes while the dialog is open, nothing is closed.
 
 Run `luajit rex/tests/close-pane-or-session.lua` to check this behavior.
+
+## Rexflash
+
+`Ctrl+K`, then `f` labels targets; `Ctrl+K`, then `/` searches text.
+In both modes, an unmodified hint opens, Ctrl pastes into the source pane,
+and Shift copies. Rexflash copies every selection before running its action,
+including Open and Paste.
+
+`rexflash` launches `rexflash.ts` with Node 22.18 or newer. It uses Node on
+PATH, falling back to the existing nvm default when Rex starts with a short PATH.
+The upstream Lua extension and `~/dev/rexflash/target/release/rexflash` stay unchanged.
+
+Open resolves paths against the source pane's working directory. Recognized
+source/config extensions, known names such as Makefile, and code MIME types open
+in Neovim in a new pane immediately to the left of the source pane. MIME checks
+exclude binary files, even with a source extension. Ordinary text/Markdown,
+directories, PDFs, images other than SVG, and URLs use macOS Open. Extensionless
+`text/plain` files also use macOS Open unless their name is recognized.
+
+`path:line[:column]`, `path#Lline[Ccolumn]`, and local `file://` links with those
+locations preserve the position in Neovim. The editor gets focus after Rexflash
+exits. Ctrl/Shift selections and cancellation retain the source pane's focus.
+Shell text is passed as arguments, never evaluated as a command.
+
+Run `node --test rex/tests/rexflash.test.ts` and
+`luajit rex/tests/copy-mode-routing.lua` to check the wrapper and bindings.

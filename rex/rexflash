@@ -1,0 +1,8 @@
+#!/bin/bash
+set -euo pipefail
+script_dir="$(cd -- "$(dirname -- "$0")" && pwd)"
+if command -v node >/dev/null 2>&1; then
+  exec node "$script_dir/rexflash.ts" "$@"
+fi
+export NODE_VERSION=default
+exec "$HOME/.nvm/nvm-exec" node "$script_dir/rexflash.ts" "$@"

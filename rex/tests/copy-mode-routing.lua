@@ -30,6 +30,9 @@ setfenv(
 			if file:match("/rexflash%.lua$") then
 				return function(value)
 					assert(not value.hint_key and not value.flash_key, "Plugin shortcuts belong in keybindings.lua")
+					assert(value.bin == os.getenv("HOME") .. "/dev/dotfiles/rex/rexflash")
+					assert(value.main_action == '"' .. value.bin .. '" --open')
+					assert(value.ctrl_action == ":paste:" and value.shift_action == ":copy:")
 				end
 			end
 			return {
