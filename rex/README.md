@@ -40,6 +40,10 @@ The plugin's runtime files remain unmodified. Updating those files preserves
 the custom keys; keep the `nvim` option pointing to this executable wrapper.
 The wrapper uses `/opt/homebrew/bin/nvim`, matching this Mac's installation.
 
+Copy-mode viewers skip Lazy's automatic plugin update checks at startup.
+They still load the usual Neovim config and plugins. Regular Neovim sessions
+continue to check for updates.
+
 Wrapper changes apply to newly opened viewers. An already open viewer keeps
 its existing mappings until it closes.
 
