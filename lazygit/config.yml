@@ -3,3 +3,10 @@ gui:
   showFileTree: false
 os:
   editPreset: "nvim"
+customCommands:
+  - key: '<c-g>'
+    context: 'files'
+    description: 'AIでコミットメッセージを生成'
+    command: 'node "$HOME/dev/dotfiles/lazygit/generate-commit-message.ts"'
+    loadingText: 'Working: コミットメッセージを生成中…'
+    output: 'log'

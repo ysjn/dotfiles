@@ -1,29 +1,7 @@
 return {
-  { "vimpostor/vim-tpipeline" },
-
   {
     "nvim-lualine/lualine.nvim",
     dependencies = { "folke/snacks.nvim" },
-  },
-
-  {
-    "shortcuts/no-neck-pain.nvim",
-    opts = {
-      width = 200,
-      autocmds = {
-        enableOnVimEnter = true,
-      },
-      buffers = {
-        right = {
-          enabled = false,
-        },
-      },
-      integrations = {
-        dashboard = {
-          enabled = true,
-        },
-      },
-    },
   },
 
   {
@@ -224,14 +202,7 @@ return {
   },
 
   {
-    "rcarriga/nvim-notify",
-    opts = {
-      background_colour = "#000000",
-    },
-  },
-
-  {
-    "ggandor/leap.nvim",
+    url = "https://codeberg.org/andyg/leap.nvim",
     config = function()
       local colors = require("ayu.colors")
       colors.generate(true)
@@ -286,6 +257,16 @@ return {
         commit = "/commit/{commit}",
       }
       return {
+        notifier = { enabled = true },
+        lazygit = {
+          config = {
+            os = {
+              -- Keep file edits in the current tab instead of the preset's --remote-tab.
+              edit = [[nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{filename}}]],
+              editAtLine = [[nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{filename}} && nvim --server "$NVIM" --remote-send ":{{line}}<CR>"]],
+            },
+          },
+        },
         dashboard = {
           sections = {
             { section = "header" },

@@ -13,6 +13,9 @@ else
   brew update
 fi
 
+# better touch tool
+brew install --cask bettertouchtool
+
 # raycast
 brew install --cask raycast
 
@@ -22,3 +25,8 @@ brew install --cask pearcleaner
 
 # Google Japanese Input Method Editor
 brew install --cask google-japanese-ime
+
+# hammerspoon
+brew install --cask hammerspoon
+mkdir -p $HOME/.hammerspoon
+ln -snfv $HOME/dev/dotfiles/.hammerspoon.lua $HOME/.hammerspoon/init.lua

@@ -10,6 +10,13 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    vim.opt_local.spell = false
+  end,
+})
+
 vim.api.nvim_create_autocmd("User", {
   pattern = "GitConflictDetected",
   callback = function()
@@ -82,7 +89,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 
 vim.api.nvim_create_autocmd("FocusGained", {
   group = vim.api.nvim_create_augroup("RefocusFloatSimple", { clear = true }),
-  desc = "Refocus Lazygit or fzf-lua input terminal when coming back from tmux pane",
+  desc = "Refocus Lazygit or fzf-lua input terminal when focus returns",
   callback = function()
     -- コマンドライン編集中は奪わない
     if vim.api.nvim_get_mode().mode == "c" then

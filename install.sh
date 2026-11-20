@@ -16,9 +16,6 @@ fi
 # install nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 
-# install alacritty
-brew install --cask alacritty
-
 # install neovim
 brew install neovim ripgrep fd lazygit tree-sitter-cli
 
@@ -35,18 +32,37 @@ rm -rf $HOME/.config/nvim/.git
 brew tap homebrew/cask-fonts
 brew install --cask font-jetbrains-mono-nerd-font
 
-# install tmux
-brew install tmux
+# install herdr
+brew install herdr
 
-# install tmux plugin manager
-git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
+# create symbolic link for herdr config
+mkdir -p "$HOME/.config/herdr"
+ln -snfv "$HOME/dev/dotfiles/herdr/config.toml" "$HOME/.config/herdr/config.toml"
 
-# create symbolic link for tmux.conf
-mkdir -p $HOME/.config/tmux
-ln -snfv $HOME/dev/dotfiles/tmux.conf $HOME/.config/tmux/tmux.conf
+# create symbolic link for Rex config
+mkdir -p "$HOME/.config/rex"
+ln -snfv "$HOME/dev/dotfiles/rex/init.lua" "$HOME/.config/rex/init.lua"
 
-# install fzf (for tmux-fzf-url)
+# Link the CLI from an existing Rex installation.
+rex_cli="/Applications/Rex Beta.app/Contents/Helpers/Rex Server.rex/Contents/MacOS/rex"
+if [[ -x "$rex_cli" ]]; then
+  mkdir -p "$HOME/.local/bin"
+  if [[ ! -e "$HOME/.local/bin/rex" && ! -L "$HOME/.local/bin/rex" ]]; then
+    ln -sv "$rex_cli" "$HOME/.local/bin/rex"
+  fi
+  if ! grep -Fqx 'export PATH="$HOME/.local/bin:$PATH"' "$HOME/.zprofile" 2>/dev/null; then
+    printf '\nexport PATH="$HOME/.local/bin:$PATH"\n' >> "$HOME/.zprofile"
+  fi
+fi
+
+# install fzf
 brew install fzf
+
+# install zoxide (smarter cd)
+brew install zoxide
+
+# install Obsidian and seed a portable Markdown vault
+bash "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/obsidian/install.sh" || exit 1
 
 # install github completion
 mkdir -p $HOME/.zsh
@@ -65,6 +81,8 @@ ln -snfv $HOME/dev/dotfiles/.zshrc $HOME
 rm -rf $HOME/.config/nvim
 ln -snfv $HOME/dev/dotfiles/nvim $HOME/.config
 ln -snfv $HOME/dev/dotfiles/alacritty.toml $HOME/.config/alacritty.toml
+
+mkdir -p $HOME/Library/Application\ Support/lazygit
 ln -snfv $HOME/dev/dotfiles/lazygit/config.yml $HOME/Library/Application\ Support/lazygit/config.yml
 
 # load config

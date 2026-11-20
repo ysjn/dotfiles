@@ -73,17 +73,33 @@ vim.keymap.set("i", "<A-C-k>", "<esc><cmd>m .-2<cr>==gi", opts("Move up"))
 vim.keymap.set("v", "<A-C-j>", ":m '>+1<cr>gv=gv", opts("Move down"))
 vim.keymap.set("v", "<A-C-k>", ":m '<-2<cr>gv=gv", opts("Move up"))
 
--- Move between splits in NeoVim windows and Tmux panes
-vim.keymap.set("n", "<A-h>", "<cmd>TmuxNavigateLeft<CR>", opts())
-vim.keymap.set("n", "<A-j>", "<cmd>TmuxNavigateDown<CR>", opts())
-vim.keymap.set("n", "<A-k>", "<cmd>TmuxNavigateUp<CR>", opts())
-vim.keymap.set("n", "<A-l>", "<cmd>TmuxNavigateRight<CR>", opts())
-
--- Resize splits for NeoVim windows Panes and Tmux panes
-vim.keymap.set("n", "<A-H>", "<cmd>TmuxResizeLeft<CR>", opts())
-vim.keymap.set("n", "<A-J>", "<cmd>TmuxResizeDown<CR>", opts())
-vim.keymap.set("n", "<A-K>", "<cmd>TmuxResizeUp<CR>", opts())
-vim.keymap.set("n", "<A-L>", "<cmd>TmuxResizeRight<CR>", opts())
+-- Move and resize Neovim splits and Herdr panes
+if vim.env.HERDR_ENV == "1" then
+  vim.keymap.set("n", "<M-h>", function()
+    require("herdr-splits").move_cursor_left()
+  end, opts("Navigate left"))
+  vim.keymap.set("n", "<M-j>", function()
+    require("herdr-splits").move_cursor_down()
+  end, opts("Navigate down"))
+  vim.keymap.set("n", "<M-k>", function()
+    require("herdr-splits").move_cursor_up()
+  end, opts("Navigate up"))
+  vim.keymap.set("n", "<M-l>", function()
+    require("herdr-splits").move_cursor_right()
+  end, opts("Navigate right"))
+  vim.keymap.set("n", "<M-H>", function()
+    require("herdr-splits").resize_left()
+  end, opts("Resize left"))
+  vim.keymap.set("n", "<M-J>", function()
+    require("herdr-splits").resize_down()
+  end, opts("Resize down"))
+  vim.keymap.set("n", "<M-K>", function()
+    require("herdr-splits").resize_up()
+  end, opts("Resize up"))
+  vim.keymap.set("n", "<M-L>", function()
+    require("herdr-splits").resize_right()
+  end, opts("Resize right"))
+end
 
 -- Split windows
 vim.keymap.set("n", "<leader>v", "<cmd>vsplit<CR><c-w>h<cmd>:bp<cr><c-w>l", opts("Split window right"))
@@ -134,14 +150,41 @@ vim.keymap.set("n", "<leader>fi", function()
   vim.fn.jobstart({ "open", get_current_oil_dir() })
 end, opts("Open Finder"))
 
--- Copy oil.nvim's cwd to clipboard
-vim.keymap.set("n", "<leader>y", function()
-  local cwd = get_current_oil_dir()
-  vim.fn.setreg("+", cwd)
-  vim.notify("Copied: " .. cwd, vim.log.levels.INFO)
-end, opts("Copy current directory to clipboard"))
+-- Copy Oil's directory or the current file path and lines to clipboard
+vim.keymap.set({ "n", "x" }, "<leader>y", function()
+  local text
+  if vim.bo.filetype == "oil" then
+    text = get_current_oil_dir()
+  else
+    local path = vim.fn.expand("%:~"):gsub("^~/", "")
+    local line1, line2 = vim.fn.line("."), vim.fn.line(".")
+    if vim.fn.mode():match("^[vV\022]") then
+      line1, line2 = math.min(line1, vim.fn.line("v")), math.max(line2, vim.fn.line("v"))
+    end
+    local lines = "L" .. line1
+    if line1 ~= line2 then
+      lines = lines .. "-L" .. line2
+    end
+    text = "@" .. path .. " :" .. lines
+  end
+  vim.fn.setreg("+", text)
+  vim.notify("Copied: " .. text, vim.log.levels.INFO)
+end, opts("Copy directory or file path and lines to clipboard"))
 
 -- Oil
+vim.keymap.set("n", "<leader>fo", function()
+  vim.ui.input({ prompt = "Open file: ", completion = "file" }, function(path)
+    if path and path ~= "" then
+      path = vim.fs.normalize(path)
+      if vim.fn.isdirectory(path) == 1 then
+        require("oil").open_float(path)
+      else
+        vim.api.nvim_cmd({ cmd = "edit", args = { path }, magic = { file = false } }, {})
+      end
+    end
+  end)
+end, opts("Open file by path"))
+
 vim.keymap.set("n", "<leader>e", "<CMD>Oil --float<CR>", opts("Open parent directory (float)"))
 vim.keymap.set("n", "<leader>E", function()
   local oil = require("oil")
@@ -154,4 +197,29 @@ vim.keymap.set("n", "<leader>E", function()
   end
 end, opts("Open parent directory"))
 
-vim.keymap.set("n", "<leader>z", ":SimpleZoomToggle<CR>")
+vim.keymap.set("n", "<leader>z", function()
+  Snacks.zen.zoom()
+end, opts("Toggle Zoom"))
+
+-- copy diagnostic message
+vim.keymap.set("n", "<leader>dc", function()
+  local line = vim.fn.line(".") - 1
+  local diags = vim.diagnostic.get(0, { lnum = line })
+  if #diags == 0 then
+    print("No diagnostics on this line")
+    return
+  end
+
+  local seen = {}
+  local msgs = {}
+
+  for _, d in ipairs(diags) do
+    if not seen[d.message] then
+      seen[d.message] = true
+      table.insert(msgs, d.message)
+    end
+  end
+
+  vim.fn.setreg("+", table.concat(msgs, "\n"))
+  print("Copied " .. #msgs .. " unique diagnostic(s)")
+end, { desc = "Copy unique diagnostics on line" })

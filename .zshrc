@@ -86,3 +86,5 @@ gbl() {
     fi
   done
 }
+
+eval "$(zoxide init zsh --cmd cd)"

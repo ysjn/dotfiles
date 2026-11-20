@@ -1,0 +1,15 @@
+#!/bin/bash
+# Load the usual Neovim config while preserving the viewer's remaining arguments.
+nvim_arguments=()
+while [ "$#" -gt 0 ]; do
+  if [ "$1" = "-u" ] && [ "${2-}" = "NONE" ]; then
+    shift 2
+  else
+    nvim_arguments+=("$1")
+    shift
+  fi
+done
+
+# Keep the quit mapping local to the copy-mode viewer.
+exec /opt/homebrew/bin/nvim "${nvim_arguments[@]}" \
+  -c 'lua vim.keymap.set({ "n", "x", "t" }, "q", "<Cmd>qa!<CR>", { buffer = true, silent = true })'

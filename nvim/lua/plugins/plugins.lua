@@ -1,15 +1,50 @@
 return {
-  { "christoomey/vim-tmux-navigator", event = "VeryLazy" },
-  { "RyanMillerC/better-vim-tmux-resizer", event = "VeryLazy" },
-  { "mg979/vim-visual-multi", event = "VeryLazy" },
-  { "OlegGulevskyy/better-ts-errors.nvim", event = "VeryLazy" },
-  { "ray-x/lsp_signature.nvim", event = "VeryLazy" },
-  { "nacro90/numb.nvim", event = "VeryLazy", config = true },
   {
-    "fasterius/simple-zoom.nvim",
+    "lmilojevicc/herdr-splits.nvim",
+    cond = vim.env.HERDR_ENV == "1",
     event = "VeryLazy",
-    opts = { hide_tabline = false },
+    config = function()
+      require("herdr-splits").setup({
+        nav_keys = { left = "<M-h>", down = "<M-j>", up = "<M-k>", right = "<M-l>" },
+        resize_keys = { left = "<M-S-h>", down = "<M-S-j>", up = "<M-S-k>", right = "<M-S-l>" },
+        nav_at_edge = "stop",
+      })
+    end,
   },
+  {
+    "smart-splits-nvim/smart-splits.nvim",
+    version = "^3.0.0",
+    cond = function()
+      return vim.env.HERDR_ENV ~= "1"
+        and vim.env.REX_SESSION ~= nil
+        and vim.env.REX_SESSION ~= ""
+        and vim.env.REX_BLOCK ~= nil
+        and vim.env.REX_BLOCK ~= ""
+    end,
+    dependencies = {
+      { "rawnly/smart-splits-backend-rex", main = "smart-splits-backend-rex", opts = {} },
+    },
+    opts = {
+      move = { at_edge = "stop" },
+      mux = { backend = "smart-splits-backend-rex" },
+    },
+    keys = function()
+      local splits = require("smart-splits")
+      return {
+        { "<M-h>", splits.move_cursor_left, mode = { "n", "t" }, desc = "Navigate left" },
+        { "<M-j>", splits.move_cursor_down, mode = { "n", "t" }, desc = "Navigate down" },
+        { "<M-k>", splits.move_cursor_up, mode = { "n", "t" }, desc = "Navigate up" },
+        { "<M-l>", splits.move_cursor_right, mode = { "n", "t" }, desc = "Navigate right" },
+        { "<M-H>", splits.resize_left, mode = { "n", "t" }, desc = "Resize left" },
+        { "<M-J>", splits.resize_down, mode = { "n", "t" }, desc = "Resize down" },
+        { "<M-K>", splits.resize_up, mode = { "n", "t" }, desc = "Resize up" },
+        { "<M-L>", splits.resize_right, mode = { "n", "t" }, desc = "Resize right" },
+      }
+    end,
+  },
+
+  { "mg979/vim-visual-multi", event = "VeryLazy" },
+  { "nacro90/numb.nvim", event = "VeryLazy", config = true },
 
   {
     "akinsho/git-conflict.nvim",
@@ -25,8 +60,16 @@ return {
       require("ts_context_commentstring").setup({
         enable_autocmd = false,
       })
+      local pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook()
       require("Comment").setup({
-        pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
+        pre_hook = function(ctx)
+          -- Neovim 0.12 returns nil for missing parsers, which Comment.nvim cannot handle.
+          local ok, parser = pcall(vim.treesitter.get_parser, 0)
+          if ok and parser == nil then
+            return require("Comment.ft").get(vim.bo.filetype, ctx.ctype) or vim.bo.commentstring
+          end
+          return pre_hook(ctx)
+        end,
       })
     end,
   },
@@ -34,22 +77,19 @@ return {
   {
     "folke/noice.nvim",
     opts = function(_, opts)
-      table.insert(opts.routes, {
-        filter = {
-          event = "notify",
-          find = "No information",
-        },
-        opts = { skip = true },
-      })
+      local filters = {
+        { event = "notify", find = "No information" },
+      }
+
+      for _, filter in ipairs(filters) do
+        table.insert(opts.routes, {
+          filter = filter,
+          opts = { skip = true },
+        })
+      end
+
       opts.presets.lsp_doc_border = true
     end,
-  },
-
-  {
-    "rcarriga/nvim-notify",
-    opts = {
-      timeout = 5000,
-    },
   },
 
   {
@@ -95,9 +135,9 @@ return {
         "yaml",
       },
     },
-    config = function()
+    init = function()
       vim.filetype.add({ extension = { mdx = "markdown.mdx" } })
-      vim.treesitter.language.register("markdown", "mdx")
+      vim.treesitter.language.register("markdown", { "mdx", "markdown.mdx" })
     end,
   },
 
@@ -173,24 +213,49 @@ return {
   },
 
   {
+    "mason-org/mason.nvim",
+    opts = function(_, opts)
+      opts.ensure_installed = vim.tbl_filter(function(tool)
+        return tool ~= "markdownlint-cli2"
+      end, vim.list_extend(opts.ensure_installed, { "cspell", "markuplint" }))
+    end,
+  },
+
+  {
+    "stevearc/conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        markdown = { "prettier", "markdown-toc" },
+        ["markdown.mdx"] = { "prettier", "markdown-toc" },
+      },
+    },
+  },
+
+  {
+    "mfussenegger/nvim-lint",
+    opts = function(_, opts)
+      opts.linters_by_ft.markdown = {}
+      opts.linters_by_ft["*"] = { "cspell" }
+      opts.linters.cspell = require("lint.util").wrap(require("lint").linters.cspell, function(diagnostic)
+        diagnostic.severity = vim.diagnostic.severity.HINT
+        return diagnostic
+      end)
+      opts.linters.cspell.condition = function(ctx)
+        return vim.bo.buftype == "" and ctx.filename ~= ""
+      end
+    end,
+  },
+
+  {
     "nvimtools/none-ls.nvim",
     lazy = true,
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "nvim-lua/plenary.nvim",
-      {
-        "jay-babu/mason-null-ls.nvim",
-        opts = {
-          ensure_installed = { "cspell", "markuplint" },
-          methods = { code_actions = false },
-        },
-      },
-      "davidmh/cspell.nvim",
       "nvimtools/none-ls-extras.nvim",
     },
     opts = function()
       local null_ls = require("null-ls")
-      local cspell = require("cspell")
       local DIAGNOSTICS_ON_OPEN = null_ls.methods.DIAGNOSTICS_ON_OPEN
       local DIAGNOSTICS_ON_SAVE = null_ls.methods.DIAGNOSTICS_ON_SAVE
       return {
@@ -211,13 +276,6 @@ return {
             end,
             method = { DIAGNOSTICS_ON_OPEN, DIAGNOSTICS_ON_SAVE },
           }),
-          cspell.diagnostics.with({
-            diagnostics_postprocess = function(diagnostic)
-              diagnostic.severity = vim.diagnostic.severity["HINT"]
-            end,
-            method = { DIAGNOSTICS_ON_OPEN, DIAGNOSTICS_ON_SAVE },
-          }),
-          cspell.code_actions,
           -- none-ls-extras
           require("none-ls.diagnostics.eslint").with({
             method = { DIAGNOSTICS_ON_OPEN, DIAGNOSTICS_ON_SAVE },
@@ -259,76 +317,5 @@ return {
         },
       }
     end,
-  },
-
-  {
-    "folke/sidekick.nvim",
-    opts = {
-      cli = {
-        win = {
-          keys = {
-            navigate_left = {
-              "<A-h>",
-              function()
-                vim.cmd("TmuxNavigateLeft")
-              end,
-            },
-            navigate_right = {
-              "<A-l>",
-              function()
-                vim.cmd("TmuxNavigateRight")
-              end,
-            },
-            new_line_or_submit = {
-              "<CR>",
-              function(t)
-                local buf = vim.api.nvim_get_current_buf()
-                local total_lines = vim.api.nvim_buf_line_count(buf)
-                local is_insert_mode = false
-                for i = total_lines, math.max(1, total_lines - total_lines + 1), -1 do
-                  local line = vim.api.nvim_buf_get_lines(buf, i - 1, i, false)[1] or ""
-                  if line:match("^%s*%-%-%s*INSERT") then
-                    is_insert_mode = true
-                    break
-                  end
-                  if line:match("%S") then
-                    -- 空白以外の文字が見つかった場合、その一つ上の行もチェック
-                    if i > 1 then
-                      local prev_line = vim.api.nvim_buf_get_lines(buf, i - 2, i - 1, false)[1] or ""
-                      if prev_line:match("^%s*%-%-%s*INSERT") then
-                        is_insert_mode = true
-                      end
-                    end
-                    break
-                  end
-                end
-
-                if is_insert_mode then
-                  t:send("\n")
-                else
-                  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, false, true), "n", false)
-                end
-              end,
-            },
-          },
-        },
-      },
-    },
-    keys = {
-      {
-        "<leader>aa",
-        function()
-          require("sidekick.cli").toggle({ filter = { installed = true } })
-        end,
-        desc = "Sidekick Toggle",
-      },
-      {
-        "<leader>as",
-        function()
-          require("sidekick.cli").select({ filter = { installed = true } })
-        end,
-        desc = "Sidekick Select CLI",
-      },
-    },
   },
 }
