@@ -1,8 +1,36 @@
 #!/bin/bash
 set -euo pipefail
-script_dir="$(cd -- "$(dirname -- "$0")" && pwd)"
-if command -v node >/dev/null 2>&1; then
-  exec node "$script_dir/rexflash.ts" "$@"
+if [[ ${1:-} == --open ]]; then
+  script_dir="$(cd -- "$(dirname -- "$0")" && pwd)"
+  if command -v node >/dev/null 2>&1; then
+    exec node "$script_dir/rexflash.ts" "$@"
+  fi
+  export NODE_VERSION=default
+  exec "$HOME/.nvm/nvm-exec" node "$script_dir/rexflash.ts" "$@"
 fi
-export NODE_VERSION=default
-exec "$HOME/.nvm/nvm-exec" node "$script_dir/rexflash.ts" "$@"
+
+args=("$@")
+session= block=
+for ((i=1; i<${#args[@]}; i+=2)); do
+  case ${args[i]} in
+    --session) session=${args[i+1]:-} ;;
+    --block) block=${args[i+1]:-} ;;
+  esac
+done
+if [[ -z $session || -z $block ]]; then
+  echo 'rexflash: Missing --session or --block' >&2
+  exit 1
+fi
+
+temporary=$(mktemp -d "${TMPDIR:-/tmp}/rexflash-XXXXXXXX")
+trap 'rm -rf -- "$temporary"' EXIT
+export REXFLASH_SOURCE_SESSION=$session REXFLASH_SOURCE_BLOCK=$block
+export REXFLASH_FOCUS_FILE=$temporary/focus
+export REX_BIN=${REX_BIN:-$HOME/.local/bin/rex}
+status=0
+"$HOME/dev/rexflash/target/release/rexflash" "${args[@]}" || status=$?
+# Rexflash refocuses the source pane on exit, so focus the editor afterwards.
+if [[ $status == 0 && -f $REXFLASH_FOCUS_FILE ]]; then
+  "$REX_BIN" focus -s "$session" "$(< "$REXFLASH_FOCUS_FILE")"
+fi
+exit "$status"

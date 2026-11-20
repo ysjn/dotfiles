@@ -110,9 +110,14 @@ In both modes, an unmodified hint opens, Ctrl pastes into the source pane,
 and Shift copies. Rexflash copies every selection before running its action,
 including Open and Paste.
 
-`rexflash` launches `rexflash.ts` with Node 22.18 or newer. It uses Node on
-PATH, falling back to the existing nvm default when Rex starts with a short PATH.
-The upstream Lua extension and `~/dev/rexflash/target/release/rexflash` stay unchanged.
+`rexflash` starts `~/dev/rexflash/target/release/rexflash` directly, without
+loading Node or nvm before hints appear. Only Open launches `rexflash.ts` with
+Node 22.18 or newer. Open uses Node on PATH, falling back to the existing nvm
+default when Rex starts with a short PATH. The upstream Lua extension is unchanged.
+
+The local Rust checkout captures the source pane while compiling patterns and
+fetching its size. Rebuild it with `cargo build --release --manifest-path
+"$HOME/dev/rexflash/Cargo.toml"` after changing that checkout.
 
 Open resolves paths against the source pane's working directory. Recognized
 source/config extensions, known names such as Makefile, and code MIME types open
@@ -128,3 +133,21 @@ Shell text is passed as arguments, never evaluated as a command.
 
 Run `node --test rex/tests/rexflash.test.ts` and
 `luajit rex/tests/copy-mode-routing.lua` to check the wrapper and bindings.
+
+Startup measurements on this Mac (2026-11-20), from the hint action request to
+the hint appearing in a VT capture:
+
+| Change | Samples | Median | p90 |
+| --- | ---: | ---: | ---: |
+| Original launcher | 10 | 588 ms | 592 ms |
+| Start Rust without Node/nvm | 10 | 174 ms | 184 ms |
+| Also overlap capture with size/pattern setup | 30 | 146 ms | 156 ms |
+
+The final version measured 152 ms median / 174 ms p90 with 5,000 lines containing
+Japanese text, paths, URLs, and OSC 8 links. Generating initial hints only for the
+visible rows and adding a second worker for size lookup each saved less than
+4 ms in comparisons; neither produced a stable gain, so both were discarded.
+The measurements include CLI startup and polling, but exclude physical key
+handling and display rendering. Before/after VT frames matched for hint, flash,
+and scrolling. A mutual-barrier check verified concurrent size/capture calls;
+an error check verified failed size lookup still reports an error without hanging.

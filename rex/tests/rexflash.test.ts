@@ -1,11 +1,11 @@
 import assert from "node:assert/strict";
 import childProcess from "node:child_process";
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { homedir, tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { after, afterEach, mock, test } from "node:test";
-import { isCode, main, openSelection, targetOf } from "../rexflash.ts";
+import { isCode, openSelection, targetOf } from "../rexflash.ts";
 
 const directory = mkdtempSync(join(tmpdir(), "rexflash-test-"));
 const source = join(directory, "source with 'quotes' $(touch SHOULD_NOT_EXIST).ts");
@@ -113,49 +113,56 @@ test("missing source context and failed splits report errors without opening a s
 
 test("the launcher preserves arguments and focuses the editor after upstream exits", () => {
 	const args = ["hint", "--session", "original-session", "--block", "original-block", "--cwd", directory, "--config", '{"main_action":"a command"}'];
-	let requestFile = "";
-	const order: string[] = [];
-	mock.method(childProcess, "spawnSync", (command: string, received: string[], options: any) => {
-		if (command.endsWith("target/release/rexflash")) {
-			assert.deepEqual(received, args);
-			assert.equal(options.stdio, "inherit");
-			assert.equal(options.env.REXFLASH_SOURCE_SESSION, "original-session");
-			assert.equal(options.env.REXFLASH_SOURCE_BLOCK, "original-block");
-			requestFile = options.env.REXFLASH_FOCUS_FILE;
-			writeFileSync(requestFile, "new-editor");
-			order.push("upstream returned");
+	const home = join(directory, "home with 'quotes'");
+	const binDir = join(home, "dev/rexflash/target/release");
+	mkdirSync(binDir, { recursive: true });
+	writeFileSync(join(binDir, "rexflash"), `#!/bin/bash
+printf '%s\\0' "$@" > "$TEST_OUTPUT/argv"
+printf '%s\\n' "$REXFLASH_SOURCE_SESSION" "$REXFLASH_SOURCE_BLOCK" "$REXFLASH_FOCUS_FILE" > "$TEST_OUTPUT/context"
+if [[ $TEST_PICK == 1 ]]; then printf new-editor > "$REXFLASH_FOCUS_FILE"; fi
+printf 'upstream returned\\n' > "$TEST_OUTPUT/order"
+exit "$TEST_STATUS"
+`, { mode: 0o755 });
+	const rex = join(home, "rex");
+	writeFileSync(rex, `#!/bin/bash
+printf '%s\\0' "$@" > "$TEST_OUTPUT/focus-argv"
+printf 'editor focused\\n' >> "$TEST_OUTPUT/order"
+`, { mode: 0o755 });
+	for (const [pick, status] of [[1, 0], [0, 0], [1, 2]]) {
+		rmSync(join(directory, "focus-argv"), { force: true });
+		const result = childProcess.spawnSync(fileURLToPath(new URL("../rexflash", import.meta.url)), args, {
+			encoding: "utf8",
+			env: { ...process.env, HOME: home, PATH: "/usr/bin:/bin", REX_BIN: rex, TEST_OUTPUT: directory, TEST_PICK: String(pick), TEST_STATUS: String(status) },
+		});
+		assert.equal(result.status, status, result.stderr);
+		assert.deepEqual(readFileSync(join(directory, "argv"), "utf8").split("\0").slice(0, -1), args);
+		const [session, block, requestFile] = readFileSync(join(directory, "context"), "utf8").trimEnd().split("\n");
+		assert.equal(session, "original-session");
+		assert.equal(block, "original-block");
+		assert.equal(existsSync(requestFile), false, "temporary focus request must be removed");
+		if (pick && status === 0) {
+			assert.deepEqual(readFileSync(join(directory, "focus-argv"), "utf8").split("\0").slice(0, -1), ["focus", "-s", session, "new-editor"]);
+			assert.equal(readFileSync(join(directory, "order"), "utf8"), "upstream returned\neditor focused\n");
 		} else {
-			assert.deepEqual(received, ["focus", "-s", "original-session", "new-editor"]);
-			order.push("editor focused");
+			assert.equal(existsSync(join(directory, "focus-argv")), false);
 		}
-		return { status: 0, stdout: "", stderr: "" };
-	});
-	main(args);
-	assert.deepEqual(order, ["upstream returned", "editor focused"]);
-	assert.equal(existsSync(requestFile), false);
+	}
 });
 
-test("cancel/paste/copy do not move focus, and upstream failures are preserved", () => {
-	const calls: string[] = [];
-	let status = 0;
-	mock.method(childProcess, "spawnSync", (command: string) => {
-		calls.push(command);
-		return { status, stdout: "", stderr: "" };
-	});
-	main(["flash", "--session", "s", "--block", "b"]);
-	assert.equal(process.exitCode, 0);
-	assert.equal(calls.length, 1);
-	status = 2;
-	main(["flash", "--session", "s", "--block", "b"]);
-	assert.equal(process.exitCode, 2);
-	assert.equal(calls.length, 2);
-});
-
-test("the executable starts with Rex's minimal PATH using the nvm default", () => {
+test("the executable validates arguments with Rex's minimal PATH", () => {
 	const result = childProcess.spawnSync(fileURLToPath(new URL("../rexflash", import.meta.url)), [], {
 		encoding: "utf8",
 		env: { ...process.env, PATH: "/usr/bin:/bin", NODE_VERSION: "" },
 	});
 	assert.equal(result.status, 1);
 	assert.match(result.stderr, /Missing --session or --block/);
+});
+
+test("Open still starts Node through the nvm default with Rex's minimal PATH", () => {
+	const result = childProcess.spawnSync(fileURLToPath(new URL("../rexflash", import.meta.url)), ["--open"], {
+		input: "", encoding: "utf8",
+		env: { ...process.env, PATH: "/usr/bin:/bin", NODE_VERSION: "" },
+	});
+	assert.equal(result.status, 1);
+	assert.match(result.stderr, /Invalid Open target/);
 });

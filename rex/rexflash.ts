@@ -1,6 +1,6 @@
 import childProcess from "node:child_process";
-import { existsSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
-import { homedir, tmpdir } from "node:os";
+import { existsSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { homedir } from "node:os";
 import { basename, extname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -85,30 +85,10 @@ export function openSelection(text: string) {
 	run("/usr/bin/open", [target.openArg]);
 }
 
-export function main(args: string[]) {
-	if (args[0] === "--open") return openSelection(readFileSync(0, "utf8"));
-	const session = args[args.indexOf("--session") + 1];
-	const block = args[args.indexOf("--block") + 1];
-	if (!args.includes("--session") || !session || !args.includes("--block") || !block) throw new Error("Missing --session or --block");
-	const temporary = mkdtempSync(join(tmpdir(), "rexflash-"));
-	const focusFile = join(temporary, "focus");
-	try {
-		const result = childProcess.spawnSync(join(homedir(), "dev/rexflash/target/release/rexflash"), args, {
-			stdio: "inherit",
-			env: { ...process.env, REXFLASH_SOURCE_SESSION: session, REXFLASH_SOURCE_BLOCK: block, REXFLASH_FOCUS_FILE: focusFile },
-		});
-		if (result.error) throw result.error;
-		process.exitCode = result.status ?? 1;
-		// Rexflash refocuses the source pane on exit, so focus the editor afterwards.
-		if (result.status === 0 && existsSync(focusFile)) run(rex, ["focus", "-s", session, readFileSync(focusFile, "utf8")]);
-	} finally {
-		rmSync(temporary, { recursive: true, force: true });
-	}
-}
-
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
 	try {
-		main(process.argv.slice(2));
+		if (process.argv[2] !== "--open") throw new Error("Expected --open");
+		openSelection(readFileSync(0, "utf8"));
 	} catch (error) {
 		console.error(`rexflash: ${error instanceof Error ? error.message : error}`);
 		process.exitCode = 1;
