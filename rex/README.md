@@ -16,6 +16,37 @@ reload reads their latest contents.
 After changing any Lua configuration file, run `rex config check` and
 `rex config reload`.
 
+## Codex line scrolling
+
+When Codex is the local foreground process, `Ctrl+B` sends three `PageUp` keys
+and `Ctrl+F` sends three `PageDown` keys. With the Codex configuration below,
+each shortcut scrolls three lines in the fullscreen conversation without
+entering selection mode and replaces those keys' input-cursor movement in Codex.
+Other programs receive the original keys, including Codex reached through SSH.
+The handler writes the page-key escape sequences directly to the source pane;
+Rex does not allow `rex.client.queue` inside a key handler.
+
+Add this section to `~/.codex/config.toml`, then restart Codex:
+
+```toml
+[tui.keymap.pager]
+scroll_up = ["up", "k", "page-up"]
+scroll_down = ["down", "j", "page-down"]
+page_up = ["shift-space", "ctrl-b"]
+page_down = ["space", "ctrl-f"]
+```
+
+This also makes physical `PageUp` / `PageDown` (`Fn+Up` / `Fn+Down` on macOS)
+scroll one line. The page bindings above retain the other pager shortcuts
+without conflicting with the line bindings.
+
+Codex 0.170.0 only accepts `PageUp` / `PageDown` as configurable scroll keys in
+the main conversation view; custom `Ctrl+B` / `Ctrl+F` bindings do not reach it.
+The TODO in `keybindings.lua` tracks moving these bindings into Codex once it
+supports that configuration.
+
+Run `luajit rex/tests/codex-page-scroll.lua` to check routing and error handling.
+
 ## Copy mode
 
 `plugins.lua` loads [CJNE/rex-copy-mode](https://github.com/CJNE/rex-copy-mode) from
